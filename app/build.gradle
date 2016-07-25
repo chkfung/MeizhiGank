@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'com.neenbedankt.android-apt'
+android {
+    compileSdkVersion 23
+    buildToolsVersion "24.0.0"
+    defaultConfig {
+        applicationId "me.chkfung.meizhigank"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    Map<String, String> dependencies = rootProject.ext.dependencies;
+//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+//    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    //SupportLibrary
+    compile dependencies.appCompat
+    compile dependencies.cardView
+    compile dependencies.design
+    compile dependencies.recyclerView
+    compile dependencies.constraintLayout
+    androidTestCompile dependencies.atc_annotation
+
+    //Utils
+    compile dependencies.butterKnife
+    apt dependencies.apt_ButterKnife
+    compile dependencies.rxAndroid
+    compile dependencies.dagger
+    apt dependencies.apt_Dagger
+    provided dependencies.provided_annotation
+
+    //Network And Provider
+    compile dependencies.retrofit
+    compile dependencies.retrofitConverterGson
+    compile dependencies.retrofitAdapterRxJava
+    compile dependencies.gson
+    compile dependencies.logger
+
+    //UI Library
+    compile dependencies.circleImageView
+
+    //Testing
+    testCompile dependencies.tc_jUnit
+    androidTestCompile dependencies.atc_espresso
+    androidTestCompile dependencies.atc_runner
+    compile 'com.google.firebase:firebase-core:9.0.2'
+
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.google.android.gms:play-services-location:9.0.2'
+    compile 'com.github.chrisbanes:PhotoView:1.2.6'
+
+}
+
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'
