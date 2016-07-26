@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "479805264884",
+    "firebase_url": "https://meizhi-c1800.firebaseio.com",
+    "project_id": "meizhi-c1800",
+    "storage_bucket": "meizhi-c1800.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479805264884:android:81b5325810cd6540",
+        "android_client_info": {
+          "package_name": "me.chkfung.meizhigank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "479805264884-h1f082h5hmdrbe7bo0pn9vcrkj9bqe3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.chkfung.meizhigank",
+            "certificate_hash": "6FB9AA0ADE468D63AF01791B4E0C0403392BA23C"
+          }
+        },
+        {
+          "client_id": "479805264884-s3ql6496fh6jdovgggojcibai4ana34m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByaj7TzeKy24d02WoC5_1FSNGnO1NeKu8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479805264884-s3ql6496fh6jdovgggojcibai4ana34m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
