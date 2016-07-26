@@ -1,8 +1,10 @@
 package me.chkfung.meizhigank.UI;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -10,77 +12,80 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.chkfung.meizhigank.Base.BaseActivity;
-import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.Meizhi;
+import me.chkfung.meizhigank.Presenter.MainPresenter;
 import me.chkfung.meizhigank.R;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MainContract.View {
 
-    final List<Meizhi.ResultsBean> data = new ArrayList<Meizhi.ResultsBean>();
+    final private List<Meizhi.ResultsBean> MeizhiData = new ArrayList<>();
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rv_meizhi)
     RecyclerView rvMeizhi;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    MeizhiRvAdapter meizhiRvAdapter;
+    @BindView(R.id.refreshlayout)
+    SwipeRefreshLayout refreshlayout;
+    private MeizhiRvAdapter meizhiRvAdapter;
+    private MainContract.Presenter mainPresenter = new MainPresenter();
+    private int paging = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                refreshlayout.setRefreshing(true);
+                mainPresenter.loadMeizhi(paging++, MeizhiData);
             }
         });
-
-
-        meizhiRvAdapter = new MeizhiRvAdapter(this, data);
+        mainPresenter.attachView(this);
+        meizhiRvAdapter = new MeizhiRvAdapter(this, MeizhiData);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvMeizhi.setAdapter(meizhiRvAdapter);
         rvMeizhi.setLayoutManager(layoutManager);
-        MeizhiApp meizhiApp = MeizhiApp.get(this);
-//        try{
-        Call<Meizhi> az = meizhiApp.getNetworkApi().getMeizhi(1);
-        az.enqueue(new Callback<Meizhi>() {
+        refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onResponse(Call<Meizhi> call, Response<Meizhi> response) {
-                Logger.json(response.body().toString());
-                for (Meizhi.ResultsBean z : response.body().getResults()
-                        ) {
-
-                    data.add(z);
-                }
-                setupRV();
-            }
-
-            @Override
-            public void onFailure(Call<Meizhi> call, Throwable t) {
-                Logger.e(t, "Error Occur");
+            public void onRefresh() {
+                //Clear Adapter
+                MeizhiData.clear();
+                meizhiRvAdapter.notifyDataSetChanged();
+                paging = 1;
+                mainPresenter.loadMeizhi(paging, MeizhiData);
             }
         });
-//        }catch (Exception e){
-//            System.out.println(e.getMessage());
-//        }
     }
 
-    public void setupRV() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainPresenter.detachView();
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void refreshRv() {
         meizhiRvAdapter.notifyDataSetChanged();
+        refreshlayout.setRefreshing(false);
     }
 
     @Override
@@ -95,13 +100,10 @@ public class MainActivity extends BaseActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (item.getItemId() == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
+
 }

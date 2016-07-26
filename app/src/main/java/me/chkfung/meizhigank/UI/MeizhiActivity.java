@@ -6,12 +6,18 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.R;
 
@@ -26,6 +32,8 @@ public class MeizhiActivity extends BaseActivity {
     AppBarLayout appbar;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.progressbar)
+    ProgressBar progressbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,15 +42,32 @@ public class MeizhiActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         Bundle data = getIntent().getExtras();
+        progressbar.setVisibility(View.VISIBLE);
         Glide.with(this)
                 .load(data.get("URL"))
+                .listener(new RequestListener<Object, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        progressbar.setVisibility(View.INVISIBLE);
+                        return false;
+                    }
+                })
                 .into(image);
-//        appbar.setAlpha(0.7f);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    }
+
+    @OnClick(R.id.image)
+    public void onClick() {
+        onBackPressed();
     }
 
     @Override

@@ -5,6 +5,9 @@ import android.content.Context;
 
 import com.orhanobut.logger.Logger;
 
+import rx.Scheduler;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by Fung on 21/07/2016.
  */
@@ -12,7 +15,7 @@ import com.orhanobut.logger.Logger;
 public class MeizhiApp extends Application {
 
     private NetworkApi networkApi;
-
+    private Scheduler defaultSubscribeScheduler;
     public static MeizhiApp get(Context context) {
         return (MeizhiApp) context.getApplicationContext();
     }
@@ -23,6 +26,11 @@ public class MeizhiApp extends Application {
         return networkApi;
     }
 
+    public Scheduler getDefaultSubscribeScheduler() {
+        if (defaultSubscribeScheduler == null)
+            defaultSubscribeScheduler = Schedulers.io();
+        return defaultSubscribeScheduler;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
