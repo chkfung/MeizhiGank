@@ -35,6 +35,5 @@ public class MeizhiApp extends Application {
     public void onCreate() {
         super.onCreate();
         Logger.init("Tibber Say");
-
     }
 }

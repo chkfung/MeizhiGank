@@ -13,10 +13,11 @@ import rx.Observable;
  */
 
 public interface NetworkApi {
-    @GET("api/data/福利/10/{page}")
-    Observable<Meizhi> getMeizhi(@Path("page") int page);
+    @GET("api/data/福利/{amount}/{page}")
+    Observable<Meizhi> getMeizhi(@Path("amount") int meizhiCount, @Path("page") int page);
 
-
+    @GET("api/data/Android/{amount}/{page}")
+    Observable<Meizhi> getAndroid(@Path("amount") int meizhiCount, @Path("page") int page);
     class Factory {
         public static NetworkApi create() {
             Retrofit retrofit = new Retrofit.Builder().baseUrl("http://gank.io/")

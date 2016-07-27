@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI;
+package me.chkfung.meizhigank.Contract;
 
 import java.util.List;
 
@@ -16,5 +16,9 @@ public interface MainContract {
 
     public interface View extends BaseContract.View {
         void refreshRv();
+
+        void networkError(Throwable e);
+
+        void summonMeizhi(boolean clearItem);
     }
 }

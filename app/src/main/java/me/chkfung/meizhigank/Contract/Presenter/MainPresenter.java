@@ -1,13 +1,14 @@
-package me.chkfung.meizhigank.Presenter;
+package me.chkfung.meizhigank.Contract.Presenter;
 
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
+import me.chkfung.meizhigank.Constants;
+import me.chkfung.meizhigank.Contract.MainContract;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.Meizhi;
 import me.chkfung.meizhigank.NetworkApi;
-import me.chkfung.meizhigank.UI.MainContract;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -25,7 +26,7 @@ public class MainPresenter implements MainContract.Presenter {
         MeizhiApp meizhiApp = MeizhiApp.get(mView.getContext());
         NetworkApi networkApi = meizhiApp.getNetworkApi();
         if (mSubscription != null) mSubscription.unsubscribe();
-        mSubscription = networkApi.getMeizhi(page)
+        mSubscription = networkApi.getMeizhi(Constants.MEIZHI_AMOUNT, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(meizhiApp.getDefaultSubscribeScheduler())
                 .subscribe(new Subscriber<Meizhi>() {
@@ -36,6 +37,7 @@ public class MainPresenter implements MainContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        mView.networkError(e);
                         Logger.e(e, "Error in loadMeizhi");
                     }
 
