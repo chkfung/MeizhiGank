@@ -1,16 +1,29 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'com.neenbedankt.android-apt'
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion "24.0.0"
-    defaultConfig {
-        applicationId "me.chkfung.meizhigank"
-        minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        def code = versionProps['VERSION_CODE'].toInteger() + 1
+        versionProps['VERSION_CODE'] = code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        compileSdkVersion 23
+        buildToolsVersion "24.0.0"
+        defaultConfig {
+            applicationId "me.chkfung.meizhigank"
+            minSdkVersion 16
+            targetSdkVersion 23
+            versionCode code
+            versionName "1.0"
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        }
+    } else {
+        throw new GradleException("Could not read version.properties!")
     }
     buildTypes {
         release {

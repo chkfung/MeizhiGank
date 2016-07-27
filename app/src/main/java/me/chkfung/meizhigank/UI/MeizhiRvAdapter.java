@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -33,6 +34,12 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
     public MeizhiRvAdapter(Context mContext, List<Meizhi.ResultsBean> meizhiList) {
         this.mContext = mContext;
         this.meizhiList = meizhiList;
+        setHasStableIds(true);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return meizhiList.get(position).hashCode();
     }
 
     @Override
@@ -43,10 +50,13 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+//        holder.image.setOriginalSize(400,400);
+        if (position == 12) {
+            Logger.i("Triggered On bind");
+        }
         Glide.with(mContext)
                 .load(meizhiList.get(position).getUrl())
-                .centerCrop()
-                .crossFade()
+//                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .error(R.drawable.common_plus_signin_btn_icon_dark_normal)
                 .into(holder.image);
@@ -61,6 +71,7 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
                 mContext.startActivity(i, optionsCompat.toBundle());
             }
         });
+
     }
 
 

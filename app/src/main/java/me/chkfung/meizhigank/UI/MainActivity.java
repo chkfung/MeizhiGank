@@ -64,12 +64,14 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 super.onScrolled(recyclerView, dx, dy);
                 int[] lasPos = new int[layoutManager.getSpanCount()];
                 layoutManager.findLastVisibleItemPositions(lasPos);
-                if (MeizhiData.size() - lasPos[0] < Constants.MEIZHI_PRELOAD && !refreshlayout.isRefreshing() && paging != 1) {
+                if (MeizhiData.size() - Math.max(lasPos[0], lasPos[1]) < Constants.MEIZHI_PRELOAD &&
+                        !refreshlayout.isRefreshing() &&
+                        MeizhiData.size() >= 10) {
                     summonMeizhi(false);
                 }
             }
         });
-        summonMeizhi(false);
+        summonMeizhi(true);
     }
 
     @Override
@@ -85,7 +87,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void refreshRv() {
-        meizhiRvAdapter.notifyDataSetChanged();
+        //To Prevent ViewHolder that had been loaded blink/ load
+        meizhiRvAdapter.notifyItemRangeChanged(10 * paging++, Constants.MEIZHI_AMOUNT);
         refreshlayout.setRefreshing(false);
     }
 
@@ -103,7 +106,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             paging = 1;
         }
         refreshlayout.setRefreshing(true);
-        mainPresenter.loadMeizhi(paging++, MeizhiData);
+        mainPresenter.loadMeizhi(paging, MeizhiData);
     }
 
     @Override

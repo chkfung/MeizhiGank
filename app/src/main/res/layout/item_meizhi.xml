@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:minHeight="200dp"
-            android:scaleType="fitCenter"
             android:transitionName="MeizhiImage" />
 
         <TextView

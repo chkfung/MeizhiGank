@@ -6,5 +6,5 @@ package me.chkfung.meizhigank;
 
 public class Constants {
     public static final int MEIZHI_AMOUNT = 10;
-    public static final int MEIZHI_PRELOAD = 6;
+    public static final int MEIZHI_PRELOAD = 4;
 }
