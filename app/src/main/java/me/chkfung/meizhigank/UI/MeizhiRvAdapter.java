@@ -50,13 +50,9 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-//        holder.image.setOriginalSize(400,400);
-        if (position == 12) {
-            Logger.i("Triggered On bind");
-        }
+        Logger.i("Triggered onBind: " + position);
         Glide.with(mContext)
                 .load(meizhiList.get(position).getUrl())
-//                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .error(R.drawable.common_plus_signin_btn_icon_dark_normal)
                 .into(holder.image);

@@ -65,8 +65,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 int[] lasPos = new int[layoutManager.getSpanCount()];
                 layoutManager.findLastVisibleItemPositions(lasPos);
                 if (MeizhiData.size() - Math.max(lasPos[0], lasPos[1]) < Constants.MEIZHI_PRELOAD &&
-                        !refreshlayout.isRefreshing() &&
-                        MeizhiData.size() >= 10) {
+                        !refreshlayout.isRefreshing()) {
                     summonMeizhi(false);
                 }
             }
@@ -95,7 +94,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     public void networkError(Throwable e) {
         refreshlayout.setRefreshing(false);
-        Snackbar.make(fab, e.getMessage(), Snackbar.LENGTH_LONG)
+        Snackbar.make(fab, "Error Message: " + e.getMessage(), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 

@@ -42,11 +42,19 @@ public class MeizhiActivity extends BaseActivity {
         setContentView(R.layout.activity_meizhi);
         ButterKnife.bind(this);
 
+        //TODO there should be better way
+        //To Prevent Image Flicker 2 times when glide load success and previous image transition,
+        //Save Image in private storage and pass it as Uri?
+        //looks like double caching to me.
+        //Ref : https://github.com/bumptech/glide/issues/627#issuecomment-146136474
+        //Ref : http://stackoverflow.com/a/33283006/5367003
+        supportPostponeEnterTransition();
         Bundle data = getIntent().getExtras();
         progressbar.setVisibility(View.VISIBLE);
         Glide.with(this)
                 .load(data.get("URL"))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .dontAnimate()
                 .listener(new RequestListener<Object, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -54,9 +62,11 @@ public class MeizhiActivity extends BaseActivity {
                         progressbar.setVisibility(View.INVISIBLE);
                         return false;
                     }
+
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         progressbar.setVisibility(View.INVISIBLE);
+                        supportStartPostponedEnterTransition();
                         return false;
                     }
                 })
