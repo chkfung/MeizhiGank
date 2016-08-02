@@ -57,7 +57,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 summonMeizhi(true);
             }
         });
-
         rvMeizhi.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

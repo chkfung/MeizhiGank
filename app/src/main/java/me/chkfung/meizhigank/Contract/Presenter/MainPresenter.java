@@ -1,7 +1,5 @@
 package me.chkfung.meizhigank.Contract.Presenter;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.List;
 
 import me.chkfung.meizhigank.Constants;
@@ -9,9 +7,11 @@ import me.chkfung.meizhigank.Contract.MainContract;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.Meizhi;
 import me.chkfung.meizhigank.NetworkApi;
+import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 /**
  * Created by Fung on 26/07/2016.
@@ -29,7 +29,14 @@ public class MainPresenter implements MainContract.Presenter {
         mSubscription = networkApi.getMeizhi(Constants.MEIZHI_AMOUNT, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(meizhiApp.getDefaultSubscribeScheduler())
-                .subscribe(new Subscriber<Meizhi>() {
+                //v5
+                .flatMap(new Func1<Meizhi, Observable<Meizhi.ResultsBean>>() {
+                    @Override
+                    public Observable<Meizhi.ResultsBean> call(Meizhi meizhi) {
+                        return Observable.from(meizhi.getResults());
+                    }
+                })
+                .subscribe(new Subscriber<Meizhi.ResultsBean>() {
                     @Override
                     public void onCompleted() {
                         mView.refreshRv();
@@ -38,14 +45,11 @@ public class MainPresenter implements MainContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.networkError(e);
-                        Logger.e(e, "Error in loadMeizhi");
                     }
 
                     @Override
-                    public void onNext(Meizhi meizhi) {
-                        for (Meizhi.ResultsBean data : meizhi.getResults()) {
-                            MeizhiData.add(data);
-                        }
+                    public void onNext(Meizhi.ResultsBean resultsBean) {
+                        MeizhiData.add(resultsBean);
                     }
                 });
     }

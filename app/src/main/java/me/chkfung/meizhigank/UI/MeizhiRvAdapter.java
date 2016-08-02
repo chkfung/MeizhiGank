@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -50,7 +49,6 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Logger.i("Triggered onBind: " + position);
         Glide.with(mContext)
                 .load(meizhiList.get(position).getUrl())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
