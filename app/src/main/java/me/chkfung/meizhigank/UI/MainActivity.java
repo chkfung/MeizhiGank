@@ -47,6 +47,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
         mainPresenter.attachView(this);
 
+        refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         meizhiRvAdapter = new MeizhiRvAdapter(this, MeizhiData);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvMeizhi.setAdapter(meizhiRvAdapter);
@@ -103,6 +104,15 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             MeizhiData.clear();
             paging = 1;
         }
+        //Refresh Layout wont show when onCreate
+        refreshlayout.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshlayout.setRefreshing(true);
+                    }
+                }
+        );
         refreshlayout.setRefreshing(true);
         mainPresenter.loadMeizhi(paging, MeizhiData);
     }

@@ -8,7 +8,7 @@ import me.chkfung.meizhigank.Base.BaseContract;
 
 public interface MeizhiContract {
     public interface Presenter extends BaseContract.Presenter<View> {
-        void SaveImage();
+        void SaveImage(String url);
     }
 
     public interface View extends BaseContract.View {

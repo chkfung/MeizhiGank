@@ -115,7 +115,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
             case R.id.action_save:
                 if (PermissionUtils.requestPermission(this, SAVE_MEIZHI, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     Logger.i("Granted");
-                    mPresenter.SaveImage();
+                    mPresenter.SaveImage(url);
                 }
                 break;
 
@@ -129,7 +129,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         //Immediate Action When Permission Dialog Granted Tapped
         if (PermissionUtils.permissionGranted(requestCode, SAVE_MEIZHI, grantResults)) {
             Logger.i("What Happen");
-            mPresenter.SaveImage();
+            mPresenter.SaveImage(url);
         }
     }
 //    public void SaveImage(){
