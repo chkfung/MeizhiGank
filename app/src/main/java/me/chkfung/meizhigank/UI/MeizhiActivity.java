@@ -85,13 +85,17 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override
-    public void ImageSuccess() {
-        Snackbar.make(findViewById(android.R.id.content), "Image Saved", Snackbar.LENGTH_LONG).show();
-//        Toast.makeText(this,"Image Saved",Toast.LENGTH_LONG).show();
+    public void DownloadFailure() {
+        Snackbar.make(findViewById(android.R.id.content), "Save Failed", Snackbar.LENGTH_LONG)
+                .setAction("Retry", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SaveMenuTapped();
+                    }
+                }).show();
     }
 
     @OnClick(R.id.image)
@@ -106,6 +110,14 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     }
 
     @Override
+    public void SaveMenuTapped() {
+        if (PermissionUtils.requestPermission(this, SAVE_MEIZHI, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Logger.i("Granted");
+            mPresenter.SaveImage(url);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -114,10 +126,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
             case R.id.action_share:
                 break;
             case R.id.action_save:
-                if (PermissionUtils.requestPermission(this, SAVE_MEIZHI, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    Logger.i("Granted");
-                    mPresenter.SaveImage(url);
-                }
+                SaveMenuTapped();
                 break;
 
         }
@@ -129,7 +138,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //Immediate Action When Permission Dialog Granted Tapped
         if (PermissionUtils.permissionGranted(requestCode, SAVE_MEIZHI, grantResults)) {
-            Logger.i("What Happen");
             mPresenter.SaveImage(url);
         }
     }

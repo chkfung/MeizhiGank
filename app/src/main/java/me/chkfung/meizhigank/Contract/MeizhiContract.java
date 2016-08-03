@@ -18,7 +18,8 @@ public interface MeizhiContract {
     }
 
     public interface View extends BaseContract.View {
-        void ImageSuccess();
+        void SaveMenuTapped();
 
+        void DownloadFailure();
     }
 }

@@ -43,6 +43,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         Logger.e(e, "Save Image Error");
+                        mView.DownloadFailure();
                     }
 
                     @Override
