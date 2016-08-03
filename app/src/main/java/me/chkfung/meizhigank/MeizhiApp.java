@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.orhanobut.logger.Logger;
+import com.squareup.leakcanary.LeakCanary;
 
 import okhttp3.OkHttpClient;
 import rx.Scheduler;
@@ -42,6 +43,7 @@ public class MeizhiApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LeakCanary.install(this);
         Logger.init("Tibber Say");
     }
 }

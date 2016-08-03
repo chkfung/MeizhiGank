@@ -35,9 +35,9 @@ android {
 
 dependencies {
     Map<String, String> dependencies = rootProject.ext.dependencies;
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-//    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     //SupportLibrary
     compile dependencies.appCompat
     compile dependencies.cardView
@@ -73,6 +73,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.android.gms:play-services-location:9.0.2'
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
 }
 

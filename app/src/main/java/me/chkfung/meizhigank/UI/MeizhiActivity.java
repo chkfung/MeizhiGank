@@ -1,10 +1,10 @@
 package me.chkfung.meizhigank.UI;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,11 +44,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     ProgressBar progressbar;
     private MeizhiContract.Presenter mPresenter = new MeizhiPresenter();
     private String url;
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +88,12 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
     }
 
+    @Override
+    public void ImageSuccess() {
+        Snackbar.make(findViewById(android.R.id.content), "Image Saved", Snackbar.LENGTH_LONG).show();
+//        Toast.makeText(this,"Image Saved",Toast.LENGTH_LONG).show();
+    }
+
     @OnClick(R.id.image)
     public void onClick() {
         onBackPressed();
@@ -132,34 +133,10 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
             mPresenter.SaveImage(url);
         }
     }
-//    public void SaveImage(){
-//
-////        Bitmap theBitmap = Glide.
-////                with(this).
-////                load(url).
-////                asBitmap().
-////                into(100, 100). // Width and height
-////                get();
-//        File appDir = new File(Environment.getExternalStorageDirectory(), "MeizhiGank");
-//        if (!appDir.exists()) {
-//            appDir.mkdir();
-//        }
-////        String fileName ="abc.jpg";
-////        File file = new File(appDir, fileName);
-////        try {
-////            FileOutputStream outputStream = new FileOutputStream(file);
-////            assert bitmap != null;
-////            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-////            outputStream.flush();
-////            outputStream.close();
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        }
-////
-////        Uri uri = Uri.fromFile(file);
-////        // 通知图库更新
-////        Intent scannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-////        context.sendBroadcast(scannerIntent);
-////        return Observable.just(uri);
-//    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
+    }
 }

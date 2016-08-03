@@ -1,6 +1,5 @@
 package me.chkfung.meizhigank.UI;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -79,10 +78,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mainPresenter.detachView();
     }
 
-    @Override
-    public Context getContext() {
-        return this;
-    }
 
     @Override
     public void refreshRv() {

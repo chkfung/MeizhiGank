@@ -21,5 +21,11 @@ public interface BaseContract {
 
     public interface View {
         Context getContext();
+
+        void SnackBarResult(String desc);
+
+        void ToastResult(String desc);
     }
+
+
 }

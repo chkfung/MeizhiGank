@@ -1,7 +1,10 @@
 package me.chkfung.meizhigank;
 
+import com.orhanobut.logger.Logger;
+
 import me.chkfung.meizhigank.Model.Meizhi;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -34,8 +37,18 @@ public interface NetworkApi {
 
     class OkHttpFactory {
         public static OkHttpClient create() {
-            OkHttpClient okHttpClient = new OkHttpClient();
-            return okHttpClient;
+            OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                        Logger.t(5).i(message);
+                    }
+                });
+                httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                okHttpClient.addInterceptor(httpLoggingInterceptor);
+            }
+            return okHttpClient.build();
         }
     }
 }
