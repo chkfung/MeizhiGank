@@ -139,6 +139,8 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         //Immediate Action When Permission Dialog Granted Tapped
         if (PermissionUtils.permissionGranted(requestCode, SAVE_MEIZHI, grantResults)) {
             mPresenter.SaveImage(url);
+        } else {
+            ToastResult("Permission Denied");
         }
     }
 
@@ -146,5 +148,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+
     }
 }

@@ -1,13 +1,6 @@
 package me.chkfung.meizhigank;
 
-import com.orhanobut.logger.Logger;
-
 import me.chkfung.meizhigank.Model.Meizhi;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -25,30 +18,31 @@ public interface NetworkApi {
     @GET("api/data/Android/{amount}/{page}")
     Observable<Meizhi> getAndroid(@Path("amount") int meizhiCount, @Path("page") int page);
 
-    class Factory {
-        public static NetworkApi create() {
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://gank.io/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    .build();
-            return retrofit.create(NetworkApi.class);
-        }
-    }
+//    class Factory {
+//        public static NetworkApi create() {
+//            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://gank.io/")
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                    .build();
+//            return retrofit.create(NetworkApi.class);
+//        }
+//
+//    }
 
-    class OkHttpFactory {
-        public static OkHttpClient create() {
-            OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
-            if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                    @Override
-                    public void log(String message) {
-                        Logger.t(5).i(message);
-                    }
-                });
-                httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                okHttpClient.addInterceptor(httpLoggingInterceptor);
-            }
-            return okHttpClient.build();
-        }
-    }
+//    class OkHttpFactory {
+//        public static OkHttpClient.Builder create() {
+//            OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
+//            if (BuildConfig.DEBUG) {
+//                HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+//                    @Override
+//                    public void log(String message) {
+//                        Logger.t(5).i(message);
+//                    }
+//                });
+//                httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//                okHttpClient.addInterceptor(httpLoggingInterceptor);
+//            }
+//            return okHttpClient;
+//        }
+//    }
 }

@@ -42,7 +42,8 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        Logger.e(e, "Save Image Error");
+                        Logger.e(e, "Download Failure");
+
                         mView.DownloadFailure();
                     }
 
@@ -79,6 +80,8 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                         sink.close();
                         subscriber.onNext(Uri.fromFile(downloadedFile));
                     }
+                    if (resp.code() == 504)
+                        throw new IOException("File is not cached");
                 } catch (IOException e) {
                     subscriber.onError(e);
                 }

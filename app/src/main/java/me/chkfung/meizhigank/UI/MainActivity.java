@@ -22,6 +22,7 @@ import me.chkfung.meizhigank.Contract.MainContract;
 import me.chkfung.meizhigank.Contract.Presenter.MainPresenter;
 import me.chkfung.meizhigank.Model.Meizhi;
 import me.chkfung.meizhigank.R;
+import me.chkfung.meizhigank.Util.ConnectionUtil;
 
 public class MainActivity extends BaseActivity implements MainContract.View {
 
@@ -89,8 +90,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     public void networkError(Throwable e) {
         refreshlayout.setRefreshing(false);
-        Snackbar.make(fab, "Error Message: " + e.getMessage(), Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+
+        if (ConnectionUtil.isNetworkAvailable(this)) {
+            Snackbar.make(fab, "Error Message: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(fab, "No Internet Connection and cache unavailable", Snackbar.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -100,14 +106,14 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             paging = 1;
         }
         //Refresh Layout wont show when onCreate
-        refreshlayout.post(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshlayout.setRefreshing(true);
-                    }
-                }
-        );
+//        refreshlayout.post(
+//                new Runnable() {
+//                    @Override
+//                    public void run() {
+        refreshlayout.setRefreshing(true);
+//                    }
+//                }
+//        );
         refreshlayout.setRefreshing(true);
         mainPresenter.loadMeizhi(paging, MeizhiData);
     }

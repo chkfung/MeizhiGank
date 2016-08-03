@@ -6,7 +6,18 @@ import android.content.Context;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 
+import java.io.IOException;
+
+import me.chkfung.meizhigank.Util.ConnectionUtil;
+import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
@@ -19,19 +30,33 @@ public class MeizhiApp extends Application {
     private NetworkApi networkApi;
     private Scheduler defaultSubscribeScheduler;
     private OkHttpClient okHttpClient;
+    private Cache cache;
+    private HttpLoggingInterceptor httpLoggingInterceptor;
+    private Interceptor interceptor;
     public static MeizhiApp get(Context context) {
         return (MeizhiApp) context.getApplicationContext();
     }
 
     public NetworkApi getNetworkApi() {
-        if (networkApi == null)
-            networkApi = NetworkApi.Factory.create();
+        if (networkApi == null) {
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://gank.io/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .client(getOkHttpClient())
+                    .build();
+            networkApi = retrofit.create(NetworkApi.class);
+        }
         return networkApi;
     }
 
     public OkHttpClient getOkHttpClient() {
-        if (okHttpClient == null)
-            okHttpClient = NetworkApi.OkHttpFactory.create();
+        if (okHttpClient == null) {
+            OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+            okHttpClientBuilder.cache(getCache());
+            okHttpClientBuilder.addInterceptor(getHttpLoggingInterceptor());
+            okHttpClientBuilder.addInterceptor(getCachingInterceptor());
+            okHttpClient = okHttpClientBuilder.build();
+        }
         return okHttpClient;
     }
 
@@ -40,6 +65,46 @@ public class MeizhiApp extends Application {
             defaultSubscribeScheduler = Schedulers.io();
         return defaultSubscribeScheduler;
     }
+
+    //Cache only used when offline
+    public Cache getCache() {
+        int cacheSize = 10 * 1024 * 1024;//10mb
+        if (cache == null)
+            cache = new Cache(getCacheDir(), cacheSize);
+        return cache;
+    }
+
+    public HttpLoggingInterceptor getHttpLoggingInterceptor() {
+        if (httpLoggingInterceptor == null) {
+            httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override
+                public void log(String message) {
+                    Logger.t(5).i(message);
+                }
+            });
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        }
+        return httpLoggingInterceptor;
+    }
+
+    public Interceptor getCachingInterceptor() {
+        if (interceptor == null) {
+            interceptor = new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request request = chain.request();
+                    if (ConnectionUtil.isNetworkAvailable(getApplicationContext())) {
+                        request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                    } else {
+                        request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+                    }
+                    return chain.proceed(request);
+                }
+            };
+        }
+        return interceptor;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
