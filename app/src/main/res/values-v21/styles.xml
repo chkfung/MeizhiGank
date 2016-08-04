@@ -10,7 +10,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/md_deep_purple_500</item>
         <item name="colorPrimaryDark">@color/md_deep_purple_700</item>
-        <item name="colorAccent">@color/md_cyan_500</item>
+        <item name="colorAccent">@color/md_indigo_A200</item>
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="android:windowContentTransitions">true</item>

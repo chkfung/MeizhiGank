@@ -27,6 +27,7 @@ import me.chkfung.meizhigank.Contract.MeizhiContract;
 import me.chkfung.meizhigank.Contract.Presenter.MeizhiPresenter;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.Util.PermissionUtils;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Fung on 25/07/2016.
@@ -42,6 +43,8 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     Toolbar toolbar;
     @BindView(R.id.progressbar)
     ProgressBar progressbar;
+
+    PhotoViewAttacher photoViewAttacher;
     private MeizhiContract.Presenter mPresenter = new MeizhiPresenter();
     private String url;
 
@@ -77,10 +80,27 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                     public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         progressbar.setVisibility(View.INVISIBLE);
                         supportStartPostponedEnterTransition();
+
+//                        photoViewAttacher = new PhotoViewAttacher(image);
+//                        photoViewAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+//                            @Override
+//                            public void onViewTap(View view, float v, float v1) {
+//                                onBackPressed();
+//                            }
+//                        });
+
+//                        photoViewAttacher.update();
                         return false;
                     }
                 })
                 .into(image);
+        image.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+//                return false;
+                return true;
+            }
+        });
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
@@ -136,7 +156,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        //Immediate Action When Permission Dialog Granted Tapped
+        //Immediate Action When Permission Dialog Tapped
         if (PermissionUtils.permissionGranted(requestCode, SAVE_MEIZHI, grantResults)) {
             mPresenter.SaveImage(url);
         } else {

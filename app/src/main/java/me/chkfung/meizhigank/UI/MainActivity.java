@@ -48,16 +48,17 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mainPresenter.attachView(this);
 
         refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
-        meizhiRvAdapter = new MeizhiRvAdapter(this, MeizhiData);
-        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        rvMeizhi.setAdapter(meizhiRvAdapter);
-        rvMeizhi.setLayoutManager(layoutManager);
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 summonMeizhi(true);
             }
         });
+
+        meizhiRvAdapter = new MeizhiRvAdapter(this, MeizhiData);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        rvMeizhi.setAdapter(meizhiRvAdapter);
+        rvMeizhi.setLayoutManager(layoutManager);
         rvMeizhi.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

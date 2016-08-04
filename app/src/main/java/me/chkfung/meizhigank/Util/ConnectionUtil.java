@@ -8,6 +8,12 @@ import android.net.ConnectivityManager;
  */
 
 public class ConnectionUtil {
+    /**
+     * Check Network availability
+     *
+     * @param mContext
+     * @return true = Available
+     */
     public static boolean isNetworkAvailable(Context mContext) {
         ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();

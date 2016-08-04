@@ -11,6 +11,12 @@ import me.chkfung.meizhigank.Model.Meizhi;
 
 public interface MainContract {
     public interface Presenter extends BaseContract.Presenter<View> {
+        /**
+         * Perform Network Request to Obtain Meizhi Data
+         *
+         * @param page
+         * @param MeizhiData
+         */
         void loadMeizhi(int page, List<Meizhi.ResultsBean> MeizhiData);
     }
 

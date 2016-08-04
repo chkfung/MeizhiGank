@@ -11,8 +11,19 @@ import rx.Observable;
 
 public interface MeizhiContract {
     public interface Presenter extends BaseContract.Presenter<View> {
+
+        /**
+         * Save Image to Storage
+         *
+         * @param url
+         */
         void SaveImage(String url);
 
+        /**
+         * Download Image using OkHttpClient
+         * @param mUrl
+         * @return Uri for informing gallery to update
+         */
         Observable<Uri> DownloadImage(String mUrl);
 
     }

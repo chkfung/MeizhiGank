@@ -3,6 +3,8 @@ package me.chkfung.meizhigank;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -33,14 +35,20 @@ public class MeizhiApp extends Application {
     private Cache cache;
     private HttpLoggingInterceptor httpLoggingInterceptor;
     private Interceptor interceptor;
+    private GsonConverterFactory gsonConverterFactory;
     public static MeizhiApp get(Context context) {
         return (MeizhiApp) context.getApplicationContext();
     }
 
+    /**
+     * Get Retrofit Singleton
+     *
+     * @return Retrofit Interface
+     */
     public NetworkApi getNetworkApi() {
         if (networkApi == null) {
             Retrofit retrofit = new Retrofit.Builder().baseUrl("http://gank.io/")
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(getGsonFactory())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .client(getOkHttpClient())
                     .build();
@@ -49,6 +57,10 @@ public class MeizhiApp extends Application {
         return networkApi;
     }
 
+    /**
+     * Get OkHttpClient Singleton
+     * @return OkHttpClient
+     */
     public OkHttpClient getOkHttpClient() {
         if (okHttpClient == null) {
             OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
@@ -66,7 +78,6 @@ public class MeizhiApp extends Application {
         return defaultSubscribeScheduler;
     }
 
-    //Cache only used when offline
     public Cache getCache() {
         int cacheSize = 10 * 1024 * 1024;//10mb
         if (cache == null)
@@ -74,6 +85,10 @@ public class MeizhiApp extends Application {
         return cache;
     }
 
+    /**
+     * Log Network Response
+     * @return Logging Interceptor
+     */
     public HttpLoggingInterceptor getHttpLoggingInterceptor() {
         if (httpLoggingInterceptor == null) {
             httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -87,6 +102,10 @@ public class MeizhiApp extends Application {
         return httpLoggingInterceptor;
     }
 
+    /**
+     * Cache Are available when Network Connection is not available
+     * @return Caching Interceptor
+     */
     public Interceptor getCachingInterceptor() {
         if (interceptor == null) {
             interceptor = new Interceptor() {
@@ -105,6 +124,13 @@ public class MeizhiApp extends Application {
         return interceptor;
     }
 
+    public GsonConverterFactory getGsonFactory() {
+        if (gsonConverterFactory == null) {
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
+            gsonConverterFactory = GsonConverterFactory.create(gson);
+        }
+        return gsonConverterFactory;
+    }
     @Override
     public void onCreate() {
         super.onCreate();

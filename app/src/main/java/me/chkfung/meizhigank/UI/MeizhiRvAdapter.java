@@ -55,7 +55,7 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
                 .error(R.drawable.common_plus_signin_btn_icon_dark_normal)
                 .into(holder.image);
 
-        holder.title.setText(meizhiList.get(position).getDesc());
+        holder.title.setText(meizhiList.get(position).getPublishedAt().toString() + " " + meizhiList.get(position).getDesc());
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -18,6 +18,9 @@ public interface NetworkApi {
     @GET("api/data/Android/{amount}/{page}")
     Observable<Meizhi> getAndroid(@Path("amount") int meizhiCount, @Path("page") int page);
 
+    @GET("api/day/{year}/{month}/{day}")
+    Observable<Meizhi> getDay(@Path("year") int year, @Path("month") int month, @Path("day") int day);
+
 //    class Factory {
 //        public static NetworkApi create() {
 //            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://gank.io/")
