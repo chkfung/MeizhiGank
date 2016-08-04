@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             }
         });
 
-        meizhiRvAdapter = new MeizhiRvAdapter(this, MeizhiData);
+        meizhiRvAdapter = new MeizhiRvAdapter(MeizhiData);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvMeizhi.setAdapter(meizhiRvAdapter);
         rvMeizhi.setLayoutManager(layoutManager);

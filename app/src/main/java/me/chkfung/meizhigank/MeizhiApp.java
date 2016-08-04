@@ -78,7 +78,7 @@ public class MeizhiApp extends Application {
         return defaultSubscribeScheduler;
     }
 
-    public Cache getCache() {
+    private Cache getCache() {
         int cacheSize = 10 * 1024 * 1024;//10mb
         if (cache == null)
             cache = new Cache(getCacheDir(), cacheSize);
@@ -89,7 +89,7 @@ public class MeizhiApp extends Application {
      * Log Network Response
      * @return Logging Interceptor
      */
-    public HttpLoggingInterceptor getHttpLoggingInterceptor() {
+    private HttpLoggingInterceptor getHttpLoggingInterceptor() {
         if (httpLoggingInterceptor == null) {
             httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
@@ -106,7 +106,7 @@ public class MeizhiApp extends Application {
      * Cache Are available when Network Connection is not available
      * @return Caching Interceptor
      */
-    public Interceptor getCachingInterceptor() {
+    private Interceptor getCachingInterceptor() {
         if (interceptor == null) {
             interceptor = new Interceptor() {
                 @Override
@@ -124,7 +124,7 @@ public class MeizhiApp extends Application {
         return interceptor;
     }
 
-    public GsonConverterFactory getGsonFactory() {
+    private GsonConverterFactory getGsonFactory() {
         if (gsonConverterFactory == null) {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
             gsonConverterFactory = GsonConverterFactory.create(gson);

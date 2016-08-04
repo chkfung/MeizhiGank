@@ -1,5 +1,6 @@
 package me.chkfung.meizhigank;
 
+import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.Model.Meizhi;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -18,9 +19,11 @@ public interface NetworkApi {
     @GET("api/data/Android/{amount}/{page}")
     Observable<Meizhi> getAndroid(@Path("amount") int meizhiCount, @Path("page") int page);
 
-    @GET("api/day/{year}/{month}/{day}")
-    Observable<Meizhi> getDay(@Path("year") int year, @Path("month") int month, @Path("day") int day);
+//    @GET("api/day/{year}/{month}/{day}")
+//    Observable<Day> getDay(@Path("year") int year, @Path("month") int month, @Path("day") int day);
 
+    @GET("api/day/{date}")
+    Observable<Day> getDay(@Path("date") String date);
 //    class Factory {
 //        public static NetworkApi create() {
 //            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://gank.io/")

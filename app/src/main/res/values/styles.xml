@@ -7,7 +7,6 @@
         <item name="colorPrimaryDark">@color/md_deep_purple_700</item>
         <item name="colorAccent">@color/md_indigo_A200</item>
         <item name="android:textColorPrimary">@android:color/black</item>
-
     </style>
 
     <style name="AppTheme.NoActionBar">

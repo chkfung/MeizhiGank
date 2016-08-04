@@ -10,7 +10,7 @@ import me.chkfung.meizhigank.Model.Meizhi;
  */
 
 public interface MainContract {
-    public interface Presenter extends BaseContract.Presenter<View> {
+    interface Presenter extends BaseContract.Presenter<View> {
         /**
          * Perform Network Request to Obtain Meizhi Data
          *
@@ -20,7 +20,7 @@ public interface MainContract {
         void loadMeizhi(int page, List<Meizhi.ResultsBean> MeizhiData);
     }
 
-    public interface View extends BaseContract.View {
+    interface View extends BaseContract.View {
         void refreshRv();
 
         void networkError(Throwable e);

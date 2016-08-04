@@ -10,7 +10,7 @@ import rx.Observable;
  */
 
 public interface MeizhiContract {
-    public interface Presenter extends BaseContract.Presenter<View> {
+    interface Presenter extends BaseContract.Presenter<View> {
 
         /**
          * Save Image to Storage
@@ -21,6 +21,7 @@ public interface MeizhiContract {
 
         /**
          * Download Image using OkHttpClient
+         *
          * @param mUrl
          * @return Uri for informing gallery to update
          */
@@ -28,7 +29,7 @@ public interface MeizhiContract {
 
     }
 
-    public interface View extends BaseContract.View {
+    interface View extends BaseContract.View {
         void SaveMenuTapped();
 
         void DownloadFailure();

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,10 +29,8 @@ import me.chkfung.meizhigank.R;
 public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHolder> {
     private int[] HeightTest = new int[]{200, 400, 600, 200, 400};
     private List<Meizhi.ResultsBean> meizhiList;
-    private Context mContext;
 
-    public MeizhiRvAdapter(Context mContext, List<Meizhi.ResultsBean> meizhiList) {
-        this.mContext = mContext;
+    public MeizhiRvAdapter(List<Meizhi.ResultsBean> meizhiList) {
         this.meizhiList = meizhiList;
         setHasStableIds(true);
     }
@@ -49,6 +48,8 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final Context mContext = holder.itemView.getContext();
+        //Content
         Glide.with(mContext)
                 .load(meizhiList.get(position).getUrl())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -56,6 +57,8 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
                 .into(holder.image);
 
         holder.title.setText(meizhiList.get(position).getPublishedAt().toString() + " " + meizhiList.get(position).getDesc());
+
+        //Event
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +66,18 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
                 i.putExtra("URL", meizhiList.get(position).getUrl());
                 ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, (View) holder.image, "MeizhiImage");
                 mContext.startActivity(i, optionsCompat.toBundle());
+            }
+        });
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(meizhiList.get(position).getPublishedAt());
+                Intent i = new Intent(mContext, GankActivity.class);
+                i.putExtra("Date", calendar.get(Calendar.YEAR)
+                        + "/" + calendar.get(Calendar.MONTH)
+                        + "/" + calendar.get(Calendar.DAY_OF_MONTH));
+                mContext.startActivity(i);
             }
         });
 
