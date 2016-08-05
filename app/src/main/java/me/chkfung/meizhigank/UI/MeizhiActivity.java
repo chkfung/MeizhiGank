@@ -1,5 +1,6 @@
 package me.chkfung.meizhigank.UI;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +9,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -88,19 +91,128 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 //                                onBackPressed();
 //                            }
 //                        });
-
 //                        photoViewAttacher.update();
                         return false;
                     }
                 })
                 .into(image);
-        image.setOnLongClickListener(new View.OnLongClickListener() {
+        image.setOnTouchListener(new View.OnTouchListener() {
+            int StartX;
+            int StartY;
+
             @Override
-            public boolean onLongClick(View v) {
-//                return false;
+            public boolean onTouch(final View v, MotionEvent event) {
+                final FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
+                //YAY
+                switch (event.getActionMasked()) {
+//                    case MotionEvent.ACTION_POINTER_DOWN:
+//                        Logger.i("Pointer Down");
+//                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        Logger.i("Action Down");
+                        StartX = (int) event.getRawX();
+                        StartY = (int) event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        int mMotionX = (int) event.getRawX() - StartX;
+                        int mMotionY = (int) event.getRawY() - StartY;
+                        layoutParams.leftMargin = mMotionX;
+                        layoutParams.rightMargin = -mMotionX;
+                        layoutParams.topMargin = mMotionY;
+                        layoutParams.bottomMargin = -mMotionY;
+                        v.requestLayout();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        //TODO Reduce the amount of repeat code
+                        final ValueAnimator valueAnimator1 = ValueAnimator.ofInt(layoutParams.topMargin, 0);
+                        ValueAnimator valueAnimator = ValueAnimator.ofInt(layoutParams.topMargin, 0);
+                        final ValueAnimator valueAnimator2 = ValueAnimator.ofInt(layoutParams.bottomMargin, 0);
+                        final ValueAnimator valueAnimator3 = ValueAnimator.ofInt(layoutParams.leftMargin, 0);
+                        final ValueAnimator valueAnimator4 = ValueAnimator.ofInt(layoutParams.rightMargin, 0);
+
+                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener1 = new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                layoutParams.topMargin = (int) valueAnimator1.getAnimatedValue();
+                                v.requestLayout();
+                            }
+                        };
+                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener2 = new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                layoutParams.bottomMargin = (int) valueAnimator2.getAnimatedValue();
+                                v.requestLayout();
+                            }
+                        };
+                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener3 = new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                layoutParams.leftMargin = (int) valueAnimator3.getAnimatedValue();
+                                v.requestLayout();
+                            }
+                        };
+                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener4 = new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                layoutParams.rightMargin = (int) valueAnimator4.getAnimatedValue();
+                                v.requestLayout();
+                            }
+                        };
+                        valueAnimator1.addUpdateListener(animatorUpdateListener1);
+                        valueAnimator2.addUpdateListener(animatorUpdateListener2);
+                        valueAnimator3.addUpdateListener(animatorUpdateListener3);
+                        valueAnimator4.addUpdateListener(animatorUpdateListener4);
+                        valueAnimator1.setDuration(1000);
+                        valueAnimator2.setDuration(1000);
+                        valueAnimator3.setDuration(1000);
+                        valueAnimator4.setDuration(1000);
+                        valueAnimator1.start();
+                        valueAnimator2.start();
+                        valueAnimator3.start();
+                        valueAnimator4.start();
+
+//                        Animation animation =
+//                                new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,
+//                                Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f);
+//                        animation.setDuration(android.R.integer.config_shortAnimTime);
+//                        animation.setDuration(1000);
+//                        animation.setInterpolator(new LinearInterpolator());
+//
+////                        animation.setStartTime(AnimationUtils.currentAnimationTimeMillis());
+//                        animationSet.addAnimation(animation);
+//                        animationSet.setFillAfter(true);
+//                        animationSet.setAnimationListener(new Animation.AnimationListener() {
+//                            @Override
+//                            public void onAnimationStart(Animation animation) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onAnimationEnd(Animation animation) {
+//                                layoutParams.topMargin = 0;
+//                                layoutParams.bottomMargin = 0;
+//                                layoutParams.leftMargin = 0;
+//                                layoutParams.rightMargin = 0;
+//
+//                                v.requestLayout();
+////                                v.clearAnimation();
+//                            }
+//
+//                            @Override
+//                            public void onAnimationRepeat(Animation animation) {
+//
+//                            }
+//                        });
+//                        v.setVisibility(View.VISIBLE);
+//                        v.startAnimation(animationSet);
+                        break;
+                }
+
                 return true;
             }
         });
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
