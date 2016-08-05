@@ -125,52 +125,56 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
                         //TODO Reduce the amount of repeat code
-                        final ValueAnimator valueAnimator1 = ValueAnimator.ofInt(layoutParams.topMargin, 0);
-                        ValueAnimator valueAnimator = ValueAnimator.ofInt(layoutParams.topMargin, 0);
-                        final ValueAnimator valueAnimator2 = ValueAnimator.ofInt(layoutParams.bottomMargin, 0);
-                        final ValueAnimator valueAnimator3 = ValueAnimator.ofInt(layoutParams.leftMargin, 0);
-                        final ValueAnimator valueAnimator4 = ValueAnimator.ofInt(layoutParams.rightMargin, 0);
-
-                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener1 = new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                layoutParams.topMargin = (int) valueAnimator1.getAnimatedValue();
-                                v.requestLayout();
-                            }
-                        };
-                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener2 = new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                layoutParams.bottomMargin = (int) valueAnimator2.getAnimatedValue();
-                                v.requestLayout();
-                            }
-                        };
-                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener3 = new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                layoutParams.leftMargin = (int) valueAnimator3.getAnimatedValue();
-                                v.requestLayout();
-                            }
-                        };
-                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener4 = new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                layoutParams.rightMargin = (int) valueAnimator4.getAnimatedValue();
-                                v.requestLayout();
-                            }
-                        };
-                        valueAnimator1.addUpdateListener(animatorUpdateListener1);
-                        valueAnimator2.addUpdateListener(animatorUpdateListener2);
-                        valueAnimator3.addUpdateListener(animatorUpdateListener3);
-                        valueAnimator4.addUpdateListener(animatorUpdateListener4);
-                        valueAnimator1.setDuration(1000);
-                        valueAnimator2.setDuration(1000);
-                        valueAnimator3.setDuration(1000);
-                        valueAnimator4.setDuration(1000);
-                        valueAnimator1.start();
-                        valueAnimator2.start();
-                        valueAnimator3.start();
-                        valueAnimator4.start();
+                        //FIXME Leak Detected
+                        animate(v, layoutParams, 1);
+                        animate(v, layoutParams, 2);
+                        animate(v, layoutParams, 3);
+                        animate(v, layoutParams, 4);
+//                        ValueAnimator valueAnimator1 = ValueAnimator.ofInt(layoutParams.topMargin, 0);
+//                        ValueAnimator valueAnimator2 = ValueAnimator.ofInt(layoutParams.bottomMargin, 0);
+//                        ValueAnimator valueAnimator3 = ValueAnimator.ofInt(layoutParams.leftMargin, 0);
+//                        ValueAnimator valueAnimator4 = ValueAnimator.ofInt(layoutParams.rightMargin, 0);
+//
+//                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener1 = new ValueAnimator.AnimatorUpdateListener() {
+//                            @Override
+//                            public void onAnimationUpdate(ValueAnimator animation) {
+//                                layoutParams.topMargin = (int) animation.getAnimatedValue();
+//                                v.requestLayout();
+//                            }
+//                        };
+//                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener2 = new ValueAnimator.AnimatorUpdateListener() {
+//                            @Override
+//                            public void onAnimationUpdate(ValueAnimator animation) {
+//                                layoutParams.bottomMargin = (int) animation.getAnimatedValue();
+//                                v.requestLayout();
+//                            }
+//                        };
+//                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener3 = new ValueAnimator.AnimatorUpdateListener() {
+//                            @Override
+//                            public void onAnimationUpdate(ValueAnimator animation) {
+//                                layoutParams.leftMargin = (int) animation.getAnimatedValue();
+//                                v.requestLayout();
+//                            }
+//                        };
+//                        ValueAnimator.AnimatorUpdateListener animatorUpdateListener4 = new ValueAnimator.AnimatorUpdateListener() {
+//                            @Override
+//                            public void onAnimationUpdate(ValueAnimator animation) {
+//                                layoutParams.rightMargin = (int) animation.getAnimatedValue();
+//                                v.requestLayout();
+//                            }
+//                        };
+//                        valueAnimator1.addUpdateListener(animatorUpdateListener1);
+//                        valueAnimator2.addUpdateListener(animatorUpdateListener2);
+//                        valueAnimator3.addUpdateListener(animatorUpdateListener3);
+//                        valueAnimator4.addUpdateListener(animatorUpdateListener4);
+//                        valueAnimator1.setDuration(200);
+//                        valueAnimator2.setDuration(200);
+//                        valueAnimator3.setDuration(200);
+//                        valueAnimator4.setDuration(200);
+//                        valueAnimator1.start();
+//                        valueAnimator2.start();
+//                        valueAnimator3.start();
+//                        valueAnimator4.start();
 
 //                        Animation animation =
 //                                new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,
@@ -217,6 +221,47 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void animate(final View view, final FrameLayout.LayoutParams layoutParams, final int identifier) {
+        int from = 0;
+        switch (identifier) {
+            case 1:
+                from = layoutParams.topMargin;
+                break;
+            case 2:
+                from = layoutParams.bottomMargin;
+                break;
+            case 3:
+                from = layoutParams.leftMargin;
+                break;
+            case 4:
+                from = layoutParams.rightMargin;
+                break;
+        }
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(from, 0);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                switch (identifier) {
+                    case 1:
+                        layoutParams.topMargin = (int) animation.getAnimatedValue();
+                        break;
+                    case 2:
+                        layoutParams.bottomMargin = (int) animation.getAnimatedValue();
+                        break;
+                    case 3:
+                        layoutParams.leftMargin = (int) animation.getAnimatedValue();
+                        break;
+                    case 4:
+                        layoutParams.rightMargin = (int) animation.getAnimatedValue();
+                        break;
+                }
+                view.requestLayout();
+            }
+        });
+        valueAnimator.setDuration(200);
+        valueAnimator.start();
     }
 
     @Override
