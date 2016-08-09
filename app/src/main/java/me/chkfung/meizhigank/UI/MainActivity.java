@@ -22,6 +22,7 @@ import me.chkfung.meizhigank.Contract.MainContract;
 import me.chkfung.meizhigank.Contract.Presenter.MainPresenter;
 import me.chkfung.meizhigank.Model.Meizhi;
 import me.chkfung.meizhigank.R;
+import me.chkfung.meizhigank.UI.Adapter.MeizhiRvAdapter;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
 
 public class MainActivity extends BaseActivity implements MainContract.View {

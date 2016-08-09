@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI;
+package me.chkfung.meizhigank.UI.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,6 +21,8 @@ import butterknife.ButterKnife;
 import me.chkfung.meizhigank.MeizhiImageView;
 import me.chkfung.meizhigank.Model.Meizhi;
 import me.chkfung.meizhigank.R;
+import me.chkfung.meizhigank.UI.GankActivity;
+import me.chkfung.meizhigank.UI.MeizhiActivity;
 
 /**
  * Created by Fung on 21/07/2016.
@@ -75,7 +77,7 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
                 calendar.setTime(meizhiList.get(position).getPublishedAt());
                 Intent i = new Intent(mContext, GankActivity.class);
                 i.putExtra("Date", calendar.get(Calendar.YEAR)
-                        + "/" + calendar.get(Calendar.MONTH)
+                        + "/" + (calendar.get(Calendar.MONTH) + 1)
                         + "/" + calendar.get(Calendar.DAY_OF_MONTH));
                 mContext.startActivity(i);
             }

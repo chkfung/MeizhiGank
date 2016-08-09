@@ -33,4 +33,9 @@ public class BaseActivity extends AppCompatActivity implements BaseContract.View
     public void ToastResult(String desc) {
         Toast.makeText(this, desc, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

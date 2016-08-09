@@ -1,7 +1,5 @@
 package me.chkfung.meizhigank.Contract.Presenter;
 
-import com.orhanobut.logger.Logger;
-
 import me.chkfung.meizhigank.Contract.GankContract;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.Day;
@@ -27,6 +25,7 @@ public class GankPresenter implements GankContract.Presenter {
                 .subscribe(new Subscriber<Day>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
@@ -36,8 +35,7 @@ public class GankPresenter implements GankContract.Presenter {
 
                     @Override
                     public void onNext(Day day) {
-
-                        Logger.i(day.getCategory().get(0));
+                        mView.setupRecycleView(day);
                     }
                 });
 

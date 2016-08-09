@@ -1,5 +1,6 @@
 package me.chkfung.meizhigank.UI;
 
+import android.Manifest;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -48,6 +49,8 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     ProgressBar progressbar;
 
     PhotoViewAttacher photoViewAttacher;
+    @BindView(R.id.frame_meizhi)
+    FrameLayout frameMeizhi;
     private MeizhiContract.Presenter mPresenter = new MeizhiPresenter();
     private String url;
 
@@ -57,6 +60,10 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         setContentView(R.layout.activity_meizhi);
         ButterKnife.bind(this);
         mPresenter.attachView(this);
+        //Frame Layout Background Alpha was changed by Image Movement and wont reset to alpha 255
+        //fixme need further investigation
+        frameMeizhi.getBackground().setAlpha(255);
+
         //TODO there should be better way
         //To Prevent Image Flicker 2 times when glide load success and previous image transition,
         //Save Image in private storage and pass it as Uri?
@@ -99,10 +106,12 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         image.setOnTouchListener(new View.OnTouchListener() {
             int StartX;
             int StartY;
+            int mMotionX;
+            int mMotionY;
 
             @Override
             public boolean onTouch(final View v, MotionEvent event) {
-                final FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
                 //YAY
                 switch (event.getActionMasked()) {
 //                    case MotionEvent.ACTION_POINTER_DOWN:
@@ -114,25 +123,33 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                         StartY = (int) event.getRawY();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        int mMotionX = (int) event.getRawX() - StartX;
-                        int mMotionY = (int) event.getRawY() - StartY;
-                        layoutParams.leftMargin = mMotionX;
-                        layoutParams.rightMargin = -mMotionX;
-                        layoutParams.topMargin = mMotionY;
-                        layoutParams.bottomMargin = -mMotionY;
+                        mMotionX = (int) event.getRawX() - StartX;
+                        mMotionY = (int) event.getRawY() - StartY;
+//                        layoutParams.leftMargin = mMotionX;
+//                        layoutParams.rightMargin = -mMotionX;
+                        layoutParams.topMargin = mMotionY / 2;
+                        layoutParams.bottomMargin = -mMotionY / 2;
                         v.requestLayout();
+                        if (Math.abs(mMotionY) > 100) {
+                            frameMeizhi.getBackground().setAlpha(122);
+                        } else {
+                            frameMeizhi.getBackground().setAlpha(255);
+                        }
                         break;
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
-                        //TODO Reduce the amount of repeat code
-                        //FIXME Leak Detected
-                        animate(v, layoutParams, 1);
-                        animate(v, layoutParams, 2);
-                        animate(v, layoutParams, 3);
-                        animate(v, layoutParams, 4);
+                        Logger.i("Motion Y: " + mMotionY);
+                        if (Math.abs(mMotionY) > 100) {
+                            onBackPressed();
+                        } else {
+                            //TODO Reuse Value Animator?
+                            animate(v, layoutParams, 1);
+                            animate(v, layoutParams, 2);
+                            animate(v, layoutParams, 3);
+                            animate(v, layoutParams, 4);
+                        }
                         break;
                 }
-
                 return true;
             }
         });
@@ -208,7 +225,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
     @Override
     public void SaveMenuTapped() {
-        if (PermissionUtils.requestPermission(this, SAVE_MEIZHI, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (PermissionUtils.requestPermission(this, SAVE_MEIZHI, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             Logger.i("Granted");
             mPresenter.SaveImage(url);
         }

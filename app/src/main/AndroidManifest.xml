@@ -22,8 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.MeizhiActivity" />
+        <activity
+            android:name=".UI.MeizhiActivity"
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity android:name=".UI.GankActivity" />
+        <activity
+            android:name=".UI.GankInfoActivity"
+            android:theme="@style/Theme.AppCompat.Translucent" />
     </application>
 
 </manifest>
