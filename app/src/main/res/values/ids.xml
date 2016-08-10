@@ -2,5 +2,6 @@
 <resources>
     <item name="root_layout" type="id" />
     <item name="close_button" type="id" />
+    <item name="progressbar" type="id" />
 
 </resources>

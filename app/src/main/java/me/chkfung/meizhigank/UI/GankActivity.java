@@ -3,10 +3,13 @@ package me.chkfung.meizhigank.UI;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.orhanobut.logger.Logger;
 
@@ -32,13 +35,15 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     AppBarLayout appbar;
     @BindView(R.id.rv_gank)
     RecyclerView rvGank;
-
+    @BindView(R.id.progressbar)
+    ProgressBar progressbar;
+    String mDate;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gank);
         ButterKnife.bind(this);
-        String mDate = getIntent().getExtras().getString("Date");
+        mDate = getIntent().getExtras().getString("Date");
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(mDate);
@@ -60,8 +65,22 @@ public class GankActivity extends BaseActivity implements GankContract.View {
 
     @Override
     public void setupRecycleView(Day day) {
+        progressbar.setVisibility(View.INVISIBLE);
         rvGank.setAdapter(new GankRvAdapter(day));
         rvGank.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+    }
+
+    @Override
+    public void showError(Throwable e) {
+        progressbar.setVisibility(View.INVISIBLE);
+        Snackbar.make(findViewById(android.R.id.content), "Request Failed: " + e.getMessage()
+                , Snackbar.LENGTH_LONG)
+                .setAction("Retry", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.getGank(mDate);
+                    }
+                }).show();
     }
 
     @Override

@@ -30,7 +30,7 @@ public class GankPresenter implements GankContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        mView.showError(e);
                     }
 
                     @Override

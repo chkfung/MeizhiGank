@@ -14,5 +14,7 @@ public interface GankContract {
 
     interface View extends BaseContract.View {
         void setupRecycleView(Day day);
+
+        void showError(Throwable e);
     }
 }
