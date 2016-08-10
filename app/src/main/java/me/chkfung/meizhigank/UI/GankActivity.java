@@ -38,6 +38,8 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     @BindView(R.id.progressbar)
     ProgressBar progressbar;
     String mDate;
+
+    //    Day mDay;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,7 @@ public class GankActivity extends BaseActivity implements GankContract.View {
 
     @Override
     public void setupRecycleView(Day day) {
+//        mDay = day;
         progressbar.setVisibility(View.INVISIBLE);
         rvGank.setAdapter(new GankRvAdapter(day));
         rvGank.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));

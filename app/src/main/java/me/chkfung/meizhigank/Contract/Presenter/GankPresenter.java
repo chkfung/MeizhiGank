@@ -1,5 +1,7 @@
 package me.chkfung.meizhigank.Contract.Presenter;
 
+import java.util.Collections;
+
 import me.chkfung.meizhigank.Contract.GankContract;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.Day;
@@ -35,10 +37,10 @@ public class GankPresenter implements GankContract.Presenter {
 
                     @Override
                     public void onNext(Day day) {
+                        Collections.sort(day.getCategory());
                         mView.setupRecycleView(day);
                     }
                 });
-
     }
 
     @Override

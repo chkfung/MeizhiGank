@@ -1,5 +1,8 @@
 package me.chkfung.meizhigank.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,8 +11,19 @@ import java.util.List;
  * Created by Fung on 04/08/2016.
  */
 
-public class Day {
+public class Day implements Parcelable {
 
+    public static final Parcelable.Creator<Day> CREATOR = new Parcelable.Creator<Day>() {
+        @Override
+        public Day createFromParcel(Parcel source) {
+            return new Day(source);
+        }
+
+        @Override
+        public Day[] newArray(int size) {
+            return new Day[size];
+        }
+    };
     /**
      * category : ["iOS","Android","瞎推荐","拓展资源","福利","RestVideo"]
      * error : false
@@ -19,6 +33,15 @@ public class Day {
     private boolean error;
     private ResultsBean results;
     private List<String> category;
+
+    public Day() {
+    }
+
+    protected Day(Parcel in) {
+        this.error = in.readByte() != 0;
+        this.results = in.readParcelable(ResultsBean.class.getClassLoader());
+        this.category = in.createStringArrayList();
+    }
 
     public boolean isError() {
         return error;
@@ -44,7 +67,30 @@ public class Day {
         this.category = category;
     }
 
-    public static class ResultsBean {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte(this.error ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.results, flags);
+        dest.writeStringList(this.category);
+    }
+
+    public static class ResultsBean implements Parcelable {
+        public static final Parcelable.Creator<ResultsBean> CREATOR = new Parcelable.Creator<ResultsBean>() {
+            @Override
+            public ResultsBean createFromParcel(Parcel source) {
+                return new ResultsBean(source);
+            }
+
+            @Override
+            public ResultsBean[] newArray(int size) {
+                return new ResultsBean[size];
+            }
+        };
         /**
          * _id : 56cc6d23421aa95caa707a69
          * createdAt : 2015-08-06T07:15:52.65Z
@@ -57,71 +103,31 @@ public class Day {
          */
 
         private List<DataBean> Android;
-        /**
-         * _id : 56cc6d1d421aa95caa707769
-         * createdAt : 2015-08-07T01:32:51.588Z
-         * desc : LLVM 简介
-         * publishedAt : 2015-08-07T03:57:48.70Z
-         * type : iOS
-         * url : http://adriansampson.net/blog/llvm.html
-         * used : true
-         * who : CallMeWhy
-         */
-
         private List<DataBean> iOS;
-        /**
-         * _id : 56cc6d23421aa95caa707c68
-         * createdAt : 2015-08-06T13:06:17.211Z
-         * desc : 听到就心情大好的歌，简直妖魔哈哈哈哈哈，原地址
-         * http://v.youku.com/v_show/id_XMTQxODA5NDM2.html
-         * publishedAt : 2015-08-07T03:57:48.104Z
-         * type : RestVideo
-         * url : http://www.zhihu.com/question/21778055/answer/19905413?utm_source=weibo&utm_medium=weibo_share&utm_content=share_answer&utm_campaign=share_button
-         * used : true
-         * who : lxxself
-         */
-
+        private List<DataBean> App;
+        @SerializedName("前端")
+        private List<DataBean> FrontEnd;
         @SerializedName("休息视频")
         private List<DataBean> RestVideo;
-        /**
-         * _id : 56cc6d23421aa95caa707bdf
-         * createdAt : 2015-08-07T01:36:06.932Z
-         * desc : Display GitHub code in tree format
-         * publishedAt : 2015-08-07T03:57:48.81Z
-         * type : 拓展资源
-         * url : https://github.com/buunguyen/octotree
-         * used : true
-         * who : lxxself
-         */
-
         @SerializedName("拓展资源")
         private List<DataBean> Extra;
-        /**
-         * _id : 56cc6d23421aa95caa707bd0
-         * createdAt : 2015-08-07T01:52:30.267Z
-         * desc : 程序员的电台FmM，这个页面chrome插件有问题啊哭，我写了回删除不了啊
-         * publishedAt : 2015-08-07T03:57:48.84Z
-         * type : 瞎推荐
-         * url : https://cmd.fm/
-         * used : true
-         * who : lxxself
-         */
 
+        //        @SerializedName("福利")
+//        private List<DataBean> Fuli;
         @SerializedName("瞎推荐")
         private List<DataBean> Recommend;
-        /**
-         * _id : 56cc6d23421aa95caa707c52
-         * createdAt : 2015-08-07T01:21:06.112Z
-         * desc : 8.7——（1）
-         * publishedAt : 2015-08-07T03:57:47.310Z
-         * type : 福利
-         * url : http://ww2.sinaimg.cn/large/7a8aed7bgw1eutscfcqtcj20dw0i0q4l.jpg
-         * used : true
-         * who : 张涵宇
-         */
 
-        @SerializedName("福利")
-        private List<DataBean> Fuli;
+        public ResultsBean() {
+        }
+
+        protected ResultsBean(Parcel in) {
+            this.Android = in.createTypedArrayList(DataBean.CREATOR);
+            this.iOS = in.createTypedArrayList(DataBean.CREATOR);
+            this.App = in.createTypedArrayList(DataBean.CREATOR);
+            this.RestVideo = in.createTypedArrayList(DataBean.CREATOR);
+            this.Extra = in.createTypedArrayList(DataBean.CREATOR);
+            this.Recommend = in.createTypedArrayList(DataBean.CREATOR);
+        }
 
         public List<DataBean> getAndroid() {
             return Android;
@@ -139,6 +145,22 @@ public class Day {
             this.iOS = iOS;
         }
 
+        public List<DataBean> getApp() {
+            return App;
+        }
+
+        public void setApp(List<DataBean> App) {
+            this.App = App;
+        }
+
+        public List<DataBean> getFrontEnd() {
+            return FrontEnd;
+        }
+
+        public void setFrontEnd(List<DataBean> frontEnd) {
+            FrontEnd = frontEnd;
+        }
+
         public List<DataBean> getRestVideo() {
             return RestVideo;
         }
@@ -150,6 +172,14 @@ public class Day {
         public List<DataBean> getExtra() {
             return Extra;
         }
+
+//        public List<DataBean> getFuli() {
+//            return Fuli;
+//        }
+//
+//        public void setFuli(List<DataBean> fuli) {
+//            this.Fuli = fuli;
+//        }
 
         public void setExtra(List<DataBean> extra) {
             this.Extra = extra;
@@ -163,15 +193,33 @@ public class Day {
             this.Recommend = recommend;
         }
 
-        public List<DataBean> getFuli() {
-            return Fuli;
+        @Override
+        public int describeContents() {
+            return 0;
         }
 
-        public void setFuli(List<DataBean> fuli) {
-            this.Fuli = fuli;
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeTypedList(this.Android);
+            dest.writeTypedList(this.iOS);
+            dest.writeTypedList(this.App);
+            dest.writeTypedList(this.RestVideo);
+            dest.writeTypedList(this.Extra);
+            dest.writeTypedList(this.Recommend);
         }
 
-        public static class DataBean {
+        public static class DataBean implements Parcelable {
+            public static final Parcelable.Creator<DataBean> CREATOR = new Parcelable.Creator<DataBean>() {
+                @Override
+                public DataBean createFromParcel(Parcel source) {
+                    return new DataBean(source);
+                }
+
+                @Override
+                public DataBean[] newArray(int size) {
+                    return new DataBean[size];
+                }
+            };
             private String _id;
             private String createdAt;
             private String desc;
@@ -180,6 +228,20 @@ public class Day {
             private String url;
             private boolean used;
             private String who;
+
+            public DataBean() {
+            }
+
+            protected DataBean(Parcel in) {
+                this._id = in.readString();
+                this.createdAt = in.readString();
+                this.desc = in.readString();
+                this.publishedAt = in.readString();
+                this.type = in.readString();
+                this.url = in.readString();
+                this.used = in.readByte() != 0;
+                this.who = in.readString();
+            }
 
             public String get_id() {
                 return _id;
@@ -244,7 +306,23 @@ public class Day {
             public void setWho(String who) {
                 this.who = who;
             }
-        }
 
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this._id);
+                dest.writeString(this.createdAt);
+                dest.writeString(this.desc);
+                dest.writeString(this.publishedAt);
+                dest.writeString(this.type);
+                dest.writeString(this.url);
+                dest.writeByte(this.used ? (byte) 1 : (byte) 0);
+                dest.writeString(this.who);
+            }
+        }
     }
 }

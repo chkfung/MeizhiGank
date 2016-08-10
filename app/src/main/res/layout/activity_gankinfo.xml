@@ -23,16 +23,23 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/headerImage"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:src="@mipmap/ic_launcher"
                 android:transitionName="GankTransitionImage" />
 
             <TextView
+                android:id="@+id/category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ancs"
                 android:transitionName="GankTransitionText" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_gankinfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_gankinfo" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
