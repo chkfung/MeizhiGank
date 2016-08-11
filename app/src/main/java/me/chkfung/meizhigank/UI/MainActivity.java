@@ -1,5 +1,7 @@
 package me.chkfung.meizhigank.UI;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +50,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         setContentView(R.layout.activity_main);
         setSupportActionBar(toolbar);
 
+        if (savedInstanceState == null)
+            Logger.i("Saved Instance is null");
         mainPresenter.attachView(this);
-
         refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -128,6 +133,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -140,6 +150,23 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @OnClick(R.id.fab)
     public void onClick(View v) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        //fixme - does not work for api below 23 (Marshmallow)
+        //ref https://developer.android.com/reference/android/app/UiModeManager.html#setNightMode%28int%29
+//        UiModeManager uiModeManager =(UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
+//        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK){
+//            case Configuration.UI_MODE_NIGHT_YES:
+//                uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
+////                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                break;
+//            case Configuration.UI_MODE_NIGHT_NO:
+//
+//                uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+////                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                break;
+//        }
+////        recreate();
+//        Logger.i("Day Night: "+ getDelegate().applyDayNight());
         Snackbar.make(v, "Show Other Pages", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }

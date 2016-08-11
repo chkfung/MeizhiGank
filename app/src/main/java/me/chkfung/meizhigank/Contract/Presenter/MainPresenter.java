@@ -20,7 +20,6 @@ import rx.functions.Func1;
 public class MainPresenter implements MainContract.Presenter {
     MainContract.View mView;
     Subscription mSubscription;
-
     @Override
     public void loadMeizhi(int page, final List<Meizhi.ResultsBean> MeizhiData) {
         MeizhiApp meizhiApp = MeizhiApp.get(mView.getContext());

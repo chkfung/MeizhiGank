@@ -1,10 +1,15 @@
 package me.chkfung.meizhigank.UI;
 
+import android.animation.Animator;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,6 +33,8 @@ public class GankInfoActivity extends BaseActivity {
     TextView category;
     @BindView(R.id.rv_gankinfo)
     RecyclerView rvGankinfo;
+    @BindView(R.id.revealTest)
+    LinearLayout revealTest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +47,18 @@ public class GankInfoActivity extends BaseActivity {
 
         rvGankinfo.setAdapter(new GankInfoRvAdapter(mData));
         rvGankinfo.setLayoutManager(new LinearLayoutManager(this));
+        revealTest.post(new Runnable() {
+            @Override
+            public void run() {
+
+                if (Build.VERSION.SDK_INT > 21) {
+                    Animator circularReveal = ViewAnimationUtils.createCircularReveal(revealTest, revealTest.getWidth() / 2, 0, 0, revealTest.getWidth());
+                    circularReveal.setDuration(500);
+                    circularReveal.setInterpolator(new AccelerateInterpolator(1.5f));
+                    circularReveal.start();
+                }
+            }
+        });
     }
 
     @OnClick({R.id.close_button})
