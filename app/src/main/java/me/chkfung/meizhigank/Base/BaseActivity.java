@@ -38,4 +38,5 @@ public class BaseActivity extends AppCompatActivity implements BaseContract.View
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

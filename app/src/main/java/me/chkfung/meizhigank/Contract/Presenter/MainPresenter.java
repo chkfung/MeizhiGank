@@ -1,5 +1,7 @@
 package me.chkfung.meizhigank.Contract.Presenter;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.List;
 
 import me.chkfung.meizhigank.Constants;
@@ -20,8 +22,10 @@ import rx.functions.Func1;
 public class MainPresenter implements MainContract.Presenter {
     MainContract.View mView;
     Subscription mSubscription;
+    int counter = 100;
     @Override
     public void loadMeizhi(int page, final List<Meizhi.ResultsBean> MeizhiData) {
+        Logger.i("Logging " + counter++);
         MeizhiApp meizhiApp = MeizhiApp.get(mView.getContext());
         NetworkApi networkApi = meizhiApp.getNetworkApi();
         if (mSubscription != null) mSubscription.unsubscribe();

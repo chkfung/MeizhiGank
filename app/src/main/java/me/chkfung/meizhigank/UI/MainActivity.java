@@ -12,8 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.orhanobut.logger.Logger;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +25,13 @@ import me.chkfung.meizhigank.Constants;
 import me.chkfung.meizhigank.Contract.MainContract;
 import me.chkfung.meizhigank.Contract.Presenter.MainPresenter;
 import me.chkfung.meizhigank.Model.Meizhi;
+import me.chkfung.meizhigank.PresenterFactory;
+import me.chkfung.meizhigank.PresenterLoader;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.MeizhiRvAdapter;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
 
-public class MainActivity extends BaseActivity implements MainContract.View {
+public class MainActivity extends BaseActivity implements MainContract.View, android.support.v4.app.LoaderManager.LoaderCallbacks<MainContract.Presenter> {
 
     final private List<Meizhi.ResultsBean> MeizhiData = new ArrayList<>();
     @BindView(R.id.toolbar)
@@ -41,7 +43,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @BindView(R.id.refreshlayout)
     SwipeRefreshLayout refreshlayout;
     private MeizhiRvAdapter meizhiRvAdapter;
-    private MainContract.Presenter mainPresenter = new MainPresenter();
+    private MainContract.Presenter mainPresenter;// = new MainPresenter();
     private int paging = 1;
 
     @Override
@@ -49,10 +51,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(toolbar);
-
-        if (savedInstanceState == null)
-            Logger.i("Saved Instance is null");
-        mainPresenter.attachView(this);
+        getSupportLoaderManager().initLoader(101, null, this);
+//        mainPresenter.attachView(this);
         refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         rvMeizhi.setAdapter(meizhiRvAdapter);
         rvMeizhi.setLayoutManager(layoutManager);
         rvMeizhi.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -76,8 +77,18 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                     summonMeizhi(false);
                 }
             }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    fab.animate().translationY(0f)
+                            .setInterpolator(new OvershootInterpolator()).start();
+                else
+                    fab.animate().translationY(fab.getHeight() + getResources().getDimension(R.dimen.fab_margin))
+                            .setInterpolator(new DecelerateInterpolator(4)).start();
+            }
         });
-        summonMeizhi(true);
     }
 
     @Override
@@ -86,6 +97,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mainPresenter.detachView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mainPresenter.attachView(this);
+        summonMeizhi(true);
+    }
 
     @Override
     public void refreshRv() {
@@ -153,8 +171,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         //fixme - does not work for api below 23 (Marshmallow)
         //ref https://developer.android.com/reference/android/app/UiModeManager.html#setNightMode%28int%29
-//        UiModeManager uiModeManager =(UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
-//        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK){
+//        UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
+//        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
 //            case Configuration.UI_MODE_NIGHT_YES:
 //                uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
 ////                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -170,4 +188,27 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         Snackbar.make(v, "Show Other Pages", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
+
+    @Override
+    public android.support.v4.content.Loader<MainContract.Presenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(this, new PresenterFactory<MainContract.Presenter>() {
+            @Override
+            public MainContract.Presenter create() {
+                return new MainPresenter();
+            }
+        });
+    }
+
+    @Override
+    public void onLoadFinished(android.support.v4.content.Loader<MainContract.Presenter> loader, MainContract.Presenter data) {
+
+        mainPresenter = data;
+    }
+
+    @Override
+    public void onLoaderReset(android.support.v4.content.Loader<MainContract.Presenter> loader) {
+        mainPresenter = null;
+
+    }
+
 }
