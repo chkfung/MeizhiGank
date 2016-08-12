@@ -25,13 +25,11 @@ import me.chkfung.meizhigank.Constants;
 import me.chkfung.meizhigank.Contract.MainContract;
 import me.chkfung.meizhigank.Contract.Presenter.MainPresenter;
 import me.chkfung.meizhigank.Model.Meizhi;
-import me.chkfung.meizhigank.PresenterFactory;
-import me.chkfung.meizhigank.PresenterLoader;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.MeizhiRvAdapter;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
 
-public class MainActivity extends BaseActivity implements MainContract.View, android.support.v4.app.LoaderManager.LoaderCallbacks<MainContract.Presenter> {
+public class MainActivity extends BaseActivity implements MainContract.View { //, android.support.v4.app.LoaderManager.LoaderCallbacks<MainContract.Presenter> {
 
     final private List<Meizhi.ResultsBean> MeizhiData = new ArrayList<>();
     @BindView(R.id.toolbar)
@@ -43,7 +41,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, and
     @BindView(R.id.refreshlayout)
     SwipeRefreshLayout refreshlayout;
     private MeizhiRvAdapter meizhiRvAdapter;
-    private MainContract.Presenter mainPresenter;// = new MainPresenter();
+    private MainContract.Presenter mainPresenter = new MainPresenter();
     private int paging = 1;
 
     @Override
@@ -51,8 +49,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, and
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(toolbar);
-        getSupportLoaderManager().initLoader(101, null, this);
-//        mainPresenter.attachView(this);
+//        getSupportLoaderManager().initLoader(101, null, this);
+        mainPresenter.attachView(this);
         refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -66,7 +64,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, and
         rvMeizhi.setAdapter(meizhiRvAdapter);
         rvMeizhi.setLayoutManager(layoutManager);
         rvMeizhi.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -89,6 +86,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, and
                             .setInterpolator(new DecelerateInterpolator(4)).start();
             }
         });
+        summonMeizhi(true);
     }
 
     @Override
@@ -101,8 +99,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, and
     protected void onStart() {
         super.onStart();
 
-        mainPresenter.attachView(this);
-        summonMeizhi(true);
     }
 
     @Override
@@ -168,7 +164,11 @@ public class MainActivity extends BaseActivity implements MainContract.View, and
 
     @OnClick(R.id.fab)
     public void onClick(View v) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        else
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         //fixme - does not work for api below 23 (Marshmallow)
         //ref https://developer.android.com/reference/android/app/UiModeManager.html#setNightMode%28int%29
 //        UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
@@ -185,30 +185,30 @@ public class MainActivity extends BaseActivity implements MainContract.View, and
 //        }
 ////        recreate();
 //        Logger.i("Day Night: "+ getDelegate().applyDayNight());
-        Snackbar.make(v, "Show Other Pages", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+//        Snackbar.make(v, "Show Other Pages", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show();
     }
 
-    @Override
-    public android.support.v4.content.Loader<MainContract.Presenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<>(this, new PresenterFactory<MainContract.Presenter>() {
-            @Override
-            public MainContract.Presenter create() {
-                return new MainPresenter();
-            }
-        });
-    }
-
-    @Override
-    public void onLoadFinished(android.support.v4.content.Loader<MainContract.Presenter> loader, MainContract.Presenter data) {
-
-        mainPresenter = data;
-    }
-
-    @Override
-    public void onLoaderReset(android.support.v4.content.Loader<MainContract.Presenter> loader) {
-        mainPresenter = null;
-
-    }
+//    @Override
+//    public android.support.v4.content.Loader<MainContract.Presenter> onCreateLoader(int id, Bundle args) {
+//        return new PresenterLoader<>(this, new PresenterFactory<MainContract.Presenter>() {
+//            @Override
+//            public MainContract.Presenter create() {
+//                return new MainPresenter();
+//            }
+//        });
+//    }
+//
+//    @Override
+//    public void onLoadFinished(android.support.v4.content.Loader<MainContract.Presenter> loader, MainContract.Presenter data) {
+//
+//        mainPresenter = data;
+//    }
+//
+//    @Override
+//    public void onLoaderReset(android.support.v4.content.Loader<MainContract.Presenter> loader) {
+//        mainPresenter = null;
+//
+//    }
 
 }

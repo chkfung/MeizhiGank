@@ -18,7 +18,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_meizhi"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingLeft="@dimen/card_margin"
             android:paddingRight="@dimen/card_margin"
             android:paddingTop="@dimen/card_margin" />
