@@ -10,6 +10,10 @@ import com.squareup.leakcanary.LeakCanary;
 
 import java.io.IOException;
 
+import me.chkfung.meizhigank.Dagger.Component.DaggerNetComponent;
+import me.chkfung.meizhigank.Dagger.Component.NetComponent;
+import me.chkfung.meizhigank.Dagger.Module.AppModule;
+import me.chkfung.meizhigank.Dagger.Module.NetModule;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -36,6 +40,7 @@ public class MeizhiApp extends Application {
     private HttpLoggingInterceptor httpLoggingInterceptor;
     private Interceptor interceptor;
     private GsonConverterFactory gsonConverterFactory;
+    private NetComponent netComponent;
     public static MeizhiApp get(Context context) {
         return (MeizhiApp) context.getApplicationContext();
     }
@@ -136,5 +141,13 @@ public class MeizhiApp extends Application {
         super.onCreate();
         LeakCanary.install(this);
         Logger.init("Tibber Say");
+        netComponent = DaggerNetComponent.builder()
+                .appModule(new AppModule(this))
+                .netModule(new NetModule("http://gank.io/"))
+                .build();
+    }
+
+    public NetComponent getNetComponent() {
+        return netComponent;
     }
 }

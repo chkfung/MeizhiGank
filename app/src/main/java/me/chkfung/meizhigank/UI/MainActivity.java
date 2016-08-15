@@ -1,7 +1,10 @@
 package me.chkfung.meizhigank.UI;
 
-import android.content.pm.ActivityInfo;
+import android.app.UiModeManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -164,26 +167,29 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
 
     @OnClick(R.id.fab)
     public void onClick(View v) {
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        else
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        startActivity(new Intent(this, AboutMeActivity.class));
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//        else
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //fixme - does not work for api below 23 (Marshmallow)
         //ref https://developer.android.com/reference/android/app/UiModeManager.html#setNightMode%28int%29
-//        UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
-//        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
-//            case Configuration.UI_MODE_NIGHT_YES:
-//                uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
-////                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                break;
-//            case Configuration.UI_MODE_NIGHT_NO:
-//
-//                uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
-////                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                break;
-//        }
-////        recreate();
+        if (Build.VERSION.SDK_INT >= 23) {
+            UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
+            switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+                case Configuration.UI_MODE_NIGHT_YES:
+                    uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    break;
+                case Configuration.UI_MODE_NIGHT_NO:
+
+                    uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    break;
+            }
+        }
+//        recreate();
 //        Logger.i("Day Night: "+ getDelegate().applyDayNight());
 //        Snackbar.make(v, "Show Other Pages", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show();

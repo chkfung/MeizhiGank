@@ -29,6 +29,8 @@
         <activity
             android:name=".UI.GankInfoActivity"
             android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity android:name=".UI.WebActivity" />
+        <activity android:name=".UI.AboutMeActivity" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package me.chkfung.meizhigank.UI.Adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
+import me.chkfung.meizhigank.UI.WebActivity;
 
 /**
  * Created by Fung on 10/08/2016.
@@ -31,8 +33,17 @@ public class GankInfoRvAdapter extends RecyclerView.Adapter<GankInfoRvAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText(Data.get(position).getDesc());
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final String titleText = Data.get(position).getDesc();
+        holder.title.setText(titleText);
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = holder.itemView.getContext();
+                context.startActivity(
+                        WebActivity.newIntent(context, titleText, Data.get(position).getUrl()));
+            }
+        });
     }
 
     @Override
