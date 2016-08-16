@@ -43,7 +43,6 @@ public class AboutMeActivity extends BaseActivity {
             ver = "Unable to retrieve Info";
         }
         version.setText(ver);
-
     }
 
     @Override

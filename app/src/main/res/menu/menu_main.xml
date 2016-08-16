@@ -3,8 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.chkfung.meizhigank.UI.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:id="@+id/action_about"
+        android:title="@string/about_me"
         app:showAsAction="never" />
+    <item android:title="Day Night Mode">
+        <menu>
+            <item
+                android:id="@+id/action_day"
+                android:orderInCategory="100"
+                android:title="Day"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_night"
+                android:orderInCategory="100"
+                android:title="Night"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 </menu>

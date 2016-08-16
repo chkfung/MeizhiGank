@@ -55,10 +55,9 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
         Glide.with(mContext)
                 .load(meizhiList.get(position).getUrl())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .error(R.drawable.common_plus_signin_btn_icon_dark_normal)
                 .into(holder.image);
 
-        holder.title.setText(meizhiList.get(position).getPublishedAt().toString() + " " + meizhiList.get(position).getDesc());
+        holder.title.setText(meizhiList.get(position).getDesc());
 
         //Event
         holder.image.setOnClickListener(new View.OnClickListener() {

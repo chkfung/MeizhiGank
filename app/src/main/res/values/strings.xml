@@ -6,4 +6,5 @@
     <string name="refresh">Refresh</string>
     <string name="copy_link">Copy Link</string>
     <string name="open_in_browser">Open In Browser</string>
+    <string name="about_me">About Me</string>
 </resources>
