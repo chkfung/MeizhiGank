@@ -15,13 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.GankInfoActivity;
+import me.chkfung.meizhigank.Util.CommonUtil;
 
 /**
  * Created by Fung on 04/08/2016.
@@ -55,7 +55,7 @@ public class GankRvAdapter extends RecyclerView.Adapter<GankRvAdapter.ViewHolder
                 ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,
                         anim1, anim2, anim3);
                 Intent i = new Intent(context, GankInfoActivity.class);
-                i.putParcelableArrayListExtra("Data", new ArrayList<Parcelable>(getDataOf(cat)));
+                i.putParcelableArrayListExtra("Data", new ArrayList<Parcelable>(CommonUtil.getDataOf(data, cat)));
                 context.startActivity(i, optionsCompat.toBundle());
 
 //                FragmentManager fm = ((AppCompatActivity) holder.itemView.getContext()).getSupportFragmentManager();
@@ -77,26 +77,6 @@ public class GankRvAdapter extends RecyclerView.Adapter<GankRvAdapter.ViewHolder
         return data.getCategory().size() - 1;
     }
 
-    private List<Day.ResultsBean.DataBean> getDataOf(String selectedItem) {
-        switch (selectedItem) {
-            case "Android":
-                return data.getResults().getAndroid();
-            case "iOS":
-                return data.getResults().getIOS();
-            case "App":
-                return data.getResults().getApp();
-            case "休息视频":
-                return data.getResults().getRestVideo();
-            case "拓展资源":
-                return data.getResults().getExtra();
-            case "瞎推荐":
-                return data.getResults().getRecommend();
-            case "前端":
-                return data.getResults().getFrontEnd();
-            default:
-                return null;
-        }
-    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 

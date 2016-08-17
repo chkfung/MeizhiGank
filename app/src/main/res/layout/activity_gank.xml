@@ -7,13 +7,28 @@
     android:fitsSystemWindows="true"
     tools:context="me.chkfung.meizhigank.UI.GankActivity">
     <include layout="@layout/view_toolbar" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_gank"
+
+    <ViewSwitcher
+        android:id="@+id/viewswitcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/item_gank" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <me.chkfung.meizhigank.Util.AnimExpandableListVIew
+            android:id="@+id/expandable_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:groupIndicator="@null"
+            android:paddingBottom="60dp"
+            tools:listheader="@layout/item_expandable_gank_header"
+            tools:listitem="@layout/item_expandable_gank_list" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_gank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_gank" />
+    </ViewSwitcher>
     <ProgressBar
         android:id="@id/progressbar"
         android:layout_width="wrap_content"

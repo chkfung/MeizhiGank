@@ -58,7 +58,11 @@ public class WebActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(Title);
+
+//        getSupportActionBar().setSubtitle(Url);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
 
         webview.setWebViewClient(new WebViewClient() {
             @Override

@@ -7,4 +7,5 @@ package me.chkfung.meizhigank;
 public class Constants {
     public static final int MEIZHI_AMOUNT = 10;
     public static final int MEIZHI_PRELOAD = 4;
+    public static final String SHARED_PREF = "TIBBER";
 }
