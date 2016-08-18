@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -111,6 +113,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
             @Override
             public boolean onTouch(final View v, MotionEvent event) {
+                boolean triggered = false;
                 FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
                 //YAY
                 switch (event.getActionMasked()) {
@@ -134,6 +137,17 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                             frameMeizhi.getBackground().setAlpha(122);
                         } else {
                             frameMeizhi.getBackground().setAlpha(255);
+
+                            triggered = false;
+                            toolbar.animate().translationY(0)
+                                    .setDuration(200)
+                                    .setInterpolator(new OvershootInterpolator());
+                        }
+                        if (!triggered) {
+                            toolbar.animate().translationY(-toolbar.getMeasuredHeight() - 20)
+                                    .setDuration(200)
+                                    .setInterpolator(new DecelerateInterpolator());
+                            triggered = true;
                         }
                         break;
                     case MotionEvent.ACTION_UP:

@@ -12,12 +12,12 @@ android {
         versionProps['VERSION_CODE'] = code.toString()
         versionProps.store(versionPropsFile.newWriter(), null)
 
-        compileSdkVersion 23
+        compileSdkVersion 24
         buildToolsVersion "24.0.0"
         defaultConfig {
             applicationId "me.chkfung.meizhigank"
             minSdkVersion 16
-            targetSdkVersion 23
+            targetSdkVersion 24
             versionCode code
             versionName "1.0"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

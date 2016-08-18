@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <transition>
+            <item android:drawable="@drawable/ic_octoface"></item>
+            <item android:drawable="@drawable/ic_list_white"></item>
+        </transition>
+
+    </item>
+</layer-list>

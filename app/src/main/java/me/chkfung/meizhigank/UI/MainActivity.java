@@ -15,8 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,17 +74,6 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
                         !refreshlayout.isRefreshing()) {
                     summonMeizhi(false);
                 }
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    fab.animate().translationY(0f)
-                            .setInterpolator(new OvershootInterpolator()).start();
-                else
-                    fab.animate().translationY(fab.getHeight() + getResources().getDimension(R.dimen.fab_margin))
-                            .setInterpolator(new DecelerateInterpolator(4)).start();
             }
         });
         summonMeizhi(true);
@@ -156,6 +143,11 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutMeActivity.class));
+                break;
+        }
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -167,7 +159,6 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
 
     @OnClick(R.id.fab)
     public void onClick(View v) {
-        startActivity(new Intent(this, AboutMeActivity.class));
 //        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 //        else
@@ -194,27 +185,4 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
 //        Snackbar.make(v, "Show Other Pages", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show();
     }
-
-//    @Override
-//    public android.support.v4.content.Loader<MainContract.Presenter> onCreateLoader(int id, Bundle args) {
-//        return new PresenterLoader<>(this, new PresenterFactory<MainContract.Presenter>() {
-//            @Override
-//            public MainContract.Presenter create() {
-//                return new MainPresenter();
-//            }
-//        });
-//    }
-//
-//    @Override
-//    public void onLoadFinished(android.support.v4.content.Loader<MainContract.Presenter> loader, MainContract.Presenter data) {
-//
-//        mainPresenter = data;
-//    }
-//
-//    @Override
-//    public void onLoaderReset(android.support.v4.content.Loader<MainContract.Presenter> loader) {
-//        mainPresenter = null;
-//
-//    }
-
 }
