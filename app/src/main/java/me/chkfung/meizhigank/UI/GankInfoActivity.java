@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
-import me.chkfung.meizhigank.Model.Day;
+import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.GankInfoRvAdapter;
 
@@ -41,7 +41,7 @@ public class GankInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gankinfo);
         ButterKnife.bind(this);
-        ArrayList<Day.ResultsBean.DataBean> mData;
+        ArrayList<DataInfo> mData;
         mData = getIntent().getParcelableArrayListExtra("Data");
         category.setText(mData.get(0).getType());
 

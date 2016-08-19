@@ -19,7 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.chkfung.meizhigank.MeizhiImageView;
-import me.chkfung.meizhigank.Model.Meizhi;
+import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.GankActivity;
 import me.chkfung.meizhigank.UI.MeizhiActivity;
@@ -30,9 +30,9 @@ import me.chkfung.meizhigank.UI.MeizhiActivity;
 
 public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHolder> {
     private int[] HeightTest = new int[]{200, 400, 600, 200, 400};
-    private List<Meizhi.ResultsBean> meizhiList;
+    private List<DataInfo> meizhiList;
 
-    public MeizhiRvAdapter(List<Meizhi.ResultsBean> meizhiList) {
+    public MeizhiRvAdapter(List<DataInfo> meizhiList) {
         this.meizhiList = meizhiList;
         setHasStableIds(true);
     }

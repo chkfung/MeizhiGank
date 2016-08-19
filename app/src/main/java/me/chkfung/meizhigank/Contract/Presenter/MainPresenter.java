@@ -7,6 +7,7 @@ import java.util.List;
 import me.chkfung.meizhigank.Constants;
 import me.chkfung.meizhigank.Contract.MainContract;
 import me.chkfung.meizhigank.MeizhiApp;
+import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.Model.Meizhi;
 import me.chkfung.meizhigank.NetworkApi;
 import rx.Observable;
@@ -24,7 +25,7 @@ public class MainPresenter implements MainContract.Presenter {
     Subscription mSubscription;
     int counter = 100;
     @Override
-    public void loadMeizhi(int page, final List<Meizhi.ResultsBean> MeizhiData) {
+    public void loadMeizhi(int page, final List<DataInfo> MeizhiData) {
         Logger.i("Logging " + counter++);
         MeizhiApp meizhiApp = MeizhiApp.get(mView.getContext());
         NetworkApi networkApi = meizhiApp.getNetworkApi();
@@ -33,13 +34,13 @@ public class MainPresenter implements MainContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(meizhiApp.getDefaultSubscribeScheduler())
                 //v5
-                .flatMap(new Func1<Meizhi, Observable<Meizhi.ResultsBean>>() {
+                .flatMap(new Func1<Meizhi, Observable<DataInfo>>() {
                     @Override
-                    public Observable<Meizhi.ResultsBean> call(Meizhi meizhi) {
+                    public Observable<DataInfo> call(Meizhi meizhi) {
                         return Observable.from(meizhi.getResults());
                     }
                 })
-                .subscribe(new Subscriber<Meizhi.ResultsBean>() {
+                .subscribe(new Subscriber<DataInfo>() {
                     @Override
                     public void onCompleted() {
                         mView.refreshRv();
@@ -51,7 +52,7 @@ public class MainPresenter implements MainContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(Meizhi.ResultsBean resultsBean) {
+                    public void onNext(DataInfo resultsBean) {
                         MeizhiData.add(resultsBean);
                     }
                 });

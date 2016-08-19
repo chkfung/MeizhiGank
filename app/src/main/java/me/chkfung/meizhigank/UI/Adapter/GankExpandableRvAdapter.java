@@ -17,6 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.Util.CommonUtil;
@@ -139,9 +140,9 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
      * Sub RecycleView
      */
     class GankExpandableRvSubAdapter extends RecyclerView.Adapter<GankExpandableRvSubAdapter.ViewHolder> {
-        List<Day.ResultsBean.DataBean> dataBean;
+        List<DataInfo> dataBean;
 
-        GankExpandableRvSubAdapter(List<Day.ResultsBean.DataBean> dataBean) {
+        GankExpandableRvSubAdapter(List<DataInfo> dataBean) {
             this.dataBean = dataBean;
         }
 

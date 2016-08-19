@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.chkfung.meizhigank.Model.Day;
+import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.WebActivity;
 
@@ -20,9 +20,9 @@ import me.chkfung.meizhigank.UI.WebActivity;
  */
 
 public class GankInfoRvAdapter extends RecyclerView.Adapter<GankInfoRvAdapter.ViewHolder> {
-    ArrayList<Day.ResultsBean.DataBean> Data;
+    ArrayList<DataInfo> Data;
 
-    public GankInfoRvAdapter(ArrayList<Day.ResultsBean.DataBean> Data) {
+    public GankInfoRvAdapter(ArrayList<DataInfo> Data) {
         this.Data = Data;
     }
 

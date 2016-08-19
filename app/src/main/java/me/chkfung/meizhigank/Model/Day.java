@@ -102,74 +102,74 @@ public class Day implements Parcelable {
          * who : mthli
          */
 
-        private List<DataBean> Android;
-        private List<DataBean> iOS;
-        private List<DataBean> App;
+        private List<DataInfo> Android;
+        private List<DataInfo> iOS;
+        private List<DataInfo> App;
         @SerializedName("前端")
-        private List<DataBean> FrontEnd;
+        private List<DataInfo> FrontEnd;
         @SerializedName("休息视频")
-        private List<DataBean> RestVideo;
+        private List<DataInfo> RestVideo;
         @SerializedName("拓展资源")
-        private List<DataBean> Extra;
+        private List<DataInfo> Extra;
 
         //        @SerializedName("福利")
 //        private List<DataBean> Fuli;
         @SerializedName("瞎推荐")
-        private List<DataBean> Recommend;
+        private List<DataInfo> Recommend;
 
         public ResultsBean() {
         }
 
         protected ResultsBean(Parcel in) {
-            this.Android = in.createTypedArrayList(DataBean.CREATOR);
-            this.iOS = in.createTypedArrayList(DataBean.CREATOR);
-            this.App = in.createTypedArrayList(DataBean.CREATOR);
-            this.RestVideo = in.createTypedArrayList(DataBean.CREATOR);
-            this.Extra = in.createTypedArrayList(DataBean.CREATOR);
-            this.Recommend = in.createTypedArrayList(DataBean.CREATOR);
+            this.Android = in.createTypedArrayList(DataInfo.CREATOR);
+            this.iOS = in.createTypedArrayList(DataInfo.CREATOR);
+            this.App = in.createTypedArrayList(DataInfo.CREATOR);
+            this.RestVideo = in.createTypedArrayList(DataInfo.CREATOR);
+            this.Extra = in.createTypedArrayList(DataInfo.CREATOR);
+            this.Recommend = in.createTypedArrayList(DataInfo.CREATOR);
         }
 
-        public List<DataBean> getAndroid() {
+        public List<DataInfo> getAndroid() {
             return Android;
         }
 
-        public void setAndroid(List<DataBean> Android) {
+        public void setAndroid(List<DataInfo> Android) {
             this.Android = Android;
         }
 
-        public List<DataBean> getIOS() {
+        public List<DataInfo> getIOS() {
             return iOS;
         }
 
-        public void setIOS(List<DataBean> iOS) {
+        public void setIOS(List<DataInfo> iOS) {
             this.iOS = iOS;
         }
 
-        public List<DataBean> getApp() {
+        public List<DataInfo> getApp() {
             return App;
         }
 
-        public void setApp(List<DataBean> App) {
+        public void setApp(List<DataInfo> App) {
             this.App = App;
         }
 
-        public List<DataBean> getFrontEnd() {
+        public List<DataInfo> getFrontEnd() {
             return FrontEnd;
         }
 
-        public void setFrontEnd(List<DataBean> frontEnd) {
+        public void setFrontEnd(List<DataInfo> frontEnd) {
             FrontEnd = frontEnd;
         }
 
-        public List<DataBean> getRestVideo() {
+        public List<DataInfo> getRestVideo() {
             return RestVideo;
         }
 
-        public void setRestVideo(List<DataBean> restVideo) {
+        public void setRestVideo(List<DataInfo> restVideo) {
             this.RestVideo = restVideo;
         }
 
-        public List<DataBean> getExtra() {
+        public List<DataInfo> getExtra() {
             return Extra;
         }
 
@@ -181,15 +181,15 @@ public class Day implements Parcelable {
 //            this.Fuli = fuli;
 //        }
 
-        public void setExtra(List<DataBean> extra) {
+        public void setExtra(List<DataInfo> extra) {
             this.Extra = extra;
         }
 
-        public List<DataBean> getRecommend() {
+        public List<DataInfo> getRecommend() {
             return Recommend;
         }
 
-        public void setRecommend(List<DataBean> recommend) {
+        public void setRecommend(List<DataInfo> recommend) {
             this.Recommend = recommend;
         }
 
@@ -208,121 +208,5 @@ public class Day implements Parcelable {
             dest.writeTypedList(this.Recommend);
         }
 
-        public static class DataBean implements Parcelable {
-            public static final Parcelable.Creator<DataBean> CREATOR = new Parcelable.Creator<DataBean>() {
-                @Override
-                public DataBean createFromParcel(Parcel source) {
-                    return new DataBean(source);
-                }
-
-                @Override
-                public DataBean[] newArray(int size) {
-                    return new DataBean[size];
-                }
-            };
-            private String _id;
-            private String createdAt;
-            private String desc;
-            private String publishedAt;
-            private String type;
-            private String url;
-            private boolean used;
-            private String who;
-
-            public DataBean() {
-            }
-
-            protected DataBean(Parcel in) {
-                this._id = in.readString();
-                this.createdAt = in.readString();
-                this.desc = in.readString();
-                this.publishedAt = in.readString();
-                this.type = in.readString();
-                this.url = in.readString();
-                this.used = in.readByte() != 0;
-                this.who = in.readString();
-            }
-
-            public String get_id() {
-                return _id;
-            }
-
-            public void set_id(String _id) {
-                this._id = _id;
-            }
-
-            public String getCreatedAt() {
-                return createdAt;
-            }
-
-            public void setCreatedAt(String createdAt) {
-                this.createdAt = createdAt;
-            }
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getPublishedAt() {
-                return publishedAt;
-            }
-
-            public void setPublishedAt(String publishedAt) {
-                this.publishedAt = publishedAt;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public String getUrl() {
-                return url;
-            }
-
-            public void setUrl(String url) {
-                this.url = url;
-            }
-
-            public boolean isUsed() {
-                return used;
-            }
-
-            public void setUsed(boolean used) {
-                this.used = used;
-            }
-
-            public String getWho() {
-                return who;
-            }
-
-            public void setWho(String who) {
-                this.who = who;
-            }
-
-            @Override
-            public int describeContents() {
-                return 0;
-            }
-
-            @Override
-            public void writeToParcel(Parcel dest, int flags) {
-                dest.writeString(this._id);
-                dest.writeString(this.createdAt);
-                dest.writeString(this.desc);
-                dest.writeString(this.publishedAt);
-                dest.writeString(this.type);
-                dest.writeString(this.url);
-                dest.writeByte(this.used ? (byte) 1 : (byte) 0);
-                dest.writeString(this.who);
-            }
-        }
     }
 }

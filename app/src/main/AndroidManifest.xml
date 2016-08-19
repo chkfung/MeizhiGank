@@ -31,7 +31,6 @@
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity android:name=".UI.WebActivity" />
         <activity android:name=".UI.AboutMeActivity" />
-        <activity android:name=".UI.OverflowActivity" />
     </application>
 
 </manifest>
