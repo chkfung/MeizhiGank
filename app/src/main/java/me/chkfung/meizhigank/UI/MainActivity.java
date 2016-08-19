@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -28,7 +29,6 @@ import me.chkfung.meizhigank.Contract.Presenter.MainPresenter;
 import me.chkfung.meizhigank.Model.Meizhi;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.MeizhiRvAdapter;
-import me.chkfung.meizhigank.Util.CommonUtil;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
 
 public class MainActivity extends BaseActivity implements MainContract.View { //, android.support.v4.app.LoaderManager.LoaderCallbacks<MainContract.Presenter> {
@@ -172,24 +172,31 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //        Bitmap bitmap = CommonUtil.getScreenShow(findViewById(android.R.id.content));
 //        CommonUtil.ScreenshotAlpha(findViewById(android.R.id.content));
-        CommonUtil.ScreenshotAlpha(findViewById(android.R.id.content));
+//        setContentView(R.layout.activity_main);
+//        CommonUtil.ScreenshotAlpha(findViewById(android.R.id.content));
         //fixme - does not work for api below 23 (Marshmallow)
         //ref https://developer.android.com/reference/android/app/UiModeManager.html#setNightMode%28int%29
         if (Build.VERSION.SDK_INT >= 23) {
             UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
             switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
                 case Configuration.UI_MODE_NIGHT_YES:
-                    uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                    uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                    AppCompatDelegate.set
                     break;
                 case Configuration.UI_MODE_NIGHT_NO:
 
-                    uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                    uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     break;
             }
         }
-//        recreate();
+        getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+        recreate();
+//        Intent intentChangeTheme = new Intent(this,MainActivity.class);
+////        intentChangeTheme.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intentChangeTheme);
+//        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 //        Logger.i("Day Night: "+ getDelegate().applyDayNight());
 //        Snackbar.make(v, "Show Other Pages", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show();

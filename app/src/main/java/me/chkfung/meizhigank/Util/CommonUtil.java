@@ -65,7 +65,7 @@ public class CommonUtil {
         screenView.setDrawingCacheEnabled(false);
         final WindowManager mWindowManager = (WindowManager) view.getContext().getApplicationContext().getSystemService(view.getContext().getApplicationContext().WINDOW_SERVICE);
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
-        wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
         wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
         final FrameLayout OverlayWrapper = new FrameLayout(view.getContext());
