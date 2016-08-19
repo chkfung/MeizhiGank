@@ -32,6 +32,7 @@ import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Contract.MeizhiContract;
 import me.chkfung.meizhigank.Contract.Presenter.MeizhiPresenter;
 import me.chkfung.meizhigank.R;
+import me.chkfung.meizhigank.Util.CommonUtil;
 import me.chkfung.meizhigank.Util.PermissionUtils;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -252,6 +253,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                 onBackPressed();
                 break;
             case R.id.action_share:
+                CommonUtil.ShareImage(this, url);
                 break;
             case R.id.action_save:
                 SaveMenuTapped();
