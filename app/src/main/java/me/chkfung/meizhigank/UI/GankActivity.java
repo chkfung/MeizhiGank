@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -14,9 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.ViewSwitcher;
-
-import com.orhanobut.logger.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +52,8 @@ public class GankActivity extends BaseActivity implements GankContract.View {
 
     Day mDay;
     Menu menu;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,9 +63,11 @@ public class GankActivity extends BaseActivity implements GankContract.View {
         mDate = getIntent().getExtras().getString("Date");
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(mDate);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Logger.i(mDate);
+        toolbarTitle.setText(mDate);
+        animateToolbar();
+
         mPresenter.attachView(this);
         mPresenter.getGank(mDate);
 
@@ -135,4 +139,15 @@ public class GankActivity extends BaseActivity implements GankContract.View {
             menu.findItem(R.id.action_viewswitcher).setIcon(R.drawable.ic_view_grid);
     }
 
+    @Override
+    public void animateToolbar() {
+        toolbarTitle.setAlpha(0f);
+        toolbarTitle.setScaleX(0.6f);
+        toolbarTitle.animate().scaleX(1f)
+                .alpha(1f)
+                .setStartDelay(300)
+                .setDuration(900)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .start();
+    }
 }

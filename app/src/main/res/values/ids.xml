@@ -3,5 +3,7 @@
     <item name="root_layout" type="id" />
     <item name="close_button" type="id" />
     <item name="progressbar" type="id" />
+    <item name="toolbar_title" type="id" />
+    <item name="toolbar_subtitle" type="id" />
 
 </resources>

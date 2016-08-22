@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -136,19 +136,19 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                         v.requestLayout();
                         if (Math.abs(mMotionY) > 100) {
                             frameMeizhi.getBackground().setAlpha(122);
+
+                            if (!triggered) {
+                                toolbar.animate().translationY(-50)
+                                        .setDuration(100)
+                                        .setInterpolator(new LinearInterpolator());
+                                triggered = true;
+                            }
                         } else {
                             frameMeizhi.getBackground().setAlpha(255);
-
-                            triggered = false;
                             toolbar.animate().translationY(0)
-                                    .setDuration(200)
+                                    .setDuration(100)
                                     .setInterpolator(new OvershootInterpolator());
-                        }
-                        if (!triggered) {
-                            toolbar.animate().translationY(-toolbar.getMeasuredHeight() - 20)
-                                    .setDuration(200)
-                                    .setInterpolator(new DecelerateInterpolator());
-                            triggered = true;
+                            triggered = false;
                         }
                         break;
                     case MotionEvent.ACTION_UP:

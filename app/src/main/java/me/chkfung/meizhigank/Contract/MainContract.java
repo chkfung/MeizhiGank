@@ -26,5 +26,7 @@ public interface MainContract {
         void networkError(Throwable e);
 
         void summonMeizhi(boolean clearItem);
+
+        void animateToolbar();
     }
 }

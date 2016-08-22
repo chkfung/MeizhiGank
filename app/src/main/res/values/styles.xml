@@ -8,9 +8,29 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:textColorSecondary">@color/textColor</item>
+
+        <!--<item name="android:textColor">@color/textColor</item>-->
+
+        <!--<item name="android:background">@color/colorPrimary</item>-->
+        <!--<item name="android:textColorPrimary">@android:color/black</item>-->
     </style>
 
+    <style name="ToolbarTitle">
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="MeizhiTitleAppearance" parent="ToolbarTitle">
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+    </style>
+
+    <style name="WebTitleAppearance" parent="ToolbarTitle">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="WebSubTitleAppearance" parent="ToolbarTitle">
+        <item name="android:fontFamily">serif-monospace</item>
+    </style>
     <style name="WindowAnimationFadeInOut">
         <item name="@android:windowEnterAnimation">@anim/fade_in</item>
         <item name="@android:windowExitAnimation">@anim/fade_out</item>
@@ -30,8 +50,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat">
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat" />
 
 </resources>

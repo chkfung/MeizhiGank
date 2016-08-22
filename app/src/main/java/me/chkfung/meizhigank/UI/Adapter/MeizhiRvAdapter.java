@@ -79,6 +79,10 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
                         + "/" + (calendar.get(Calendar.MONTH) + 1)
                         + "/" + calendar.get(Calendar.DAY_OF_MONTH));
                 mContext.startActivity(i);
+//                ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+//                ((Activity) mContext).overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+
+
             }
         });
 

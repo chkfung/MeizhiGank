@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Constants;
@@ -35,7 +38,10 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
     RecyclerView rvMeizhi;
     @BindView(R.id.refreshlayout)
     SwipeRefreshLayout refreshlayout;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
     StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
     private ArrayList<DataInfo> MeizhiData = new ArrayList<>();
     private MeizhiRvAdapter meizhiRvAdapter;
     private MainContract.Presenter mainPresenter = new MainPresenter();
@@ -45,9 +51,15 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        //Setup Toolbar
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mainPresenter.attachView(this);
+
+
         refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -71,8 +83,11 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
                 }
             }
         });
-        if (savedInstanceState == null)
+
+        if (savedInstanceState == null) {
             summonMeizhi(true);
+        }
+        animateToolbar();
     }
 
     @Override
@@ -170,4 +185,16 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
 
     }
 
+    @Override
+    public void animateToolbar() {
+
+        toolbarTitle.setAlpha(0f);
+        toolbarTitle.setScaleX(0.6f);
+        toolbarTitle.animate().scaleX(1f)
+                .alpha(1f)
+                .setStartDelay(300)
+                .setDuration(900)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .start();
+    }
 }

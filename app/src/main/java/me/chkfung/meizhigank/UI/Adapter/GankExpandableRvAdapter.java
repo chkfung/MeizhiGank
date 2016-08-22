@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
+import me.chkfung.meizhigank.UI.WebActivity;
 import me.chkfung.meizhigank.Util.CommonUtil;
 
 /**
@@ -155,6 +157,15 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
         @Override
         public void onBindViewHolder(GankExpandableRvSubAdapter.ViewHolder holder, int position) {
             holder.title.setText(dataBean.get(position).getDesc());
+
+            final String desc = dataBean.get(position).getDesc();
+            final String url = dataBean.get(position).getUrl();
+            holder.subItem_handle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.getContext().startActivity(WebActivity.newIntent(v.getContext(), desc, url));
+                }
+            });
         }
 
         @Override
@@ -165,6 +176,8 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
         class ViewHolder extends RecyclerView.ViewHolder {
             @BindView(R.id.title)
             TextView title;
+            @BindView(R.id.subItem_handle)
+            LinearLayout subItem_handle;
 
             public ViewHolder(View view) {
                 super(view);

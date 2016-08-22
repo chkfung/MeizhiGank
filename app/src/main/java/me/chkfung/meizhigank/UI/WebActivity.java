@@ -18,6 +18,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +36,10 @@ public class WebActivity extends BaseActivity {
     ProgressBar progressbar;
     @BindView(R.id.webview)
     WebView webview;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+    @BindView(R.id.toolbar_subtitle)
+    TextView toolbarSubtitle;
 
     public static Intent newIntent(Context context, String Title, String Url) {
         Intent intent = new Intent(context, WebActivity.class);
@@ -57,9 +62,10 @@ public class WebActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(Title);
-
-//        getSupportActionBar().setSubtitle(Url);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbarTitle.setSelected(true);
+        toolbarTitle.setText(Title);
+        toolbarSubtitle.setText(Url);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);

@@ -20,14 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/item_expandable_gank_header" />
-        <!--<me.chkfung.meizhigank.Util.AnimExpandableListVIew-->
-        <!--android:id="@+id/expandable_listview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:groupIndicator="@null"-->
-        <!--android:paddingBottom="60dp"-->
-        <!--tools:listheader="@layout/item_expandable_gank_header"-->
-        <!--tools:listitem="@layout/item_expandable_gank_list" />-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_gank"
