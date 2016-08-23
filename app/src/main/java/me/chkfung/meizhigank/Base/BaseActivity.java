@@ -44,12 +44,12 @@ public class BaseActivity extends AppCompatActivity implements BaseContract.View
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        overridePendingTransition(R.anim.right_in_back, R.anim.right_out_back);
     }
 
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        overridePendingTransition(R.anim.right_in, R.anim.right_out);
     }
 }

@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/card_margin"
             android:paddingRight="@dimen/card_margin"
-            android:paddingTop="@dimen/card_margin" />
+            android:paddingTop="@dimen/card_margin"
+            tools:listitem="@layout/item_meizhi" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
@@ -31,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_octoface"
+        android:src="@drawable/ic_nightmode"
         android:tint="@color/md_white_1000"
         app:layout_behavior="me.chkfung.meizhigank.Util.ScrollAwareFABBehavior" />
 

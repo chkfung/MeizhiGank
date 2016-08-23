@@ -1,7 +1,14 @@
 package me.chkfung.meizhigank;
 
+import android.app.Activity;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,6 +48,7 @@ public class MeizhiApp extends Application {
     private Interceptor interceptor;
     private GsonConverterFactory gsonConverterFactory;
     private NetComponent netComponent;
+
     public static MeizhiApp get(Context context) {
         return (MeizhiApp) context.getApplicationContext();
     }
@@ -64,6 +72,7 @@ public class MeizhiApp extends Application {
 
     /**
      * Get OkHttpClient Singleton
+     *
      * @return OkHttpClient
      */
     public OkHttpClient getOkHttpClient() {
@@ -92,6 +101,7 @@ public class MeizhiApp extends Application {
 
     /**
      * Log Network Response
+     *
      * @return Logging Interceptor
      */
     private HttpLoggingInterceptor getHttpLoggingInterceptor() {
@@ -109,6 +119,7 @@ public class MeizhiApp extends Application {
 
     /**
      * Cache Are available when Network Connection is not available
+     *
      * @return Caching Interceptor
      */
     private Interceptor getCachingInterceptor() {
@@ -136,6 +147,29 @@ public class MeizhiApp extends Application {
         }
         return gsonConverterFactory;
     }
+
+    public void CustomTabLaunch(Context mcontext, Uri url) {
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setToolbarColor(mcontext.getResources().getColor(R.color.colorPrimary))
+                .setShowTitle(true);
+
+        // An example intent that sends an email.
+        Intent actionIntent = new Intent(Intent.ACTION_SEND);
+        actionIntent.setType("*/*");
+        actionIntent.putExtra(Intent.EXTRA_EMAIL, "example@example.com");
+        actionIntent.putExtra(Intent.EXTRA_SUBJECT, "example");
+        PendingIntent pi = PendingIntent.getActivity(mcontext, 0, actionIntent, 0);
+        Bitmap icon = BitmapFactory.decodeResource(mcontext.getResources(), android.R.drawable.ic_menu_share);
+        builder.setActionButton(icon, "send email", pi, true);
+
+        builder.setStartAnimations(mcontext, R.anim.right_in, R.anim.right_out);
+        builder.setExitAnimations(mcontext, R.anim.right_in_back, R.anim.right_out_back);
+        builder.setCloseButtonIcon(
+                BitmapFactory.decodeResource(mcontext.getResources(), android.R.drawable.ic_menu_close_clear_cancel));
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl((Activity) mcontext, url);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

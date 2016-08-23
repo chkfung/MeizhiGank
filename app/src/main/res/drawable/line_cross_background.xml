@@ -2,8 +2,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <transition>
-            <item android:drawable="@drawable/ic_octoface"></item>
-            <item android:drawable="@drawable/ic_list_white"></item>
+            <item android:drawable="@drawable/ic_octoface" />
+            <item android:drawable="@drawable/ic_list_white" />
         </transition>
 
     </item>

@@ -10,8 +10,6 @@ import android.widget.ImageView;
 
 public class MeizhiImageView extends ImageView {
 
-    private int originalWidth;
-    private int originalHeight;
     public MeizhiImageView(Context context) {
         super(context);
     }
@@ -29,8 +27,8 @@ public class MeizhiImageView extends ImageView {
 //    }
 
     public void setOriginalSize(int originalWidth, int originalHeight) {
-        this.originalWidth = originalWidth;
-        this.originalHeight = originalHeight;
+        int originalWidth1 = originalWidth;
+        int originalHeight1 = originalHeight;
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

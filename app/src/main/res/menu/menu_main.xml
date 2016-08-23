@@ -4,6 +4,7 @@
     tools:context="me.chkfung.meizhigank.UI.MainActivity">
     <item
         android:id="@+id/action_about"
+        android:icon="@drawable/ic_octoface"
         android:title="@string/about_me"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>

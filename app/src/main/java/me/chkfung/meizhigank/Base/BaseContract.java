@@ -9,11 +9,11 @@ import rx.Subscription;
  */
 
 public interface BaseContract {
-    public interface Presenter<T> {
+    interface Presenter<T> {
         /**
          * Attach View to Presenter
          *
-         * @param view
+         * @param view View
          */
         void attachView(T view);
 
@@ -28,19 +28,19 @@ public interface BaseContract {
         T getView();
     }
 
-    public interface View {
+    interface View {
 
         Context getContext();
 
         /**
          * General Method to display SnackBar
-         * @param desc
+         * @param desc String to display
          */
         void SnackBarResult(String desc);
 
         /**
          * General Method to display Toast
-         * @param desc
+         * @param desc String to display
          */
         void ToastResult(String desc);
     }

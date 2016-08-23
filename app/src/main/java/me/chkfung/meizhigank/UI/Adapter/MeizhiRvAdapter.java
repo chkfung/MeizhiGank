@@ -29,7 +29,6 @@ import me.chkfung.meizhigank.UI.MeizhiActivity;
  */
 
 public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHolder> {
-    private int[] HeightTest = new int[]{200, 400, 600, 200, 400};
     private List<DataInfo> meizhiList;
 
     public MeizhiRvAdapter(List<DataInfo> meizhiList) {
@@ -49,7 +48,7 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Context mContext = holder.itemView.getContext();
         //Content
         Glide.with(mContext)
@@ -64,8 +63,8 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, MeizhiActivity.class);
-                i.putExtra("URL", meizhiList.get(position).getUrl());
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, (View) holder.image, "MeizhiImage");
+                i.putExtra("URL", meizhiList.get(holder.getAdapterPosition()).getUrl());
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, holder.image, "MeizhiImage");
                 mContext.startActivity(i, optionsCompat.toBundle());
             }
         });
@@ -73,7 +72,7 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(meizhiList.get(position).getPublishedAt());
+                calendar.setTime(meizhiList.get(holder.getAdapterPosition()).getPublishedAt());
                 Intent i = new Intent(mContext, GankActivity.class);
                 i.putExtra("Date", calendar.get(Calendar.YEAR)
                         + "/" + (calendar.get(Calendar.MONTH) + 1)

@@ -14,8 +14,8 @@ public interface MainContract {
         /**
          * Perform Network Request to Obtain Meizhi Data
          *
-         * @param page
-         * @param MeizhiData
+         * @param page Current Page Number
+         * @param MeizhiData Current Meizhi Data
          */
         void loadMeizhi(int page, List<DataInfo> MeizhiData);
     }

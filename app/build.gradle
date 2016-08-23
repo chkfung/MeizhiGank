@@ -17,7 +17,7 @@ android {
         defaultConfig {
             applicationId "me.chkfung.meizhigank"
             minSdkVersion 16
-            targetSdkVersion 23
+            targetSdkVersion 24
             versionCode code
             versionName "1.0"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -35,14 +35,18 @@ android {
 
 dependencies {
     Map<String, String> dependencies = rootProject.ext.dependencies;
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+
+    //Leak Canary
+    debugCompile dependencies.debug_LeakCanary
+    releaseCompile dependencies.test_LeakCanary
+    testCompile dependencies.test_LeakCanary
+
     //SupportLibrary
     compile dependencies.appCompat
     compile dependencies.cardView
     compile dependencies.design
     compile dependencies.recyclerView
+    compile dependencies.customTabs
     compile dependencies.constraintLayout
     androidTestCompile dependencies.atc_annotation
 
@@ -70,7 +74,7 @@ dependencies {
     androidTestCompile dependencies.atc_runner
     compile 'com.google.firebase:firebase-core:9.0.2'
 
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile dependencies.glide
     compile 'com.google.android.gms:play-services-location:9.0.2'
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'

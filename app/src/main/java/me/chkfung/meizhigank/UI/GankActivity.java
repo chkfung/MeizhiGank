@@ -20,6 +20,7 @@ import android.widget.ViewSwitcher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Constants;
 import me.chkfung.meizhigank.Contract.GankContract;
@@ -49,11 +50,12 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     RecyclerView expandableListview;
     @BindView(R.id.viewswitcher)
     ViewSwitcher viewswitcher;
-
-    Day mDay;
-    Menu menu;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
+    Day mDay;
+    Menu menu;
+    @BindView(R.id.viewswitcher_loading)
+    ViewSwitcher viewswitcherLoading;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,14 +71,13 @@ public class GankActivity extends BaseActivity implements GankContract.View {
         animateToolbar();
 
         mPresenter.attachView(this);
-        mPresenter.getGank(mDate);
-
+        onRefresh();
     }
 
     @Override
     public void setupRecycleView(Day day) {
         mDay = day;
-        progressbar.setVisibility(View.INVISIBLE);
+        viewswitcherLoading.setVisibility(View.INVISIBLE);
         expandableListview.setAdapter(new GankExpandableRvAdapter(day));
         expandableListview.setLayoutManager(new LinearLayoutManager(this));
         rvGank.setAdapter(new GankRvAdapter(day));
@@ -86,12 +87,12 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     @Override
     public void showError(Throwable e) {
         progressbar.setVisibility(View.INVISIBLE);
-        Snackbar.make(findViewById(android.R.id.content), "Request Failed: " + e.getMessage()
-                , Snackbar.LENGTH_LONG)
+        viewswitcherLoading.showNext();
+        Snackbar.make(findViewById(android.R.id.content), "Request Failed: " + e.getMessage(), Snackbar.LENGTH_LONG)
                 .setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPresenter.getGank(mDate);
+                        onRefresh();
                     }
                 }).show();
     }
@@ -111,7 +112,6 @@ public class GankActivity extends BaseActivity implements GankContract.View {
                 onBackPressed();
                 break;
             case R.id.action_viewswitcher:
-
                 SharedPreferences sharedpreferences = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 if (viewswitcher.getCurrentView() == expandableListview) {
@@ -133,10 +133,12 @@ public class GankActivity extends BaseActivity implements GankContract.View {
 
     public void setMenuIcon(Menu menu) {
         SharedPreferences sharedpreferences = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
-        if (sharedpreferences.getBoolean("GRID_LAYOUT", false))
+        if (sharedpreferences.getBoolean("GRID_LAYOUT", false)) {
+            viewswitcher.showNext();
             menu.findItem(R.id.action_viewswitcher).setIcon(R.drawable.ic_view_expand);
-        else
+        } else {
             menu.findItem(R.id.action_viewswitcher).setIcon(R.drawable.ic_view_grid);
+        }
     }
 
     @Override
@@ -149,5 +151,12 @@ public class GankActivity extends BaseActivity implements GankContract.View {
                 .setDuration(900)
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .start();
+    }
+
+    @OnClick(R.id.refresh)
+    public void onRefresh() {
+        if (viewswitcherLoading.getCurrentView() != progressbar)
+            viewswitcherLoading.showPrevious();
+        mPresenter.getGank(mDate);
     }
 }

@@ -11,7 +11,7 @@ public class ConnectionUtil {
     /**
      * Check Network availability
      *
-     * @param mContext
+     * @param mContext Current Context
      * @return true = Available
      */
     public static boolean isNetworkAvailable(Context mContext) {

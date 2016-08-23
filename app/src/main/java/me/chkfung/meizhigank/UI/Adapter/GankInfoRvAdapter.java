@@ -33,7 +33,7 @@ public class GankInfoRvAdapter extends RecyclerView.Adapter<GankInfoRvAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final String titleText = Data.get(position).getDesc();
         holder.title.setText(titleText);
         holder.title.setOnClickListener(new View.OnClickListener() {
@@ -41,7 +41,7 @@ public class GankInfoRvAdapter extends RecyclerView.Adapter<GankInfoRvAdapter.Vi
             public void onClick(View v) {
                 Context context = holder.itemView.getContext();
                 context.startActivity(
-                        WebActivity.newIntent(context, titleText, Data.get(position).getUrl()));
+                        WebActivity.newIntent(context, titleText, Data.get(holder.getAdapterPosition()).getUrl()));
             }
         });
     }

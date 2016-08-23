@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
         mainPresenter.attachView(this);
 
 
-        refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
+        refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.md_red_500);
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -135,6 +135,8 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem x = menu.findItem(R.id.action_about);
+
         return true;
     }
 

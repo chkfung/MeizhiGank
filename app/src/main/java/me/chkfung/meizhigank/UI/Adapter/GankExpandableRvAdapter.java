@@ -1,6 +1,8 @@
 package me.chkfung.meizhigank.UI.Adapter;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +20,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.UI.WebActivity;
 import me.chkfung.meizhigank.Util.CommonUtil;
 
 /**
@@ -163,7 +165,10 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
             holder.subItem_handle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    v.getContext().startActivity(WebActivity.newIntent(v.getContext(), desc, url));
+                    Context mcontext = v.getContext();
+                    ((MeizhiApp) MeizhiApp.get(mcontext)).CustomTabLaunch(mcontext, Uri.parse(url));
+
+//                    v.getContext().startActivity(WebActivity.newIntent(v.getContext(), desc, url));
                 }
             });
         }
