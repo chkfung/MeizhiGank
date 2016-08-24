@@ -116,12 +116,12 @@ public class GankActivity extends BaseActivity implements GankContract.View {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 if (viewswitcher.getCurrentView() == expandableListview) {
                     viewswitcher.showNext();
-                    editor.putBoolean("GRID_LAYOUT", false);
+                    editor.putBoolean("GRID_LAYOUT", true);
                     menu.findItem(R.id.action_viewswitcher).setIcon(R.drawable.ic_view_expand);
 
                 } else {
                     viewswitcher.showPrevious();
-                    editor.putBoolean("GRID_LAYOUT", true);
+                    editor.putBoolean("GRID_LAYOUT", false);
                     menu.findItem(R.id.action_viewswitcher).setIcon(R.drawable.ic_view_grid);
 
                 }

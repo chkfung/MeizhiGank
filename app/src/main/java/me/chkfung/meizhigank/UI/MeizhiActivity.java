@@ -2,18 +2,24 @@ package me.chkfung.meizhigank.UI;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,7 +38,6 @@ import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Contract.MeizhiContract;
 import me.chkfung.meizhigank.Contract.Presenter.MeizhiPresenter;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.Util.CommonUtil;
 import me.chkfung.meizhigank.Util.PermissionUtils;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -54,6 +59,8 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     PhotoViewAttacher photoViewAttacher;
     @BindView(R.id.frame_meizhi)
     FrameLayout frameMeizhi;
+    private ShareActionProvider miShareAction;
+
     private MeizhiContract.Presenter mPresenter = new MeizhiPresenter();
     private String url;
 
@@ -102,6 +109,17 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 //                            }
 //                        });
 //                        photoViewAttacher.update();
+//                        Bitmap mBitmap =(Bitmap) resource;
+//
+//                        String path = MediaStore.Images.Media.insertImage(getContentResolver(),
+//                                mBitmap, "Image Description", null);
+//
+//                        Uri uri = Uri.parse(path);
+//                        Intent shareIntent = new Intent();
+//                        shareIntent.setAction(Intent.ACTION_SEND);
+//                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+//                        shareIntent.setType("image/*");
+//                        miShareAction.setShareIntent(shareIntent);
                         return false;
                     }
                 })
@@ -134,21 +152,24 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                         layoutParams.topMargin = mMotionY / 2;
                         layoutParams.bottomMargin = -mMotionY / 2;
                         v.requestLayout();
-                        if (Math.abs(mMotionY) > 100) {
-                            frameMeizhi.getBackground().setAlpha(122);
+                        if (Math.abs(mMotionY) > 200) {
+                            frameMeizhi.getBackground().setAlpha(128);
 
-                            if (!triggered) {
-                                toolbar.animate().translationY(-50)
-                                        .setDuration(100)
-                                        .setInterpolator(new LinearInterpolator());
-                                triggered = true;
-                            }
+//                            if (!triggered) {
+//                                toolbar.animate().translationY(-50)
+//                                        .setDuration(100)
+//                                        .setInterpolator(new LinearInterpolator());
+//                                triggered = true;
+//                            }
                         } else {
-                            frameMeizhi.getBackground().setAlpha(255);
-                            toolbar.animate().translationY(0)
-                                    .setDuration(100)
-                                    .setInterpolator(new OvershootInterpolator());
-                            triggered = false;
+                            //Alpha min 128 max 255
+                            //255 - 128 = 127
+                            double ratioAlpha = (Math.abs(mMotionY) / 200.0) * 127;
+                            frameMeizhi.getBackground().setAlpha(255 - (int) ratioAlpha);
+//                            toolbar.animate().translationY(0)
+//                                    .setDuration(100)
+//                                    .setInterpolator(new OvershootInterpolator());
+//                            triggered = false;
                         }
                         break;
                     case MotionEvent.ACTION_UP:
@@ -235,6 +256,8 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_image, menu);
+        MenuItem share = menu.findItem(R.id.action_share);
+        miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(share);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -246,15 +269,30 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         }
     }
 
+    private void attachShareIntent() {
+        Drawable mDrawable = image.getDrawable();
+        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(),
+                mBitmap, "Image Description", null);
+
+        Uri uri = Uri.parse(path);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.setType("image/*");
+        miShareAction.setShareIntent(shareIntent);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;
-            case R.id.action_share:
-                CommonUtil.ShareImage(this, url);
-                break;
+//            case R.id.action_share:
+//                CommonUtil.ShareImage(this, url);
+//                break;
             case R.id.action_save:
                 SaveMenuTapped();
                 break;

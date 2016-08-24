@@ -65,8 +65,10 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
             @Override
             public void onClick(View v) {
                 if (holder.subItem.getMeasuredHeight() > 0) {
+                    holder.icRotate.animate().rotation(0f).setDuration(200).start();
                     Collapse(holder.subItem, holder.getAdapterPosition());
                 } else {
+                    holder.icRotate.animate().rotation(180f).setDuration(200).start();
                     Expand(holder.subItem, holder.getAdapterPosition());
                 }
             }

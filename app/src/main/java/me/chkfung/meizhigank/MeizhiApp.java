@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 
+import com.frogermcs.androiddevmetrics.AndroidDevMetrics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.orhanobut.logger.Logger;
@@ -175,6 +176,7 @@ public class MeizhiApp extends Application {
         super.onCreate();
         LeakCanary.install(this);
         Logger.init("Tibber Say");
+        AndroidDevMetrics.initWith(this);
         netComponent = DaggerNetComponent.builder()
                 .appModule(new AppModule(this))
                 .netModule(new NetModule("http://gank.io/"))

@@ -31,11 +31,16 @@ import me.chkfung.meizhigank.UI.MeizhiActivity;
 public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHolder> {
     private List<DataInfo> meizhiList;
 
+    public MeizhiRvAdapter() {
+    }
     public MeizhiRvAdapter(List<DataInfo> meizhiList) {
         this.meizhiList = meizhiList;
-        setHasStableIds(true);
+//        setHasStableIds(true);
     }
 
+    public void setMeizhiList(List<DataInfo> meizhiList) {
+        this.meizhiList = meizhiList;
+    }
     @Override
     public long getItemId(int position) {
         return meizhiList.get(position).hashCode();

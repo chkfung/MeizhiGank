@@ -1,5 +1,7 @@
 package me.chkfung.meizhigank.UI;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -33,6 +37,8 @@ public class AboutMeActivity extends BaseActivity {
     TextView toolbarTitle;
     @BindView(R.id.rv_about)
     RecyclerView rvAbout;
+    @BindView(R.id.AppName)
+    TextView AppName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,17 +61,20 @@ public class AboutMeActivity extends BaseActivity {
 
         String[][] item = {
                 {"Butterknife", "Jake Wharton"},
-                {"Dagger 2", "Google"},
-                {"Glide", "Bumptech"},
+                {"Dagger 2", "Google, Square"},
+                {"Glide", "Bumptech - Sam Judd"},
                 {"Gson", "Google"},
-                {"Leak Canary", "Square Up"},
-                {"Logger", "Orhanobut"},
-                {"Retrofit", "Square Up"},
-                {"RxAndroid", "ReactiveX"},
-                {"Support Library", "Android"},
+                {"Leak Canary", "Square"},
+                {"Logger", "Orhan Obut"},
+                {"Retrofit", "Square"},
+                {"RxAndroid", "RxAndroid authors"},
+                {"Support Library", "Android Developers"},
         };
         rvAbout.setLayoutManager(new LinearLayoutManager(this));
         rvAbout.setAdapter(new AboutRvAdapter(item));
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_fade_scale);
+        animation.setInterpolator(new FastOutSlowInInterpolator());
+        AppName.startAnimation(animation);
     }
 
     @Override
@@ -79,6 +88,8 @@ public class AboutMeActivity extends BaseActivity {
     }
 
     public void animateToolbar() {
+        Animator x = new ValueAnimator();
+
         toolbarTitle.setAlpha(0f);
         toolbarTitle.setScaleX(0.6f);
         toolbarTitle.animate().scaleX(1f)

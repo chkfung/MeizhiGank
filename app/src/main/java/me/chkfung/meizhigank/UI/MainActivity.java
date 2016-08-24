@@ -68,7 +68,9 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
             }
         });
 
-        meizhiRvAdapter = new MeizhiRvAdapter(MeizhiData);
+//        meizhiRvAdapter = new MeizhiRvAdapter(MeizhiData);
+        meizhiRvAdapter = new MeizhiRvAdapter();
+        meizhiRvAdapter.setMeizhiList(MeizhiData);
         rvMeizhi.setAdapter(meizhiRvAdapter);
         rvMeizhi.setLayoutManager(layoutManager);
         rvMeizhi.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -161,7 +163,8 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
         }
-
+//        overridePendingTransition(R.anim.right_in,R.anim.right_out);
+        //fixme Nougat not showing animation
         getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
         recreate();
     }
@@ -198,5 +201,11 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
                 .setDuration(900)
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }
