@@ -182,10 +182,6 @@ public class MeizhiApp extends Application {
                 .appModule(new AppModule(this))
                 .netModule(new NetModule("http://gank.io/"))
                 .build();
-//        netComponent = DaggerNetComponent.builder()
-//                .appModule(new AppModule(this))
-//                .netModule(new NetModule("http://gank.io/"))
-//                .build();
     }
 
     public AppComponent getAppComponent() {

@@ -100,14 +100,4 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
         mView = null;
         if (mSubscription != null) mSubscription.unsubscribe();
     }
-
-    @Override
-    public Subscription getmSubscription() {
-        return mSubscription;
-    }
-
-    @Override
-    public MeizhiContract.View getView() {
-        return mView;
-    }
 }

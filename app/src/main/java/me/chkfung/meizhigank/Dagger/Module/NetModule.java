@@ -4,14 +4,22 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.orhanobut.logger.Logger;
+
+import java.io.IOException;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import me.chkfung.meizhigank.NetworkApi;
+import me.chkfung.meizhigank.Util.ConnectionUtil;
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -39,9 +47,10 @@ public class NetModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(Cache cache) {
+    OkHttpClient provideOkHttpClient(Cache cache, Interceptor cachingInterceptor) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.cache(cache);
+        builder.addInterceptor(cachingInterceptor);
         return builder.build();
     }
 
@@ -69,6 +78,47 @@ public class NetModule {
     GsonConverterFactory provideGsonFactory() {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
         return GsonConverterFactory.create(gson);
+    }
+
+    /**
+     * Log Network Response
+     *
+     * @return Logging Interceptor
+     */
+    @Provides
+    @Singleton
+    HttpLoggingInterceptor getHttpLoggingInterceptor() {
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                Logger.t(5).i(message);
+            }
+        });
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return httpLoggingInterceptor;
+    }
+
+    /**
+     * Cache Are available when Network Connection is not available
+     *
+     * @return Caching Interceptor
+     */
+    @Provides
+    @Singleton
+    Interceptor getCachingInterceptor(final Application mApp) {
+        Interceptor interceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                if (ConnectionUtil.isNetworkAvailable(mApp)) {
+                    request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                } else {
+                    request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+                }
+                return chain.proceed(request);
+            }
+        };
+        return interceptor;
     }
 
     @Provides

@@ -38,6 +38,9 @@ import me.chkfung.meizhigank.Util.ConnectionUtil;
 
 public class MainActivity extends BaseActivity implements MainContract.View {
 
+    private static final String LAYOUT_MANAGER_SAVED_INSTANCE = "LAYOUT_MANAGER_SAVED_INSTANCE";
+    private static final String PAGING_SAVED_INSTANCE = "PAGING_SAVED_INSTANCE";
+    private static final String MEIZHI_DATA_SAVED_INSTANCE = "MEIZHI_DATA_SAVED_INSTANCE";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rv_meizhi)
@@ -46,7 +49,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     SwipeRefreshLayout refreshlayout;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-
     @Inject
     StaggeredGridLayoutManager layoutManager;
     @Inject
@@ -117,9 +119,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 //        diffResult.dispatchUpdatesTo(meizhiRvAdapter);
 
         refreshlayout.setRefreshing(false);
-
     }
 
+    /**
+     * Display Error Message
+     *
+     * @param e Exception Thrown
+     */
     @Override
     public void networkError(Throwable e) {
         refreshlayout.setRefreshing(false);
@@ -146,8 +152,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem x = menu.findItem(R.id.action_about);
-
         return true;
     }
 
@@ -162,6 +166,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Toggle Night Mode
+     *
+     * @param v fab
+     */
     @OnClick(R.id.fab)
     public void onClick(View v) {
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
@@ -179,23 +188,23 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(LAYOUT_MANAGER_SAVED_INSTANCE, layoutManager.onSaveInstanceState());
+        outState.putParcelableArrayList(MEIZHI_DATA_SAVED_INSTANCE, MeizhiData);
+        outState.putInt(PAGING_SAVED_INSTANCE, paging);
         super.onSaveInstanceState(outState);
-        outState.putParcelable("RvLayoutManager", layoutManager.onSaveInstanceState());
-        outState.putParcelableArrayList("Item", MeizhiData);
-        outState.putInt("Page", paging);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Parcelable x = savedInstanceState.getParcelable("RvLayoutManager");
-        layoutManager.onRestoreInstanceState(x);
 
-        MeizhiData = savedInstanceState.getParcelableArrayList("Item");
-        meizhiRvAdapter = new MeizhiRvAdapter(MeizhiData);
-        rvMeizhi.setAdapter(meizhiRvAdapter);
-        paging = savedInstanceState.getInt("Page");
+        Parcelable layoutManagerInstance = savedInstanceState.getParcelable(LAYOUT_MANAGER_SAVED_INSTANCE);
+        layoutManager.onRestoreInstanceState(layoutManagerInstance);
 
+        MeizhiData = savedInstanceState.getParcelableArrayList(MEIZHI_DATA_SAVED_INSTANCE);
+        meizhiRvAdapter.setMeizhiList(MeizhiData);
+
+        paging = savedInstanceState.getInt(PAGING_SAVED_INSTANCE);
     }
 
     @Override
@@ -212,8 +221,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         //Custom Exit Application Animation
+        super.onBackPressed();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

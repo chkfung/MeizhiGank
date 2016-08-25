@@ -2,8 +2,6 @@ package me.chkfung.meizhigank.Base;
 
 import android.content.Context;
 
-import rx.Subscription;
-
 /**
  * Created by Fung on 26/07/2016.
  */
@@ -23,9 +21,6 @@ public interface BaseContract {
          */
         void detachView();
 
-        Subscription getmSubscription();
-
-        T getView();
     }
 
     interface View {

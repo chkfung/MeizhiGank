@@ -8,11 +8,11 @@ import javax.inject.Inject;
 
 import me.chkfung.meizhigank.Constants;
 import me.chkfung.meizhigank.Contract.MainContract;
-import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.Model.Meizhi;
 import me.chkfung.meizhigank.NetworkApi;
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,6 +28,12 @@ public class MainPresenter implements MainContract.Presenter {
     int counter = 100;
 
     @Inject
+    NetworkApi networkApi;
+
+    @Inject
+    Scheduler scheduler;
+
+    @Inject
     MainPresenter(MainContract.View mView) {
         this.mView = mView;
     }
@@ -35,13 +41,10 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void loadMeizhi(int page, final List<DataInfo> MeizhiData) {
         Logger.i("Logging " + counter++);
-        MeizhiApp meizhiApp = MeizhiApp.get(mView.getContext());
-        NetworkApi networkApi = meizhiApp.getNetworkApi();
         if (mSubscription != null) mSubscription.unsubscribe();
         mSubscription = networkApi.getMeizhi(Constants.MEIZHI_AMOUNT, page)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(meizhiApp.getDefaultSubscribeScheduler())
-                //v5
+                .subscribeOn(scheduler)
                 .flatMap(new Func1<Meizhi, Observable<DataInfo>>() {
                     @Override
                     public Observable<DataInfo> call(Meizhi meizhi) {
@@ -77,12 +80,4 @@ public class MainPresenter implements MainContract.Presenter {
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
-    public Subscription getmSubscription() {
-        return mSubscription;
-    }
-
-    @Override
-    public MainContract.View getView() {
-        return mView;
-    }
 }

@@ -53,14 +53,4 @@ public class GankPresenter implements GankContract.Presenter {
         mView = null;
         if (mSubscription != null) mSubscription.unsubscribe();
     }
-
-    @Override
-    public Subscription getmSubscription() {
-        return mSubscription;
-    }
-
-    @Override
-    public GankContract.View getView() {
-        return mView;
-    }
 }
