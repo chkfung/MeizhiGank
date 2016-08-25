@@ -1,8 +1,10 @@
-package me.chkfung.meizhigank.Contract.Presenter;
+package me.chkfung.meizhigank.Dagger.Presenter;
 
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import me.chkfung.meizhigank.Constants;
 import me.chkfung.meizhigank.Contract.MainContract;
@@ -24,6 +26,12 @@ public class MainPresenter implements MainContract.Presenter {
     MainContract.View mView;
     Subscription mSubscription;
     int counter = 100;
+
+    @Inject
+    MainPresenter(MainContract.View mView) {
+        this.mView = mView;
+    }
+
     @Override
     public void loadMeizhi(int page, final List<DataInfo> MeizhiData) {
         Logger.i("Logging " + counter++);
@@ -43,7 +51,7 @@ public class MainPresenter implements MainContract.Presenter {
                 .subscribe(new Subscriber<DataInfo>() {
                     @Override
                     public void onCompleted() {
-                        mView.refreshRv();
+                        mView.refreshRv(MeizhiData);
                     }
 
                     @Override

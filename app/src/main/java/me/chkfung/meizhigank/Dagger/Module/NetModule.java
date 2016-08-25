@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import me.chkfung.meizhigank.NetworkApi;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -28,6 +29,13 @@ public class NetModule {
     public NetModule(String BaseUrl) {
         mBaseUrl = BaseUrl;
     }
+
+    @Provides
+    @Singleton
+    NetworkApi provideNetworkApi(Retrofit retrofit) {
+        return retrofit.create(NetworkApi.class);
+    }
+
 
     @Provides
     @Singleton

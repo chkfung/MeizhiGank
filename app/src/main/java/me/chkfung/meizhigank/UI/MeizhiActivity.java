@@ -36,7 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Contract.MeizhiContract;
-import me.chkfung.meizhigank.Contract.Presenter.MeizhiPresenter;
+import me.chkfung.meizhigank.Dagger.Presenter.MeizhiPresenter;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.Util.PermissionUtils;
 import uk.co.senab.photoview.PhotoViewAttacher;

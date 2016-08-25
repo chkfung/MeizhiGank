@@ -18,8 +18,8 @@ import com.squareup.leakcanary.LeakCanary;
 
 import java.io.IOException;
 
-import me.chkfung.meizhigank.Dagger.Component.DaggerNetComponent;
-import me.chkfung.meizhigank.Dagger.Component.NetComponent;
+import me.chkfung.meizhigank.Dagger.Component.AppComponent;
+import me.chkfung.meizhigank.Dagger.Component.DaggerAppComponent;
 import me.chkfung.meizhigank.Dagger.Module.AppModule;
 import me.chkfung.meizhigank.Dagger.Module.NetModule;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
@@ -48,7 +48,7 @@ public class MeizhiApp extends Application {
     private HttpLoggingInterceptor httpLoggingInterceptor;
     private Interceptor interceptor;
     private GsonConverterFactory gsonConverterFactory;
-    private NetComponent netComponent;
+    private AppComponent appComponent;
 
     public static MeizhiApp get(Context context) {
         return (MeizhiApp) context.getApplicationContext();
@@ -177,13 +177,18 @@ public class MeizhiApp extends Application {
         LeakCanary.install(this);
         Logger.init("Tibber Say");
         AndroidDevMetrics.initWith(this);
-        netComponent = DaggerNetComponent.builder()
+
+        appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .netModule(new NetModule("http://gank.io/"))
                 .build();
+//        netComponent = DaggerNetComponent.builder()
+//                .appModule(new AppModule(this))
+//                .netModule(new NetModule("http://gank.io/"))
+//                .build();
     }
 
-    public NetComponent getNetComponent() {
-        return netComponent;
+    public AppComponent getAppComponent() {
+        return appComponent;
     }
 }

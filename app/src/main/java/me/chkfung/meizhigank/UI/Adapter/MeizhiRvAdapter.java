@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
 //        setHasStableIds(true);
     }
 
-    public void setMeizhiList(List<DataInfo> meizhiList) {
+    public void setMeizhiList(ArrayList<DataInfo> meizhiList) {
         this.meizhiList = meizhiList;
     }
     @Override

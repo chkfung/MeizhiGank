@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.Contract.Presenter;
+package me.chkfung.meizhigank.Dagger.Presenter;
 
 import android.content.Intent;
 import android.net.Uri;

@@ -21,7 +21,7 @@ public interface MainContract {
     }
 
     interface View extends BaseContract.View {
-        void refreshRv();
+        void refreshRv(List<DataInfo> arrayList);
 
         void networkError(Throwable e);
 

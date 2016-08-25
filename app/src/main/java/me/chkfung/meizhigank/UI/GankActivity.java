@@ -24,7 +24,7 @@ import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Constants;
 import me.chkfung.meizhigank.Contract.GankContract;
-import me.chkfung.meizhigank.Contract.Presenter.GankPresenter;
+import me.chkfung.meizhigank.Dagger.Presenter.GankPresenter;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.GankExpandableRvAdapter;

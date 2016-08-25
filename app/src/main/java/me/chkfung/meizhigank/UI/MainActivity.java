@@ -17,6 +17,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,13 +27,16 @@ import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Constants;
 import me.chkfung.meizhigank.Contract.MainContract;
-import me.chkfung.meizhigank.Contract.Presenter.MainPresenter;
+import me.chkfung.meizhigank.Dagger.Component.DaggerMainPresenterComponent;
+import me.chkfung.meizhigank.Dagger.Module.MainPresenterModule;
+import me.chkfung.meizhigank.Dagger.Presenter.MainPresenter;
+import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.MeizhiRvAdapter;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
 
-public class MainActivity extends BaseActivity implements MainContract.View { //, android.support.v4.app.LoaderManager.LoaderCallbacks<MainContract.Presenter> {
+public class MainActivity extends BaseActivity implements MainContract.View {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -40,11 +46,15 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
     SwipeRefreshLayout refreshlayout;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
-    private ArrayList<DataInfo> MeizhiData = new ArrayList<>();
-    private MeizhiRvAdapter meizhiRvAdapter;
-    private MainContract.Presenter mainPresenter = new MainPresenter();
+    @Inject
+    StaggeredGridLayoutManager layoutManager;
+    @Inject
+    ArrayList<DataInfo> MeizhiData;
+    @Inject
+    MeizhiRvAdapter meizhiRvAdapter;
+    @Inject
+    MainPresenter mainPresenter;
     private int paging = 1;
 
     @Override
@@ -57,8 +67,10 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mainPresenter.attachView(this);
-
+        DaggerMainPresenterComponent.builder()
+                .appComponent(MeizhiApp.get(this).getAppComponent())
+                .mainPresenterModule(new MainPresenterModule(this))
+                .build().inject(this);
 
         refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.md_red_500);
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -68,11 +80,10 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
             }
         });
 
-//        meizhiRvAdapter = new MeizhiRvAdapter(MeizhiData);
-        meizhiRvAdapter = new MeizhiRvAdapter();
         meizhiRvAdapter.setMeizhiList(MeizhiData);
         rvMeizhi.setAdapter(meizhiRvAdapter);
         rvMeizhi.setLayoutManager(layoutManager);
+
         rvMeizhi.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -99,16 +110,14 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void refreshRv() {
+    public void refreshRv(List<DataInfo> arrayList) {
         //To Prevent ViewHolder that had been loaded blink/ load
         meizhiRvAdapter.notifyItemRangeChanged(10 * paging++, Constants.MEIZHI_AMOUNT);
+//        DiffUtil.DiffResult diffResult =DiffUtil.calculateDiff(new MeizhiDiffUtil(MeizhiData,arrayList));
+//        diffResult.dispatchUpdatesTo(meizhiRvAdapter);
+
         refreshlayout.setRefreshing(false);
+
     }
 
     @Override
@@ -163,7 +172,6 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
         }
-//        overridePendingTransition(R.anim.right_in,R.anim.right_out);
         //fixme Nougat not showing animation
         getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
         recreate();
@@ -192,7 +200,6 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
 
     @Override
     public void animateToolbar() {
-
         toolbarTitle.setAlpha(0f);
         toolbarTitle.setScaleX(0.6f);
         toolbarTitle.animate().scaleX(1f)
@@ -206,6 +213,7 @@ public class MainActivity extends BaseActivity implements MainContract.View { //
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        //Custom Exit Application Animation
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

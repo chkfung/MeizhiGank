@@ -4,7 +4,7 @@ ext {
     butterKnife = '8.1.0'
     rxAndroid = '1.1.0'
     gson = '2.6.2'
-    dagger = '2.5'
+    dagger = '2.6'
     glide = '3.7.0'
     leakCanary = '1.4-beta2'
 

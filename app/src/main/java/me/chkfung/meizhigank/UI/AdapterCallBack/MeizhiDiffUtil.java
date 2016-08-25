@@ -2,7 +2,7 @@ package me.chkfung.meizhigank.UI.AdapterCallBack;
 
 import android.support.v7.util.DiffUtil;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import me.chkfung.meizhigank.Model.DataInfo;
 
@@ -11,7 +11,12 @@ import me.chkfung.meizhigank.Model.DataInfo;
  */
 
 public class MeizhiDiffUtil extends DiffUtil.Callback {
-    private List<DataInfo> oldMeizhi, newMeizhi;
+    private ArrayList<DataInfo> oldMeizhi, newMeizhi;
+
+    public MeizhiDiffUtil(ArrayList<DataInfo> oldMeizhi, ArrayList<DataInfo> newMeizhi) {
+        this.oldMeizhi = oldMeizhi;
+        this.newMeizhi = newMeizhi;
+    }
 
     @Override
     public int getOldListSize() {
