@@ -32,6 +32,13 @@
         <item name="android:fontFamily">serif-monospace</item>
     </style>
 
+    <style name="ViaTextAppearance">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/md_grey_400</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
     <style name="WindowAnimationFadeInOut">
         <item name="@android:windowEnterAnimation">@anim/fade_in</item>
         <item name="@android:windowExitAnimation">@anim/fade_out</item>

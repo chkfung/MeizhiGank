@@ -13,7 +13,6 @@ public interface MainContract {
     interface Presenter extends BaseContract.Presenter<View> {
         /**
          * Perform Network Request to Obtain Meizhi Data
-         *
          * @param page Current Page Number
          * @param MeizhiData Current Meizhi Data
          */
@@ -21,10 +20,24 @@ public interface MainContract {
     }
 
     interface View extends BaseContract.View {
+
+        /**
+         * Update Adapter
+         *
+         * @param arrayList Meizhi
+         */
         void refreshRv(List<DataInfo> arrayList);
 
+        /**
+         * UI Action when Network Error
+         * @param e Throwable
+         */
         void networkError(Throwable e);
 
+        /**
+         * Summon Cute Meizhi prrrrr
+         * @param clearItem true = Reset MeizhiData, false = Add Meizhi Data
+         */
         void summonMeizhi(boolean clearItem);
 
         void animateToolbar();

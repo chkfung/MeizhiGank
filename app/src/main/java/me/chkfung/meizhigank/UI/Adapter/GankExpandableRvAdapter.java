@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,26 +156,37 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
         }
 
         @Override
-        public GankExpandableRvSubAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_expandable_gank_list, parent, false));
-
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_expandable_gank_list, parent, false);
+            return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(GankExpandableRvSubAdapter.ViewHolder holder, int position) {
-            holder.title.setText(dataBean.get(position).getDesc());
+        public void onBindViewHolder(ViewHolder holder, int position) {
 
-            final String desc = dataBean.get(position).getDesc();
-            final String url = dataBean.get(position).getUrl();
+            Context mContext = holder.itemView.getContext();
+            DataInfo dataInfo = dataBean.get(position);
+
+            String via = holder.itemView.getContext().getString(R.string.via_format, dataInfo.getWho());
+            SpannableString spannableString = new SpannableString(via);
+            spannableString.setSpan(new TextAppearanceSpan(mContext, R.style.ViaTextAppearance), 0, via.length(), 0);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(dataInfo.getDesc())
+                    .append(spannableString);
+            CharSequence DescText = spannableStringBuilder.subSequence(0, spannableStringBuilder.length());
+
+            holder.title.setText(DescText);
+
+
+            final String url = dataInfo.getUrl();
             holder.subItem_handle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context mcontext = v.getContext();
                     ((MeizhiApp) MeizhiApp.get(mcontext)).CustomTabLaunch(mcontext, Uri.parse(url));
-
-//                    v.getContext().startActivity(WebActivity.newIntent(v.getContext(), desc, url));
                 }
             });
+
+
         }
 
         @Override

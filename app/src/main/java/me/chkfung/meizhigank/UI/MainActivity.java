@@ -10,7 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Constants;
@@ -41,14 +39,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private static final String LAYOUT_MANAGER_SAVED_INSTANCE = "LAYOUT_MANAGER_SAVED_INSTANCE";
     private static final String PAGING_SAVED_INSTANCE = "PAGING_SAVED_INSTANCE";
     private static final String MEIZHI_DATA_SAVED_INSTANCE = "MEIZHI_DATA_SAVED_INSTANCE";
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.rv_meizhi)
     RecyclerView rvMeizhi;
     @BindView(R.id.refreshlayout)
     SwipeRefreshLayout refreshlayout;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
+
     @Inject
     StaggeredGridLayoutManager layoutManager;
     @Inject
@@ -57,17 +54,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     MeizhiRvAdapter meizhiRvAdapter;
     @Inject
     MainPresenter mainPresenter;
+
     private int paging = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        //Setup Toolbar
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         DaggerMainPresenterComponent.builder()
                 .appComponent(MeizhiApp.get(this).getAppComponent())
@@ -105,6 +98,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         animateToolbar();
     }
 
+    @OnClick(R.id.toolbar_title)
+    void scrollToTop() {
+        layoutManager.smoothScrollToPosition(rvMeizhi, null, 0);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -121,11 +119,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         refreshlayout.setRefreshing(false);
     }
 
-    /**
-     * Display Error Message
-     *
-     * @param e Exception Thrown
-     */
     @Override
     public void networkError(Throwable e) {
         refreshlayout.setRefreshing(false);
@@ -168,7 +161,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     /**
      * Toggle Night Mode
-     *
      * @param v fab
      */
     @OnClick(R.id.fab)
@@ -186,6 +178,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         recreate();
     }
 
+    /**
+     * Save Recycler View Instance when
+     * 1. Changing Night Mode
+     * 2. Android Neko Multi Window Resizing
+     *
+     * @param outState Bundle to put instances
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(LAYOUT_MANAGER_SAVED_INSTANCE, layoutManager.onSaveInstanceState());
@@ -194,6 +193,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Restore Recycler View Instance When Recreate or Configuration Changed
+     * @param savedInstanceState Saved Bundle
+     */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);

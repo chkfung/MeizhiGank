@@ -1,7 +1,5 @@
 package me.chkfung.meizhigank.Dagger.Presenter;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,7 +23,6 @@ import rx.functions.Func1;
 public class MainPresenter implements MainContract.Presenter {
     MainContract.View mView;
     Subscription mSubscription;
-    int counter = 100;
 
     @Inject
     NetworkApi networkApi;
@@ -40,7 +37,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void loadMeizhi(int page, final List<DataInfo> MeizhiData) {
-        Logger.i("Logging " + counter++);
         if (mSubscription != null) mSubscription.unsubscribe();
         mSubscription = networkApi.getMeizhi(Constants.MEIZHI_AMOUNT, page)
                 .observeOn(AndroidSchedulers.mainThread())

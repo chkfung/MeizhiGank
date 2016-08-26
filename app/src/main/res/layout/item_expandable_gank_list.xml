@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/subItem_handle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp">
-
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp">
     <TextView
         android:id="@+id/title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Test" />
+        android:fontFamily="serif"
+        android:paddingBottom="20dp"
+        android:textSize="14sp"
+        tools:text="安卓教程From 1 to 100 to 200 to 300 to 400 to 500 to 600 yo 700 to 800" />
+    <!--<TextView-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:id="@+id/url"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:fontFamily="monospace"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxLines="1"-->
+    <!--android:textStyle="italic"-->
+    <!--android:textSize="10sp"-->
+    <!--tools:text="https://www.github.com/"-->
+    <!--android:paddingBottom="10dp"/>-->
+    <!--<View-->
+    <!--android:id="@+id/seperator"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="@color/cardview_shadow_start_color"-->
+    <!--/>-->
 </LinearLayout>

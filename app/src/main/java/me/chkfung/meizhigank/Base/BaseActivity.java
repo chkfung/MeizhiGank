@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.chkfung.meizhigank.R;
 
@@ -15,10 +17,20 @@ import me.chkfung.meizhigank.R;
  */
 
 public class BaseActivity extends AppCompatActivity implements BaseContract.View {
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         ButterKnife.bind(this);
+
+        if (toolbar != null) {
+            //Setup Toolbar
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
     }
 
     @Override

@@ -34,10 +34,6 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
 
     public MeizhiRvAdapter() {
     }
-    public MeizhiRvAdapter(List<DataInfo> meizhiList) {
-        this.meizhiList = meizhiList;
-//        setHasStableIds(true);
-    }
 
     public void setMeizhiList(ArrayList<DataInfo> meizhiList) {
         this.meizhiList = meizhiList;

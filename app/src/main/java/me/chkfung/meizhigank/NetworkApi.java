@@ -24,31 +24,4 @@ public interface NetworkApi {
 
     @GET("api/day/{date}")
     Observable<Day> getDay(@Path("date") String date);
-//    class Factory {
-//        public static NetworkApi create() {
-//            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://gank.io/")
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                    .build();
-//            return retrofit.create(NetworkApi.class);
-//        }
-//
-//    }
-
-//    class OkHttpFactory {
-//        public static OkHttpClient.Builder create() {
-//            OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
-//            if (BuildConfig.DEBUG) {
-//                HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-//                    @Override
-//                    public void log(String message) {
-//                        Logger.t(5).i(message);
-//                    }
-//                });
-//                httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//                okHttpClient.addInterceptor(httpLoggingInterceptor);
-//            }
-//            return okHttpClient;
-//        }
-//    }
 }

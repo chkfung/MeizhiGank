@@ -9,4 +9,5 @@
     <string name="open_in_browser">Open In Browser</string>
     <string name="about_me">About Me</string>
     <string name="content_desc_meizhi_image">Meizhi Image</string>
+    <string name="via_format" formatted="false"> (via @%s)</string>
 </resources>

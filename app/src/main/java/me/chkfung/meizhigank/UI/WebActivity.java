@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.R;
 
@@ -30,8 +28,6 @@ import me.chkfung.meizhigank.R;
  */
 
 public class WebActivity extends BaseActivity {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.progressbar)
     ProgressBar progressbar;
     @BindView(R.id.webview)
@@ -52,7 +48,6 @@ public class WebActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-        ButterKnife.bind(this);
 
         String Title = getIntent().getExtras().getString("EXTRA_TITLE");
         String Url = getIntent().getExtras().getString("EXTRA_URL");
@@ -61,8 +56,6 @@ public class WebActivity extends BaseActivity {
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbarTitle.setSelected(true);
         toolbarTitle.setText(Title);
         toolbarSubtitle.setText(Url);

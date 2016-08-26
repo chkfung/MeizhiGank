@@ -15,7 +15,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Model.DataInfo;
@@ -40,7 +39,6 @@ public class GankInfoActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gankinfo);
-        ButterKnife.bind(this);
         ArrayList<DataInfo> mData;
         mData = getIntent().getParcelableArrayListExtra("Data");
         category.setText(mData.get(0).getType());

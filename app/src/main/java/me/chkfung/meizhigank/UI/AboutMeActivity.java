@@ -6,18 +6,15 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.AboutRvAdapter;
@@ -27,10 +24,6 @@ import me.chkfung.meizhigank.UI.Adapter.AboutRvAdapter;
  */
 
 public class AboutMeActivity extends BaseActivity {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.appbar)
-    AppBarLayout appbar;
     @BindView(R.id.version)
     TextView version;
     @BindView(R.id.toolbar_title)
@@ -44,9 +37,7 @@ public class AboutMeActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aboutme);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         PackageManager pck = getPackageManager();
         String ver;

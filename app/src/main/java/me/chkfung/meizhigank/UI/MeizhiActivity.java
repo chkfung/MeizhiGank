@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
@@ -20,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,7 +32,6 @@ import com.bumptech.glide.request.target.Target;
 import com.orhanobut.logger.Logger;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Contract.MeizhiContract;
@@ -49,8 +48,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     private static final int SAVE_MEIZHI = 1;
     @BindView(R.id.image)
     ImageView image;
-    @BindView(R.id.appbar)
-    AppBarLayout appbar;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.progressbar)
@@ -68,7 +65,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meizhi);
-        ButterKnife.bind(this);
         mPresenter.attachView(this);
         //Frame Layout Background Alpha was changed by Image Movement and wont reset to alpha 255
         //fixme need further investigation
@@ -132,19 +128,22 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
             @Override
             public boolean onTouch(final View v, MotionEvent event) {
-                boolean triggered = false;
                 FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
                 //YAY
                 switch (event.getActionMasked()) {
-//                    case MotionEvent.ACTION_POINTER_DOWN:
-//                        Logger.i("Pointer Down");
-//                        break;
                     case MotionEvent.ACTION_DOWN:
+
+                        if (toolbar.getAlpha() == 1)
+                            toolbar.animate().translationY(-toolbar.getMeasuredHeight())
+                                    .alpha(0)
+                                    .setDuration(100)
+                                    .setInterpolator(new LinearInterpolator());
                         Logger.i("Action Down");
                         StartX = (int) event.getRawX();
                         StartY = (int) event.getRawY();
                         break;
                     case MotionEvent.ACTION_MOVE:
+
                         mMotionX = (int) event.getRawX() - StartX;
                         mMotionY = (int) event.getRawY() - StartY;
 //                        layoutParams.leftMargin = mMotionX;
@@ -152,24 +151,15 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                         layoutParams.topMargin = mMotionY / 2;
                         layoutParams.bottomMargin = -mMotionY / 2;
                         v.requestLayout();
+
                         if (Math.abs(mMotionY) > 200) {
                             frameMeizhi.getBackground().setAlpha(128);
 
-//                            if (!triggered) {
-//                                toolbar.animate().translationY(-50)
-//                                        .setDuration(100)
-//                                        .setInterpolator(new LinearInterpolator());
-//                                triggered = true;
-//                            }
                         } else {
                             //Alpha min 128 max 255
                             //255 - 128 = 127
                             double ratioAlpha = (Math.abs(mMotionY) / 200.0) * 127;
                             frameMeizhi.getBackground().setAlpha(255 - (int) ratioAlpha);
-//                            toolbar.animate().translationY(0)
-//                                    .setDuration(100)
-//                                    .setInterpolator(new OvershootInterpolator());
-//                            triggered = false;
                         }
                         break;
                     case MotionEvent.ACTION_UP:
@@ -183,15 +173,18 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                             animate(v, layoutParams, 2);
                             animate(v, layoutParams, 3);
                             animate(v, layoutParams, 4);
+
+                            frameMeizhi.getBackground().setAlpha(255);
+                            toolbar.animate().translationY(0)
+                                    .alpha(1)
+                                    .setDuration(100)
+                                    .setInterpolator(new LinearInterpolator());
                         }
                         break;
                 }
                 return true;
             }
         });
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
