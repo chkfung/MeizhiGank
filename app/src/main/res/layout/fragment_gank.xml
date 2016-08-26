@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="50dp"
-    android:background="@android:color/transparent">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <ViewSwitcher
+        android:id="@+id/viewswitcher"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:id="@+id/headerImage1"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/expandable_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
-            android:transitionName="headerAnim" />
+            tools:listitem="@layout/item_expandable_gank_header" />
 
-        <TextView
-            android:id="@+id/abc1"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_gank"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:transitionName="abc" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_gank" />
+    </ViewSwitcher>
+
+    <ViewSwitcher
+        android:id="@+id/viewswitcher_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ProgressBar
+            android:id="@id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ImageButton
+            android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_refresh" />
+
+    </ViewSwitcher>
 </FrameLayout>

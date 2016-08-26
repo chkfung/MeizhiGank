@@ -1,6 +1,7 @@
 package me.chkfung.meizhigank.Dagger.Component;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
@@ -29,4 +30,6 @@ public interface AppComponent {
     NetworkApi getNetworkApi();
 
     Scheduler getScheduler();
+
+    SharedPreferences getSharedPreferences();
 }

@@ -2,6 +2,8 @@ package me.chkfung.meizhigank.Dagger.Presenter;
 
 import java.util.Collections;
 
+import javax.inject.Inject;
+
 import me.chkfung.meizhigank.Contract.GankContract;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.Day;
@@ -16,6 +18,11 @@ import rx.android.schedulers.AndroidSchedulers;
 public class GankPresenter implements GankContract.Presenter {
     private GankContract.View mView;
     private Subscription mSubscription;
+
+    @Inject
+    GankPresenter(GankContract.View view) {
+        this.mView = view;
+    }
 
     @Override
     public void getGank(String date) {
@@ -43,6 +50,10 @@ public class GankPresenter implements GankContract.Presenter {
                 });
     }
 
+    @Inject
+    void setupListeners() {
+        mView.setPresenter(this);
+    }
     @Override
     public void attachView(GankContract.View view) {
         mView = view;

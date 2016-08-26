@@ -29,7 +29,8 @@ import me.chkfung.meizhigank.Util.CommonUtil;
 
 public class GankRvAdapter extends RecyclerView.Adapter<GankRvAdapter.ViewHolder> {
     Day data;
-    public GankRvAdapter(Day data) {
+
+    public void setuo(Day data) {
         this.data = data;
     }
 

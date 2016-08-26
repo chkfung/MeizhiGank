@@ -38,7 +38,7 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
     private List<GankExpandableRvSubAdapter> GankAdapterReuse;
     private int[] item_height;
 
-    public GankExpandableRvAdapter(Day day) {
+    public void setup(Day day) {
         data = day;
         GankAdapterReuse = new ArrayList<>();
         for (String category : day.getCategory()) {

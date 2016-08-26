@@ -37,7 +37,6 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 .subscribe(new Subscriber<Uri>() {
                     @Override
                     public void onCompleted() {
-                        mView.SnackBarResult("Image Saved");
                     }
 
                     @Override

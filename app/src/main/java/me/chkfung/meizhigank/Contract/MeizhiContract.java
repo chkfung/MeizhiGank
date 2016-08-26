@@ -14,18 +14,17 @@ public interface MeizhiContract {
 
         /**
          * Save Image to Storage
-         *
          * @param url URL
          */
         void SaveImage(String url);
 
         /**
          * Download Image using OkHttpClient
-         *
          * @param mUrl URL
          * @return Uri for informing gallery to update
          */
         Observable<Uri> DownloadImage(String mUrl);
+
 
     }
 
@@ -33,5 +32,7 @@ public interface MeizhiContract {
         void SaveMenuTapped();
 
         void DownloadFailure();
+
+        void ImageSaved();
     }
 }

@@ -16,6 +16,7 @@ public interface GankContract {
         void setupRecycleView(Day day);
         void showError(Throwable e);
 
+        void setPresenter(GankContract.Presenter presenter);
         void animateToolbar();
     }
 }

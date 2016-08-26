@@ -23,6 +23,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -301,7 +302,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         if (PermissionUtils.permissionGranted(requestCode, SAVE_MEIZHI, grantResults)) {
             mPresenter.SaveImage(url);
         } else {
-            ToastResult("Permission Denied");
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT);
         }
     }
 
@@ -310,5 +311,10 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         super.onDestroy();
         mPresenter.detachView();
 
+    }
+
+    @Override
+    public void ImageSaved() {
+        Snackbar.make(findViewById(android.R.id.content), "Image Saved", Snackbar.LENGTH_SHORT);
     }
 }

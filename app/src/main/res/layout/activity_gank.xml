@@ -1,51 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="me.chkfung.meizhigank.UI.GankActivity">
 
-    <include layout="@layout/view_toolbar_pin" />
-
-    <ViewSwitcher
-        android:id="@+id/viewswitcher"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/expandable_listview"
+        <include layout="@layout/view_toolbar_pin" />
+
+        <FrameLayout
+            android:id="@+id/fragment_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/item_expandable_gank_header" />
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <!--<ViewSwitcher-->
+    <!--android:id="@+id/viewswitcher"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_gank"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/item_gank" />
-    </ViewSwitcher>
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/expandable_listview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--tools:listitem="@layout/item_expandable_gank_header" />-->
 
-    <ViewSwitcher
-        android:id="@+id/viewswitcher_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/rv_gank"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--tools:listitem="@layout/item_gank" />-->
+    <!--</ViewSwitcher>-->
 
-        <ProgressBar
-            android:id="@id/progressbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ImageButton
-            android:id="@+id/refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_refresh" />
-
-    </ViewSwitcher>
 </android.support.design.widget.CoordinatorLayout>

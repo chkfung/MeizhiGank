@@ -27,17 +27,6 @@ public interface BaseContract {
 
         Context getContext();
 
-        /**
-         * General Method to display SnackBar
-         * @param desc String to display
-         */
-        void SnackBarResult(String desc);
-
-        /**
-         * General Method to display Toast
-         * @param desc String to display
-         */
-        void ToastResult(String desc);
     }
 
 
