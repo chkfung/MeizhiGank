@@ -23,10 +23,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
+import me.chkfung.meizhigank.UI.GankActivity;
 import me.chkfung.meizhigank.Util.CommonUtil;
 
 /**
@@ -35,8 +35,12 @@ import me.chkfung.meizhigank.Util.CommonUtil;
 
 public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandableRvAdapter.ViewHolder> {
     private Day data;
+
     private List<GankExpandableRvSubAdapter> GankAdapterReuse;
     private int[] item_height;
+
+    public GankExpandableRvAdapter() {
+    }
 
     public void setup(Day day) {
         data = day;
@@ -164,7 +168,7 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
 
-            Context mContext = holder.itemView.getContext();
+            final Context mContext = holder.itemView.getContext();
             DataInfo dataInfo = dataBean.get(position);
 
             String via = holder.itemView.getContext().getString(R.string.via_format, dataInfo.getWho());
@@ -181,8 +185,8 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
             holder.subItem_handle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Context mcontext = v.getContext();
-                    ((MeizhiApp) MeizhiApp.get(mcontext)).CustomTabLaunch(mcontext, Uri.parse(url));
+                    ((GankActivity) mContext).startCustomTabIntent(Uri.parse(url));
+//                    ((MeizhiApp) MeizhiApp.get(mcontext)).CustomTabLaunch(mcontext, Uri.parse(url));
                 }
             });
 

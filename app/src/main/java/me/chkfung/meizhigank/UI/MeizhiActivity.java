@@ -32,11 +32,16 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.orhanobut.logger.Logger;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Contract.MeizhiContract;
+import me.chkfung.meizhigank.Dagger.Component.DaggerMeizhiPresenterComponent;
+import me.chkfung.meizhigank.Dagger.Module.MeizhiPresenterModule;
 import me.chkfung.meizhigank.Dagger.Presenter.MeizhiPresenter;
+import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.Util.PermissionUtils;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -57,16 +62,21 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     PhotoViewAttacher photoViewAttacher;
     @BindView(R.id.frame_meizhi)
     FrameLayout frameMeizhi;
+    @Inject
+    MeizhiPresenter mPresenter;
     private ShareActionProvider miShareAction;
-
-    private MeizhiContract.Presenter mPresenter = new MeizhiPresenter();
     private String url;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meizhi);
-        mPresenter.attachView(this);
+
+        DaggerMeizhiPresenterComponent.builder()
+                .appComponent(MeizhiApp.get(this).getAppComponent())
+                .meizhiPresenterModule(new MeizhiPresenterModule(this))
+                .build().inject(this);
+//        mPresenter.attachView(this);
         //Frame Layout Background Alpha was changed by Image Movement and wont reset to alpha 255
         //fixme need further investigation
         frameMeizhi.getBackground().setAlpha(255);

@@ -38,6 +38,7 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
     public void setMeizhiList(ArrayList<DataInfo> meizhiList) {
         this.meizhiList = meizhiList;
     }
+
     @Override
     public long getItemId(int position) {
         return meizhiList.get(position).hashCode();

@@ -3,7 +3,7 @@ package me.chkfung.meizhigank.UI;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Constants;
@@ -36,15 +37,16 @@ import me.chkfung.meizhigank.Util.ConnectionUtil;
 
 public class MainActivity extends BaseActivity implements MainContract.View {
 
-    private static final String LAYOUT_MANAGER_SAVED_INSTANCE = "LAYOUT_MANAGER_SAVED_INSTANCE";
-    private static final String PAGING_SAVED_INSTANCE = "PAGING_SAVED_INSTANCE";
-    private static final String MEIZHI_DATA_SAVED_INSTANCE = "MEIZHI_DATA_SAVED_INSTANCE";
+    private static final String SAVED_INSTANCE_MEIZHI = "SAVED_INSTANCE_MEIZHI";
+
     @BindView(R.id.rv_meizhi)
     RecyclerView rvMeizhi;
     @BindView(R.id.refreshlayout)
     SwipeRefreshLayout refreshlayout;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
+    @BindView(R.id.appbar)
+    AppBarLayout appbar;
 
     @Inject
     StaggeredGridLayoutManager layoutManager;
@@ -55,12 +57,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Inject
     MainPresenter mainPresenter;
 
-    private int paging = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         DaggerMainPresenterComponent.builder()
                 .appComponent(MeizhiApp.get(this).getAppComponent())
@@ -109,10 +111,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mainPresenter.detachView();
     }
 
+    //TODO Use DiffUtil to update adapter
     @Override
     public void refreshRv(List<DataInfo> arrayList) {
         //To Prevent ViewHolder that had been loaded blink/ load
-        meizhiRvAdapter.notifyItemRangeChanged(10 * paging++, Constants.MEIZHI_AMOUNT);
+        meizhiRvAdapter.notifyItemRangeChanged(MeizhiData.size(), Constants.MEIZHI_AMOUNT);
 //        DiffUtil.DiffResult diffResult =DiffUtil.calculateDiff(new MeizhiDiffUtil(MeizhiData,arrayList));
 //        diffResult.dispatchUpdatesTo(meizhiRvAdapter);
 
@@ -135,10 +138,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     public void summonMeizhi(boolean clearItem) {
         if (clearItem) {
             MeizhiData.clear();
-            paging = 1;
         }
         refreshlayout.setRefreshing(true);
-        mainPresenter.loadMeizhi(paging, MeizhiData);
+        mainPresenter.loadMeizhi(MeizhiData.size() / 10 + 1, MeizhiData);
     }
 
     @Override
@@ -161,10 +163,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     /**
      * Toggle Night Mode
+     *
      * @param v fab
      */
     @OnClick(R.id.fab)
     public void onClick(View v) {
+        appbar.setExpanded(true, false);
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
             case Configuration.UI_MODE_NIGHT_YES:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -187,27 +191,23 @@ public class MainActivity extends BaseActivity implements MainContract.View {
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(LAYOUT_MANAGER_SAVED_INSTANCE, layoutManager.onSaveInstanceState());
-        outState.putParcelableArrayList(MEIZHI_DATA_SAVED_INSTANCE, MeizhiData);
-        outState.putInt(PAGING_SAVED_INSTANCE, paging);
+
+        outState.putParcelableArrayList(SAVED_INSTANCE_MEIZHI, MeizhiData);
         super.onSaveInstanceState(outState);
     }
 
     /**
      * Restore Recycler View Instance When Recreate or Configuration Changed
+     *
      * @param savedInstanceState Saved Bundle
      */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        Parcelable layoutManagerInstance = savedInstanceState.getParcelable(LAYOUT_MANAGER_SAVED_INSTANCE);
-        layoutManager.onRestoreInstanceState(layoutManagerInstance);
-
-        MeizhiData = savedInstanceState.getParcelableArrayList(MEIZHI_DATA_SAVED_INSTANCE);
+        MeizhiData = savedInstanceState.getParcelableArrayList(SAVED_INSTANCE_MEIZHI);
         meizhiRvAdapter.setMeizhiList(MeizhiData);
 
-        paging = savedInstanceState.getInt(PAGING_SAVED_INSTANCE);
     }
 
     @Override

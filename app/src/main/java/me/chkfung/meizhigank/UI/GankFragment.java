@@ -1,6 +1,7 @@
 package me.chkfung.meizhigank.UI;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -36,15 +37,15 @@ public class GankFragment extends Fragment implements GankContract.View {
     private final static String AGRS_DATE = "DATE";
     @Inject
     SharedPreferences sharedPreferences;
-    //    @Inject
+
+    Day mDay = new Day();
     GankExpandableRvAdapter gankExpandableRvAdapter = new GankExpandableRvAdapter();
-    //    @Inject
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-    ;
-    //    @Inject
     GankRvAdapter gankRvAdapter = new GankRvAdapter();
+
     @Inject
     StaggeredGridLayoutManager staggeredGridLayoutManager;
+
     GankContract.Presenter gankPresenter;
     @BindView(R.id.expandable_listview)
     RecyclerView expandableListview;
@@ -58,7 +59,6 @@ public class GankFragment extends Fragment implements GankContract.View {
     ImageButton refresh;
     @BindView(R.id.viewswitcher_loading)
     ViewSwitcher viewswitcherLoading;
-    Day mDay;
     private String Date;
 
     public static GankFragment newInstance(String Date) {
@@ -103,7 +103,7 @@ public class GankFragment extends Fragment implements GankContract.View {
     public void setupRecycleView(Day day) {
         mDay = day;
         viewswitcherLoading.setVisibility(View.INVISIBLE);
-        gankExpandableRvAdapter.setup(day);
+//        gankExpandableRvAdapter.setup(day);
         expandableListview.setAdapter(gankExpandableRvAdapter);
         expandableListview.setLayoutManager(linearLayoutManager);
         rvGank.setAdapter(gankRvAdapter);
@@ -170,7 +170,7 @@ public class GankFragment extends Fragment implements GankContract.View {
 
         if (savedInstanceState != null) {
             mDay = savedInstanceState.getParcelable("Day");
-            gankExpandableRvAdapter.setup(mDay);
+//            gankExpandableRvAdapter.setup(mDay);
             expandableListview.setAdapter(gankExpandableRvAdapter);
             expandableListview.setLayoutManager(linearLayoutManager);
         }
@@ -185,6 +185,11 @@ public class GankFragment extends Fragment implements GankContract.View {
     }
 
     @Override
+    public void startCustomTabIntent(Uri url) {
+
+    }
+
+    //    @Override
     public void setPresenter(GankContract.Presenter presenter) {
         gankPresenter = presenter;
     }

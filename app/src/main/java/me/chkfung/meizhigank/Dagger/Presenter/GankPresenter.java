@@ -5,8 +5,9 @@ import java.util.Collections;
 import javax.inject.Inject;
 
 import me.chkfung.meizhigank.Contract.GankContract;
-import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.Day;
+import me.chkfung.meizhigank.NetworkApi;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -16,6 +17,10 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 
 public class GankPresenter implements GankContract.Presenter {
+    @Inject
+    NetworkApi networkApi;
+    @Inject
+    Scheduler scheduler;
     private GankContract.View mView;
     private Subscription mSubscription;
 
@@ -26,10 +31,9 @@ public class GankPresenter implements GankContract.Presenter {
 
     @Override
     public void getGank(String date) {
-        MeizhiApp meizhiApp = MeizhiApp.get(mView.getContext());
         if (mSubscription != null) mSubscription.unsubscribe();
-        mSubscription = meizhiApp.getNetworkApi().getDay(date)
-                .subscribeOn(meizhiApp.getDefaultSubscribeScheduler())
+        mSubscription = networkApi.getDay(date)
+                .subscribeOn(scheduler)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Day>() {
                     @Override
@@ -50,10 +54,10 @@ public class GankPresenter implements GankContract.Presenter {
                 });
     }
 
-    @Inject
-    void setupListeners() {
-        mView.setPresenter(this);
-    }
+    //    @Inject
+//    void setupListeners() {
+//        mView.setPresenter(this);
+//    }
     @Override
     public void attachView(GankContract.View view) {
         mView = view;
