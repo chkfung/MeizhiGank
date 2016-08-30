@@ -7,13 +7,7 @@ import android.content.Context;
  */
 
 public interface BaseContract {
-    interface Presenter<T> {
-        /**
-         * Attach View to Presenter
-         *
-         * @param view View
-         */
-        void attachView(T view);
+    interface Presenter {
 
         /**
          * Detach View to prevent Memory Leak

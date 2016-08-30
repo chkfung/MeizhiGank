@@ -1,7 +1,5 @@
 package me.chkfung.meizhigank.UI;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,6 +16,8 @@ import butterknife.BindView;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.AboutRvAdapter;
+
+import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
 
 /**
  * Created by Fung on 15/08/2016.
@@ -48,7 +48,6 @@ public class AboutMeActivity extends BaseActivity {
             ver = "Unable to retrieve Info";
         }
         version.setText(ver);
-        animateToolbar();
 
         String[][] item = {
                 {"Butterknife", "Jake Wharton"},
@@ -61,11 +60,16 @@ public class AboutMeActivity extends BaseActivity {
                 {"RxAndroid", "RxAndroid authors"},
                 {"Support Library", "Android Developers"},
         };
+        rvAbout.setNestedScrollingEnabled(false);
         rvAbout.setLayoutManager(new LinearLayoutManager(this));
         rvAbout.setAdapter(new AboutRvAdapter(item));
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_fade_scale);
-        animation.setInterpolator(new FastOutSlowInInterpolator());
-        AppName.startAnimation(animation);
+
+        if (savedInstanceState == null) {
+            FancyAnimation(toolbarTitle);
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_fade_scale);
+            animation.setInterpolator(new FastOutSlowInInterpolator());
+            AppName.startAnimation(animation);
+        }
     }
 
     @Override
@@ -78,16 +82,4 @@ public class AboutMeActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void animateToolbar() {
-        Animator x = new ValueAnimator();
-
-        toolbarTitle.setAlpha(0f);
-        toolbarTitle.setScaleX(0.6f);
-        toolbarTitle.animate().scaleX(1f)
-                .alpha(1f)
-                .setStartDelay(300)
-                .setDuration(900)
-                .setInterpolator(new FastOutSlowInInterpolator())
-                .start();
-    }
 }

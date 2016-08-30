@@ -1,7 +1,6 @@
 package me.chkfung.meizhigank.UI;
 
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -93,11 +92,6 @@ public class GankFragment extends Fragment implements GankContract.View {
         viewswitcherLoading.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void animateToolbar() {
-
-    }
-
 
     @Override
     public void setupRecycleView(Day day) {
@@ -185,7 +179,7 @@ public class GankFragment extends Fragment implements GankContract.View {
     }
 
     @Override
-    public void startCustomTabIntent(Uri url) {
+    public void startCustomTabIntent(String Desc, String url) {
 
     }
 

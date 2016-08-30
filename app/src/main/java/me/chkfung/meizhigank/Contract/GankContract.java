@@ -1,7 +1,5 @@
 package me.chkfung.meizhigank.Contract;
 
-import android.net.Uri;
-
 import me.chkfung.meizhigank.Base.BaseContract;
 import me.chkfung.meizhigank.Model.Day;
 
@@ -10,7 +8,7 @@ import me.chkfung.meizhigank.Model.Day;
  */
 
 public interface GankContract {
-    interface Presenter extends BaseContract.Presenter<View> {
+    interface Presenter extends BaseContract.Presenter {
         void getGank(String date);
     }
 
@@ -18,9 +16,6 @@ public interface GankContract {
         void setupRecycleView(Day day);
         void showError(Throwable e);
 
-        void startCustomTabIntent(Uri url);
-
-        //        void setPresenter(GankContract.Presenter presenter);
-        void animateToolbar();
+        void startCustomTabIntent(String Desc, String url);
     }
 }

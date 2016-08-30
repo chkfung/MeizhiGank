@@ -21,6 +21,8 @@ android {
             versionCode code
             versionName "1.0"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+            vectorDrawables.setUseSupportLibrary(true)
         }
     } else {
         throw new GradleException("Could not read version.properties!")
@@ -30,6 +32,21 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    productFlavors {
+        dev {
+            // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
+            // to pre-dex each module and produce an APK that can be tested on
+            // Android Lollipop without time consuming dex merging processes.
+            minSdkVersion 21
+        }
+
+        production {
+
+        }
+
+
     }
 }
 
@@ -73,9 +90,12 @@ dependencies {
     androidTestCompile dependencies.atc_espresso
     androidTestCompile dependencies.atc_runner
     compile 'com.google.firebase:firebase-core:9.0.2'
+    compile 'com.google.firebase:firebase-crash:9.0.2'
+    compile 'com.google.firebase:firebase-messaging:9.0.2'
+
 
     compile dependencies.glide
-    compile 'com.google.android.gms:play-services-location:9.0.2'
+    compile "com.google.android.gms:play-services-location:9.0.2"
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 

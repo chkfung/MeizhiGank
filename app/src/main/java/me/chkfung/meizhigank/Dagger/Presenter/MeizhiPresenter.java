@@ -51,7 +51,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 .subscribe(new Subscriber<Uri>() {
                     @Override
                     public void onCompleted() {
-                        Logger.i("Save Image Success");
+                        mView.ImageSaved();
                     }
 
                     @Override
@@ -99,11 +99,6 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 subscriber.onCompleted();
             }
         });
-    }
-
-    @Override
-    public void attachView(MeizhiContract.View view) {
-        mView = view;
     }
 
     @Override

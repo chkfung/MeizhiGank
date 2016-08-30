@@ -2,8 +2,8 @@ package me.chkfung.meizhigank.Util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.view.View;
 
 import java.util.List;
 
@@ -15,8 +15,6 @@ import me.chkfung.meizhigank.Model.Day;
  */
 
 public class CommonUtil {
-
-    public static Bitmap bitmap;
 
     public static List<DataInfo> getDataOf(Day data, String selectedItem) {
         switch (selectedItem) {
@@ -40,14 +38,22 @@ public class CommonUtil {
     }
 
     public static void ShareImage(Context context, String url) {
-        Uri uri = Uri.parse(url);
-        Intent SharingIntent = new Intent();
-        SharingIntent.setAction(Intent.ACTION_SEND);
 
-        try {
-            context.startActivity(Intent.createChooser(SharingIntent, "Share Image"));
-        } catch (Exception e) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_SUBJECT, "I found a cute girl!");
+        i.putExtra(Intent.EXTRA_TEXT, url);
+        context.startActivity(Intent.createChooser(i, "Share this Meizhi to"));
+    }
 
-        }
+    public static void FancyAnimation(View v) {
+        v.setAlpha(0);
+        v.setScaleX(0.6f);
+        v.animate().alpha(1)
+                .scaleX(1f)
+                .setStartDelay(300)
+                .setDuration(900)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .start();
     }
 }

@@ -10,7 +10,7 @@ import rx.Observable;
  */
 
 public interface MeizhiContract {
-    interface Presenter extends BaseContract.Presenter<View> {
+    interface Presenter extends BaseContract.Presenter {
 
         /**
          * Save Image to Storage

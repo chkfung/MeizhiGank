@@ -10,7 +10,7 @@ import me.chkfung.meizhigank.Model.DataInfo;
  */
 
 public interface MainContract {
-    interface Presenter extends BaseContract.Presenter<View> {
+    interface Presenter extends BaseContract.Presenter {
         /**
          * Perform Network Request to Obtain Meizhi Data
          * @param page Current Page Number
@@ -40,6 +40,5 @@ public interface MainContract {
          */
         void summonMeizhi(boolean clearItem);
 
-        void animateToolbar();
     }
 }

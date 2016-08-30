@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +34,8 @@ import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.MeizhiRvAdapter;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
 
+import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
+
 public class MainActivity extends BaseActivity implements MainContract.View {
 
     private static final String SAVED_INSTANCE_MEIZHI = "SAVED_INSTANCE_MEIZHI";
@@ -48,12 +49,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @BindView(R.id.appbar)
     AppBarLayout appbar;
 
-    @Inject
     StaggeredGridLayoutManager layoutManager;
-    @Inject
-    ArrayList<DataInfo> MeizhiData;
-    @Inject
-    MeizhiRvAdapter meizhiRvAdapter;
+    ArrayList<DataInfo> MeizhiData = new ArrayList<>();
+    MeizhiRvAdapter meizhiRvAdapter = new MeizhiRvAdapter();
     @Inject
     MainPresenter mainPresenter;
 
@@ -77,6 +75,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             }
         });
 
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        else
+            layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         meizhiRvAdapter.setMeizhiList(MeizhiData);
         rvMeizhi.setAdapter(meizhiRvAdapter);
         rvMeizhi.setLayoutManager(layoutManager);
@@ -97,7 +99,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         if (savedInstanceState == null) {
             summonMeizhi(true);
         }
-        animateToolbar();
+        FancyAnimation(toolbarTitle);
     }
 
     @OnClick(R.id.toolbar_title)
@@ -145,7 +147,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -208,18 +209,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         MeizhiData = savedInstanceState.getParcelableArrayList(SAVED_INSTANCE_MEIZHI);
         meizhiRvAdapter.setMeizhiList(MeizhiData);
 
-    }
-
-    @Override
-    public void animateToolbar() {
-        toolbarTitle.setAlpha(0f);
-        toolbarTitle.setScaleX(0.6f);
-        toolbarTitle.animate().scaleX(1f)
-                .alpha(1f)
-                .setStartDelay(300)
-                .setDuration(900)
-                .setInterpolator(new FastOutSlowInInterpolator())
-                .start();
     }
 
     @Override

@@ -54,15 +54,6 @@ public class GankPresenter implements GankContract.Presenter {
                 });
     }
 
-    //    @Inject
-//    void setupListeners() {
-//        mView.setPresenter(this);
-//    }
-    @Override
-    public void attachView(GankContract.View view) {
-        mView = view;
-    }
-
     @Override
     public void detachView() {
         mView = null;

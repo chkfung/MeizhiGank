@@ -1,12 +1,18 @@
 package me.chkfung.meizhigank.UI;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -34,6 +40,8 @@ import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.UI.Adapter.GankExpandableRvAdapter;
 import me.chkfung.meizhigank.UI.Adapter.GankRvAdapter;
 
+import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
+
 /**
  * Created by Fung on 04/08/2016.
  */
@@ -60,7 +68,7 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     ViewSwitcher viewswitcherLoading;
 
     @Inject
-    CustomTabsIntent customTabsIntent;
+    CustomTabsIntent.Builder customTabsIntentBuilder;
     @Inject
     GankPresenter mPresenter;
     @Inject
@@ -70,7 +78,7 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
     GankExpandableRvAdapter gankExpandableRvAdapter = new GankExpandableRvAdapter();
     GankRvAdapter gankRvAdapter = new GankRvAdapter();
-    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+    StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,10 +89,13 @@ public class GankActivity extends BaseActivity implements GankContract.View {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(mDate);
-        animateToolbar();
+        FancyAnimation(toolbarTitle);
 
-//        mPresenter.attachView(this);
-//        onRefresh();
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        else
+            staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
 //        GankFragment gankFragment = (GankFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_content);
 //        if (gankFragment == null) {
@@ -105,7 +116,6 @@ public class GankActivity extends BaseActivity implements GankContract.View {
             onRefresh();
     }
 
-    //
     @Override
     public void setupRecycleView(Day day) {
         mDay = day;
@@ -126,7 +136,6 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(SAVED_INSTANCE_GANK, mDay);
-
         super.onSaveInstanceState(outState);
     }
 
@@ -173,17 +182,6 @@ public class GankActivity extends BaseActivity implements GankContract.View {
                 }).show();
     }
 
-    @Override
-    public void animateToolbar() {
-        toolbarTitle.setAlpha(0f);
-        toolbarTitle.setScaleX(0.6f);
-        toolbarTitle.animate().scaleX(1f)
-                .alpha(1f)
-                .setStartDelay(300)
-                .setDuration(900)
-                .setInterpolator(new FastOutSlowInInterpolator())
-                .start();
-    }
 
     @OnClick(R.id.refresh)
     public void onRefresh() {
@@ -208,7 +206,26 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     }
 
     @Override
-    public void startCustomTabIntent(Uri url) {
-        customTabsIntent.launchUrl(this, url);
+    public void startCustomTabIntent(String Desc, String url) {
+
+        //Sharing Intent
+        Intent actionIntent = new Intent(Intent.ACTION_SEND);
+        actionIntent.setType("text/plain");
+        actionIntent.putExtra(Intent.EXTRA_SUBJECT, Desc);
+        actionIntent.putExtra(Intent.EXTRA_TEXT, url);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, actionIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        //Share Icon
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_share);
+        Bitmap icon = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(icon);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        //Combine Intent and Icon
+        customTabsIntentBuilder.setActionButton(icon, "Share Url", pi, true);
+
+        //Build and Launch Url
+        customTabsIntentBuilder.build().launchUrl(this, Uri.parse(url));
     }
 }

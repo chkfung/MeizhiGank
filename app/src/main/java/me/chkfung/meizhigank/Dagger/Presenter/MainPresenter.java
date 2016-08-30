@@ -66,11 +66,6 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void attachView(MainContract.View view) {
-        mView = view;
-    }
-
-    @Override
     public void detachView() {
         mView = null;
         if (mSubscription != null) mSubscription.unsubscribe();

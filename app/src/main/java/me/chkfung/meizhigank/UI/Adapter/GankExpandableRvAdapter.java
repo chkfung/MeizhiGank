@@ -2,7 +2,6 @@ package me.chkfung.meizhigank.UI.Adapter;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -180,12 +179,12 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
 
             holder.title.setText(DescText);
 
-
+            final String Desc = dataInfo.getDesc();
             final String url = dataInfo.getUrl();
             holder.subItem_handle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((GankActivity) mContext).startCustomTabIntent(Uri.parse(url));
+                    ((GankActivity) mContext).startCustomTabIntent(Desc, url);
 //                    ((MeizhiApp) MeizhiApp.get(mcontext)).CustomTabLaunch(mcontext, Uri.parse(url));
                 }
             });

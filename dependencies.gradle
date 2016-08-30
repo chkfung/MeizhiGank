@@ -41,6 +41,9 @@ ext {
             debug_LeakCanary     : "com.squareup.leakcanary:leakcanary-android:$leakCanary",
             test_LeakCanary      : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanary",
 
+            //Google Service
+            location             : "com.google.android.gms:play-services-location",
+
             //Testing
             tc_jUnit             : 'junit:junit:4.12',
             atc_espresso         : 'com.android.support.test.espresso:espresso-core:2.2.2',

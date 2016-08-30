@@ -2,18 +2,10 @@ package me.chkfung.meizhigank.UI;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +35,7 @@ import me.chkfung.meizhigank.Dagger.Module.MeizhiPresenterModule;
 import me.chkfung.meizhigank.Dagger.Presenter.MeizhiPresenter;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.R;
+import me.chkfung.meizhigank.Util.CommonUtil;
 import me.chkfung.meizhigank.Util.PermissionUtils;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -64,7 +57,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     FrameLayout frameMeizhi;
     @Inject
     MeizhiPresenter mPresenter;
-    private ShareActionProvider miShareAction;
     private String url;
 
     @Override
@@ -76,9 +68,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                 .appComponent(MeizhiApp.get(this).getAppComponent())
                 .meizhiPresenterModule(new MeizhiPresenterModule(this))
                 .build().inject(this);
-//        mPresenter.attachView(this);
-        //Frame Layout Background Alpha was changed by Image Movement and wont reset to alpha 255
-        //fixme need further investigation
+
         frameMeizhi.getBackground().setAlpha(255);
 
         //TODO there should be better way
@@ -90,7 +80,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         supportPostponeEnterTransition();
         Bundle data = getIntent().getExtras();
         url = data.getString("URL");
-        progressbar.setVisibility(View.VISIBLE);
         Glide.with(this)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -98,8 +87,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                 .listener(new RequestListener<Object, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        //TODO set Failure msg
-                        progressbar.setVisibility(View.INVISIBLE);
+
                         return false;
                     }
 
@@ -131,114 +119,9 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                     }
                 })
                 .into(image);
-        image.setOnTouchListener(new View.OnTouchListener() {
-            int StartX;
-            int StartY;
-            int mMotionX;
-            int mMotionY;
-
-            @Override
-            public boolean onTouch(final View v, MotionEvent event) {
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
-                //YAY
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-
-                        if (toolbar.getAlpha() == 1)
-                            toolbar.animate().translationY(-toolbar.getMeasuredHeight())
-                                    .alpha(0)
-                                    .setDuration(100)
-                                    .setInterpolator(new LinearInterpolator());
-                        Logger.i("Action Down");
-                        StartX = (int) event.getRawX();
-                        StartY = (int) event.getRawY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-
-                        mMotionX = (int) event.getRawX() - StartX;
-                        mMotionY = (int) event.getRawY() - StartY;
-//                        layoutParams.leftMargin = mMotionX;
-//                        layoutParams.rightMargin = -mMotionX;
-                        layoutParams.topMargin = mMotionY / 2;
-                        layoutParams.bottomMargin = -mMotionY / 2;
-                        v.requestLayout();
-
-                        if (Math.abs(mMotionY) > 200) {
-                            frameMeizhi.getBackground().setAlpha(128);
-
-                        } else {
-                            //Alpha min 128 max 255
-                            //255 - 128 = 127
-                            double ratioAlpha = (Math.abs(mMotionY) / 200.0) * 127;
-                            frameMeizhi.getBackground().setAlpha(255 - (int) ratioAlpha);
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        Logger.i("Motion Y: " + mMotionY);
-                        if (Math.abs(mMotionY) > 100) {
-                            onBackPressed();
-                        } else {
-                            //TODO Reuse Value Animator?
-                            animate(v, layoutParams, 1);
-                            animate(v, layoutParams, 2);
-                            animate(v, layoutParams, 3);
-                            animate(v, layoutParams, 4);
-
-                            frameMeizhi.getBackground().setAlpha(255);
-                            toolbar.animate().translationY(0)
-                                    .alpha(1)
-                                    .setDuration(100)
-                                    .setInterpolator(new LinearInterpolator());
-                        }
-                        break;
-                }
-                return true;
-            }
-        });
+        image.setOnTouchListener(new imageOnTouchListener());
         getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    public void animate(final View view, final FrameLayout.LayoutParams layoutParams, final int identifier) {
-        int from = 0;
-        switch (identifier) {
-            case 1:
-                from = layoutParams.topMargin;
-                break;
-            case 2:
-                from = layoutParams.bottomMargin;
-                break;
-            case 3:
-                from = layoutParams.leftMargin;
-                break;
-            case 4:
-                from = layoutParams.rightMargin;
-                break;
-        }
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(from, 0);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                switch (identifier) {
-                    case 1:
-                        layoutParams.topMargin = (int) animation.getAnimatedValue();
-                        break;
-                    case 2:
-                        layoutParams.bottomMargin = (int) animation.getAnimatedValue();
-                        break;
-                    case 3:
-                        layoutParams.leftMargin = (int) animation.getAnimatedValue();
-                        break;
-                    case 4:
-                        layoutParams.rightMargin = (int) animation.getAnimatedValue();
-                        break;
-                }
-                view.requestLayout();
-            }
-        });
-        valueAnimator.setDuration(200);
-        valueAnimator.start();
     }
 
     @Override
@@ -260,8 +143,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_image, menu);
-        MenuItem share = menu.findItem(R.id.action_share);
-        miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(share);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -270,22 +151,15 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         if (PermissionUtils.requestPermission(this, SAVE_MEIZHI, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             Logger.i("Granted");
             mPresenter.SaveImage(url);
+            progressbar.setVisibility(View.VISIBLE);
+            progressbar.setProgress(10);
+            progressbar.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressbar.setProgress(50);
+                }
+            }, 2000);
         }
-    }
-
-    private void attachShareIntent() {
-        Drawable mDrawable = image.getDrawable();
-        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-
-        String path = MediaStore.Images.Media.insertImage(getContentResolver(),
-                mBitmap, "Image Description", null);
-
-        Uri uri = Uri.parse(path);
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        shareIntent.setType("image/*");
-        miShareAction.setShareIntent(shareIntent);
     }
 
     @Override
@@ -294,9 +168,9 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
             case android.R.id.home:
                 onBackPressed();
                 break;
-//            case R.id.action_share:
-//                CommonUtil.ShareImage(this, url);
-//                break;
+            case R.id.action_share:
+                CommonUtil.ShareImage(this, url);
+                break;
             case R.id.action_save:
                 SaveMenuTapped();
                 break;
@@ -310,9 +184,15 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //Immediate Action When Permission Dialog Tapped
         if (PermissionUtils.permissionGranted(requestCode, SAVE_MEIZHI, grantResults)) {
-            mPresenter.SaveImage(url);
+            //Important Permission such as read external storage required a restart of Application to take effect
+            Snackbar.make(findViewById(android.R.id.content)
+                    , "Permission Granted! Image Saving will be taking effect on next Restart"
+                    , Snackbar.LENGTH_INDEFINITE)
+                    .setAction("OK", null)
+                    .show();
         } else {
-            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -320,11 +200,116 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
-
     }
 
     @Override
     public void ImageSaved() {
-        Snackbar.make(findViewById(android.R.id.content), "Image Saved", Snackbar.LENGTH_SHORT);
+        Snackbar.make(findViewById(android.R.id.content), "Image Saved", Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    private class imageOnTouchListener implements View.OnTouchListener {
+        int StartX;
+        int StartY;
+        int mMotionX;
+        int mMotionY;
+
+        @Override
+        public boolean onTouch(final View v, MotionEvent event) {
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (toolbar.getAlpha() == 1)
+                        toolbar.animate().translationY(-toolbar.getMeasuredHeight())
+                                .alpha(0)
+                                .setDuration(100)
+                                .setInterpolator(new LinearInterpolator());
+                    Logger.i("Action Down");
+                    StartX = (int) event.getRawX();
+                    StartY = (int) event.getRawY();
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+                    mMotionX = (int) event.getRawX() - StartX;
+                    mMotionY = (int) event.getRawY() - StartY;
+//                        layoutParams.leftMargin = mMotionX;
+//                        layoutParams.rightMargin = -mMotionX;
+                    layoutParams.topMargin = mMotionY / 2;
+                    layoutParams.bottomMargin = -mMotionY / 2;
+                    v.requestLayout();
+
+                    if (Math.abs(mMotionY) > 200) {
+                        frameMeizhi.getBackground().setAlpha(128);
+
+                    } else {
+                        //Alpha min 128 max 255
+                        //255 - 128 = 127
+                        double ratioAlpha = (Math.abs(mMotionY) / 200.0) * 127;
+                        frameMeizhi.getBackground().setAlpha(255 - (int) ratioAlpha);
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    Logger.i("Motion Y: " + mMotionY);
+                    if (Math.abs(mMotionY) > 100) {
+                        onBackPressed();
+                    } else {
+                        //TODO Reuse Value Animator?
+                        animate(v, layoutParams, 1);
+                        animate(v, layoutParams, 2);
+                        animate(v, layoutParams, 3);
+                        animate(v, layoutParams, 4);
+
+                        frameMeizhi.getBackground().setAlpha(255);
+                        toolbar.animate().translationY(0)
+                                .alpha(1)
+                                .setDuration(100)
+                                .setInterpolator(new LinearInterpolator());
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        void animate(final View view, final FrameLayout.LayoutParams layoutParams, final int identifier) {
+            int from = 0;
+            switch (identifier) {
+                case 1:
+                    from = layoutParams.topMargin;
+                    break;
+                case 2:
+                    from = layoutParams.bottomMargin;
+                    break;
+                case 3:
+                    from = layoutParams.leftMargin;
+                    break;
+                case 4:
+                    from = layoutParams.rightMargin;
+                    break;
+            }
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(from, 0);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    switch (identifier) {
+                        case 1:
+                            layoutParams.topMargin = (int) animation.getAnimatedValue();
+                            break;
+                        case 2:
+                            layoutParams.bottomMargin = (int) animation.getAnimatedValue();
+                            break;
+                        case 3:
+                            layoutParams.leftMargin = (int) animation.getAnimatedValue();
+                            break;
+                        case 4:
+                            layoutParams.rightMargin = (int) animation.getAnimatedValue();
+                            break;
+                    }
+                    view.requestLayout();
+                }
+            });
+            valueAnimator.setDuration(200);
+            valueAnimator.start();
+        }
     }
 }

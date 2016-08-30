@@ -3,6 +3,7 @@ package me.chkfung.meizhigank.Base;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -16,6 +17,7 @@ import me.chkfung.meizhigank.R;
 
 public class BaseActivity extends AppCompatActivity implements BaseContract.View {
 
+    @Nullable
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
