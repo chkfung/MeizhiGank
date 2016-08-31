@@ -57,6 +57,8 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     FrameLayout frameMeizhi;
     @Inject
     MeizhiPresenter mPresenter;
+
+
     private String url;
 
     @Override
@@ -152,13 +154,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
             Logger.i("Granted");
             mPresenter.SaveImage(url);
             progressbar.setVisibility(View.VISIBLE);
-            progressbar.setProgress(10);
-            progressbar.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    progressbar.setProgress(50);
-                }
-            }, 2000);
         }
     }
 
@@ -204,8 +199,15 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
     @Override
     public void ImageSaved() {
+        progressbar.setProgress(100);
+        progressbar.setVisibility(View.GONE);
         Snackbar.make(findViewById(android.R.id.content), "Image Saved", Snackbar.LENGTH_SHORT)
                 .show();
+    }
+
+    @Override
+    public void updateProgressBar(int progress) {
+        progressbar.setProgress(progress);
     }
 
     private class imageOnTouchListener implements View.OnTouchListener {

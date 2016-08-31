@@ -10,7 +10,6 @@ import me.chkfung.meizhigank.Dagger.Module.AppModule;
 import me.chkfung.meizhigank.Dagger.Module.NetModule;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.NetworkApi;
-import okhttp3.OkHttpClient;
 import rx.Scheduler;
 
 /**
@@ -34,5 +33,4 @@ public interface AppComponent {
 
     SharedPreferences getSharedPreferences();
 
-    OkHttpClient getOkhttpClient();
 }

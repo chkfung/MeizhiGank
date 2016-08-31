@@ -12,11 +12,18 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import me.chkfung.meizhigank.Contract.MeizhiContract;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.Buffer;
 import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.ForwardingSource;
 import okio.Okio;
+import okio.Source;
 import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
@@ -31,8 +38,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
     MeizhiContract.View mView;
     Subscription mSubscription;
 
-    @Inject
-    OkHttpClient okHttpClient;
+    OkHttpClient.Builder okHttpClientBuilder;
 
     @Inject
     Scheduler scheduler;
@@ -82,8 +88,26 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 Request mDownloadRequest = new Request.Builder()
                         .url(mUrl)
                         .build();
+                final progressListener progressListener = new progressListener() {
+                    @Override
+                    public void update(long bytesloaded, long totalbytes, boolean done) {
+                        int progress = (int) (bytesloaded / totalbytes);
+                        mView.updateProgressBar(progress);
+                    }
+                };
+                okHttpClientBuilder = new OkHttpClient.Builder();
+                okHttpClientBuilder.addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Response originalResponse = chain.proceed(chain.request());
+                        return originalResponse
+                                .newBuilder()
+                                .body(new ProgressResponseBody(originalResponse.body(), progressListener))
+                                .build();
+                    }
+                });
                 try {
-                    Response resp = okHttpClient.newCall(mDownloadRequest).execute();
+                    Response resp = okHttpClientBuilder.build().newCall(mDownloadRequest).execute();
                     if (resp.isSuccessful()) {
                         File downloadedFile = new File(appDir, mUrl.substring(mUrl.length() - 20));
                         BufferedSink sink = Okio.buffer(Okio.sink(downloadedFile));
@@ -98,12 +122,61 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 }
                 subscriber.onCompleted();
             }
-        });
+        })
+                ;
     }
 
     @Override
     public void detachView() {
         mView = null;
         if (mSubscription != null) mSubscription.unsubscribe();
+    }
+
+    interface progressListener {
+        void update(long bytesloaded, long totalbytes, boolean done);
+    }
+
+    private static class ProgressResponseBody extends ResponseBody {
+        ResponseBody responseBody;
+        progressListener downloadProgress;
+        BufferedSource bufferedSource;
+
+        private ProgressResponseBody(ResponseBody responseBody, progressListener downloadProgress) {
+            this.responseBody = responseBody;
+            this.downloadProgress = downloadProgress;
+        }
+
+        @Override
+        public MediaType contentType() {
+            return responseBody.contentType();
+        }
+
+        @Override
+        public long contentLength() {
+            return responseBody.contentLength();
+        }
+
+        @Override
+        public BufferedSource source() {
+            if (bufferedSource == null) {
+                bufferedSource = Okio.buffer(source(responseBody.source()));
+            }
+            return bufferedSource;
+        }
+
+        private Source source(Source source) {
+            return new ForwardingSource(source) {
+                long totalBytesRead = 0L;
+
+                @Override
+                public long read(Buffer sink, long byteCount) throws IOException {
+                    long bytesRead = super.read(sink, byteCount);
+                    // read() returns the number of bytes read, or -1 if this source is exhausted.
+                    totalBytesRead += bytesRead != -1 ? bytesRead : 0;
+                    downloadProgress.update(totalBytesRead, responseBody.contentLength(), bytesRead == -1);
+                    return bytesRead;
+                }
+            };
+        }
     }
 }

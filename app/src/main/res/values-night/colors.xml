@@ -7,4 +7,6 @@
     <color name="colorCircularReveal">@color/md_blue_grey_500</color>
     <color name="textColor">@color/md_white_1000</color>
     <color name="HomeCardColor">@color/colorPrimaryDark</color>
+    <color name="HeaderColor">@color/md_blue_100</color>
+
 </resources>

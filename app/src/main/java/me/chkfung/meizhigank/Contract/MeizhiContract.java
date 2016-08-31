@@ -34,5 +34,7 @@ public interface MeizhiContract {
         void DownloadFailure();
 
         void ImageSaved();
+
+        void updateProgressBar(int progress);
     }
 }

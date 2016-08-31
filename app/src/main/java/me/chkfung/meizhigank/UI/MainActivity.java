@@ -31,6 +31,7 @@ import me.chkfung.meizhigank.Dagger.Presenter.MainPresenter;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
+import me.chkfung.meizhigank.Service.AlarmReceiver;
 import me.chkfung.meizhigank.UI.Adapter.MeizhiRvAdapter;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
 
@@ -55,6 +56,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Inject
     MainPresenter mainPresenter;
 
+    AlarmReceiver alarmReceiver = new AlarmReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 .appComponent(MeizhiApp.get(this).getAppComponent())
                 .mainPresenterModule(new MainPresenterModule(this))
                 .build().inject(this);
+        alarmReceiver.setAlarm(this);
 
         refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.md_red_500);
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -217,4 +220,5 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         super.onBackPressed();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
 }

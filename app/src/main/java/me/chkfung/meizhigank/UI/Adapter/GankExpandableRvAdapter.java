@@ -2,6 +2,7 @@ package me.chkfung.meizhigank.UI.Adapter;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,12 +35,19 @@ import me.chkfung.meizhigank.Util.CommonUtil;
  */
 
 public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandableRvAdapter.ViewHolder> {
+    int mHeaderColor;
     private Day data;
-
     private List<GankExpandableRvSubAdapter> GankAdapterReuse;
     private int[] item_height;
 
     public GankExpandableRvAdapter() {
+        //Roll a color dice!
+        Random random = new Random();
+        //255 - white , 0 - black
+        int r = random.nextInt(200) + 128;
+        int g = random.nextInt(200) + 128;
+        int b = random.nextInt(200) + 128;
+        mHeaderColor = Color.argb(255, r, g, b);
     }
 
     public void setup(Day day) {
@@ -64,6 +73,17 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext());
         holder.subItem.setLayoutManager(layoutManager);
 
+        //position 0 , factor 1
+        //position 1 , factor 1.1
+        //position 2 , factor 1.2
+        double factor = 1 + position * 0.12;
+        holder.headerColor.setBackgroundColor(
+                Color.argb(255
+                        , (int) (Color.red(mHeaderColor) / factor)
+                        , (int) (Color.green(mHeaderColor) / factor)
+                        , (int) (Color.blue(mHeaderColor) / factor)
+                )
+        );
         //Preserve Height Status
         holder.subItem.getLayoutParams().height = item_height[position];
         holder.subItem.requestLayout();
@@ -141,6 +161,8 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
         RecyclerView subItem;
         @BindView(R.id.rv_header)
         CardView rv_header;
+        @BindView(R.id.headerColor)
+        View headerColor;
 
         public ViewHolder(View view) {
             super(view);

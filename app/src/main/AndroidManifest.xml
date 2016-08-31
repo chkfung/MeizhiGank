@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
         android:name=".MeizhiApp"
         android:allowBackup="true"
@@ -31,6 +33,17 @@
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity android:name=".UI.WebActivity" />
         <activity android:name=".UI.AboutMeActivity" />
+
+        <receiver android:name=".Service.AlarmReceiver" />
+        <receiver
+            android:name=".Service.BootReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".Service.SchedulingService" />
     </application>
 
 </manifest>
