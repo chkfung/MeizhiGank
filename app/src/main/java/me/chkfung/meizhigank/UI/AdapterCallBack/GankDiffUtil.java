@@ -2,6 +2,8 @@ package me.chkfung.meizhigank.UI.AdapterCallBack;
 
 import android.support.v7.util.DiffUtil;
 
+import java.util.Objects;
+
 import me.chkfung.meizhigank.Model.Day;
 
 /**
@@ -9,8 +11,8 @@ import me.chkfung.meizhigank.Model.Day;
  */
 
 public class GankDiffUtil extends DiffUtil.Callback {
-    Day oldData;
-    Day newData;
+    private Day oldData;
+    private Day newData;
 
     public GankDiffUtil(Day oldData, Day newData) {
         this.oldData = oldData;
@@ -29,11 +31,11 @@ public class GankDiffUtil extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldData.getCategory().get(oldItemPosition) == newData.getCategory().get(newItemPosition);
+        return Objects.equals(oldData.getCategory().get(oldItemPosition), newData.getCategory().get(newItemPosition));
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldData.getCategory().get(oldItemPosition) == newData.getCategory().get(newItemPosition);
+        return Objects.equals(oldData.getCategory().get(oldItemPosition), newData.getCategory().get(newItemPosition));
     }
 }

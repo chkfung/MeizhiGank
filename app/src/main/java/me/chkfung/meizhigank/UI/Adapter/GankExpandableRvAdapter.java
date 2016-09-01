@@ -35,7 +35,7 @@ import me.chkfung.meizhigank.Util.CommonUtil;
  */
 
 public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandableRvAdapter.ViewHolder> {
-    int mHeaderColor;
+    private int mHeaderColor;
     private Day data;
     private List<GankExpandableRvSubAdapter> GankAdapterReuse;
     private int[] item_height;

@@ -22,41 +22,4 @@ public class MeizhiPresenterModule {
         return view;
     }
 
-//    @PresenterScope
-//    @Provides
-//    @Named("DownloadProgress")
-//    Interceptor provideInterceptor() {
-//        Interceptor trackProgressInterceptor = new Interceptor() {
-//            @Override
-//            public Response intercept(Chain chain) throws IOException {
-//                return null;
-//            }
-//        };
-//        return trackProgressInterceptor;
-//    }
-//
-//    @PresenterScope
-//    @Provides
-//    ResponseBody provideResponseBody(){
-//        ProgressResponseBody progressResponseBody = new ProgressResponseBody();
-//        return progressResponseBody;
-//    }
-//
-//    class ProgressResponseBody extends ResponseBody{
-//        @Override
-//        public MediaType contentType() {
-//            return null;
-//        }
-//
-//        @Override
-//        public long contentLength() {
-//            return 0;
-//        }
-//
-//        @Override
-//        public BufferedSource source() {
-//            return null;
-//        }
-//    }
-
 }

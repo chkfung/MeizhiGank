@@ -15,7 +15,7 @@ import me.chkfung.meizhigank.R;
  */
 
 public class AboutRvAdapter extends RecyclerView.Adapter<AboutRvAdapter.ViewHolder> {
-    String[][] data;
+    private String[][] data;
 
     public AboutRvAdapter(String[][] data) {
         this.data = data;

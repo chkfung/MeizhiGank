@@ -3,6 +3,7 @@ package me.chkfung.meizhigank.UI.AdapterCallBack;
 import android.support.v7.util.DiffUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 import me.chkfung.meizhigank.Model.DataInfo;
 
@@ -30,11 +31,11 @@ public class MeizhiDiffUtil extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldMeizhi.get(oldItemPosition).get_id() == newMeizhi.get(newItemPosition).get_id();
+        return Objects.equals(oldMeizhi.get(oldItemPosition).get_id(), newMeizhi.get(newItemPosition).get_id());
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldMeizhi.get(oldItemPosition).getUrl() == newMeizhi.get(newItemPosition).getUrl();
+        return Objects.equals(oldMeizhi.get(oldItemPosition).getUrl(), newMeizhi.get(newItemPosition).getUrl());
     }
 }

@@ -20,7 +20,7 @@ import me.chkfung.meizhigank.UI.WebActivity;
  */
 
 public class GankInfoRvAdapter extends RecyclerView.Adapter<GankInfoRvAdapter.ViewHolder> {
-    ArrayList<DataInfo> Data;
+    private ArrayList<DataInfo> Data;
 
     public GankInfoRvAdapter(ArrayList<DataInfo> Data) {
         this.Data = Data;

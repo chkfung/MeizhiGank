@@ -5,14 +5,13 @@
     <item
         android:id="@+id/action_about"
         android:icon="@drawable/ic_octoface"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         android:title="@string/about_me"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_notif"
-        android:checkable="true"
-        android:checked="true"
-        android:icon="@drawable/ic_view_grid"
+        android:icon="@drawable/ic_notifications"
+        android:orderInCategory="100"
         android:title="Notification"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

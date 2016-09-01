@@ -35,13 +35,11 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 
 public class MeizhiPresenter implements MeizhiContract.Presenter {
-    MeizhiContract.View mView;
-    Subscription mSubscription;
-
-    OkHttpClient.Builder okHttpClientBuilder;
-
     @Inject
     Scheduler scheduler;
+    private MeizhiContract.View mView;
+    private Subscription mSubscription;
+    private OkHttpClient.Builder okHttpClientBuilder;
 
     @Inject
     MeizhiPresenter(MeizhiContract.View view) {

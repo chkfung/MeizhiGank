@@ -51,14 +51,11 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     Toolbar toolbar;
     @BindView(R.id.progressbar)
     ProgressBar progressbar;
-
-    PhotoViewAttacher photoViewAttacher;
     @BindView(R.id.frame_meizhi)
     FrameLayout frameMeizhi;
     @Inject
     MeizhiPresenter mPresenter;
-
-
+    private PhotoViewAttacher photoViewAttacher;
     private String url;
 
     @Override

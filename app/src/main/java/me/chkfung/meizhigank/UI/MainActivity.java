@@ -1,6 +1,7 @@
 package me.chkfung.meizhigank.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
 public class MainActivity extends BaseActivity implements MainContract.View {
 
     private static final String SAVED_INSTANCE_MEIZHI = "SAVED_INSTANCE_MEIZHI";
-
+    private static final String NOTIFICATION_ENABLED = "NOTIFICATION_ENABLED";
     @BindView(R.id.rv_meizhi)
     RecyclerView rvMeizhi;
     @BindView(R.id.refreshlayout)
@@ -55,6 +57,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     MeizhiRvAdapter meizhiRvAdapter = new MeizhiRvAdapter();
     @Inject
     MainPresenter mainPresenter;
+    @Inject
+    SharedPreferences sharedPreferences;
+
 
     AlarmReceiver alarmReceiver = new AlarmReceiver();
 
@@ -68,7 +73,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 .appComponent(MeizhiApp.get(this).getAppComponent())
                 .mainPresenterModule(new MainPresenterModule(this))
                 .build().inject(this);
-        alarmReceiver.setAlarm(this);
 
         refreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.md_red_500);
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -151,6 +155,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        setMenuIcon(menu.findItem(R.id.action_notif));
         return true;
     }
 
@@ -160,6 +165,20 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         switch (item.getItemId()) {
             case R.id.action_about:
                 startActivity(new Intent(this, AboutMeActivity.class));
+                break;
+            case R.id.action_notif:
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                if (sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true)) {
+                    editor.putBoolean(NOTIFICATION_ENABLED, false);
+                    alarmReceiver.cancelAlarm(this);
+                    Toast.makeText(this, "Notification Disabled", Toast.LENGTH_SHORT).show();
+                } else {
+                    editor.putBoolean(NOTIFICATION_ENABLED, true);
+                    alarmReceiver.setAlarm(this);
+                    Toast.makeText(this, "Notification Enabled", Toast.LENGTH_SHORT).show();
+                }
+                editor.apply();
+                setMenuIcon(item);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -219,6 +238,14 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         //Custom Exit Application Animation
         super.onBackPressed();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    public void setMenuIcon(MenuItem item) {
+        if (sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true)) {
+            item.setIcon(R.drawable.ic_notifications);
+        } else {
+            item.setIcon(R.drawable.ic_notifications_off);
+        }
     }
 
 }

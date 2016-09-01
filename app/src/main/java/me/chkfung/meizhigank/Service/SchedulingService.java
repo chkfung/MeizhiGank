@@ -18,7 +18,6 @@ public class SchedulingService extends IntentService {
     public static final String TAG = "Scheduling";
     // An ID used to post the notification.
     public static final int NOTIFICATION_ID = 1;
-    private NotificationManager mNotificationManager;
 
     public SchedulingService() {
         super("SchedulingService");
@@ -27,12 +26,12 @@ public class SchedulingService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        sendNotification("E Meizhi!");
+        sendNotification("Meizhi Updated");
         AlarmReceiver.completeWakefulIntent(intent);
     }
 
     private void sendNotification(String msg) {
-        mNotificationManager = (NotificationManager)
+        NotificationManager mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
@@ -41,10 +40,11 @@ public class SchedulingService extends IntentService {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("You Mei Zhi O!")
+                        .setContentTitle(getResources().getString(R.string.app_name))
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
-                        .setContentText(msg);
+                        .setContentText(msg)
+                        .setAutoCancel(true);
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());

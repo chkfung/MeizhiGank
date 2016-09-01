@@ -21,14 +21,12 @@ import rx.functions.Func1;
  */
 
 public class MainPresenter implements MainContract.Presenter {
-    MainContract.View mView;
-    Subscription mSubscription;
-
     @Inject
     NetworkApi networkApi;
-
     @Inject
     Scheduler scheduler;
+    private MainContract.View mView;
+    private Subscription mSubscription;
 
     @Inject
     MainPresenter(MainContract.View mView) {

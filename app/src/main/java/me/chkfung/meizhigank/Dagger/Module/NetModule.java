@@ -58,8 +58,7 @@ public class NetModule {
     @Singleton
     Cache provideCache(Application application) {
         int cacheSize = 10 * 1024 * 1024;//10 mb
-        Cache cache = new Cache(application.getCacheDir(), cacheSize);
-        return cache;
+        return new Cache(application.getCacheDir(), cacheSize);
     }
 
     @Provides
@@ -106,7 +105,7 @@ public class NetModule {
     @Provides
     @Singleton
     Interceptor getCachingInterceptor(final Application mApp) {
-        Interceptor interceptor = new Interceptor() {
+        return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
@@ -118,7 +117,6 @@ public class NetModule {
                 return chain.proceed(request);
             }
         };
-        return interceptor;
     }
 
     @Provides
