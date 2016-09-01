@@ -50,6 +50,10 @@ import me.chkfung.meizhigank.Util.CommonUtil;
 import me.chkfung.meizhigank.ui.GankActivity;
 
 /**
+ * Expandable Recycler view in Gank Activity
+ * It is basically a Recycler View Item contain a Recycler View
+ * It will open Custom Chrome Tab as web View when item on Click
+ * {@link GankActivity}
  * Created by Fung on 17/08/2016.
  */
 

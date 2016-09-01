@@ -62,6 +62,7 @@ import me.chkfung.meizhigank.ui.Adapter.GankRvAdapter;
 import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
 
 /**
+ * Gank Activity that contain Programmer Worth Readings
  * Created by Fung on 04/08/2016.
  */
 

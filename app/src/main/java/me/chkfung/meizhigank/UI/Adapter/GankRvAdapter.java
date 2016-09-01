@@ -45,6 +45,9 @@ import me.chkfung.meizhigank.Util.CommonUtil;
 import me.chkfung.meizhigank.ui.GankInfoActivity;
 
 /**
+ * Grid Adapter in Gank Activity Grid Layout
+ * A Simple Adapter that open a Transparent Theme
+ * {@link me.chkfung.meizhigank.ui.GankInfoActivity}
  * Created by Fung on 04/08/2016.
  */
 

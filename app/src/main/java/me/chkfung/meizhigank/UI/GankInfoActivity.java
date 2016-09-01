@@ -41,6 +41,7 @@ import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.ui.Adapter.GankInfoRvAdapter;
 
 /**
+ * Gank Info Activity
  * Created by Fung on 09/08/2016.
  */
 

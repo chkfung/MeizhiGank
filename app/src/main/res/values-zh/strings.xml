@@ -19,7 +19,7 @@
 
 <resources>
     <string name="about_me">关于</string>
-    <string name="about_me_desc">好长</string>
+    <string name="about_me_desc">每天都会更新一篇值得阅读的程式员精选干货和一个精选妹纸！\n\n数据内容来源于代码家的 http://gank.io\n\n这个项目是用 MVP 和 Dagger 2 开发的，并且以 Uncle Bob\'s Clean Architecture 为模板以达到干净代码的实现。\n\n我的Github: https://github.com/chkfung\n此项目已在Github开源以支持开源精神，有兴趣的童鞋可以来看一看星一星！靴靴！</string>
     <string name="about_me_library">开源库</string>
     <string name="action_save">下载妹纸</string>
     <string name="action_share">分享</string>

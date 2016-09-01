@@ -41,6 +41,7 @@ import me.chkfung.meizhigank.ui.Adapter.AboutRvAdapter;
 import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
 
 /**
+ * About Me Activity
  * Created by Fung on 15/08/2016.
  */
 

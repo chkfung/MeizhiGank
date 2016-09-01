@@ -30,6 +30,8 @@ import butterknife.ButterKnife;
 import me.chkfung.meizhigank.R;
 
 /**
+ * Adapter for Open Source Library Author in About me
+ * {@link me.chkfung.meizhigank.ui.AboutMeActivity}
  * Created by Fung on 23/08/2016.
  */
 

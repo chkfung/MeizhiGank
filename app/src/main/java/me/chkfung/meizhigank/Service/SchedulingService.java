@@ -30,6 +30,7 @@ import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.ui.MainActivity;
 
 /**
+ * Notification Settings
  * Created by Fung on 31/08/2016.
  */
 

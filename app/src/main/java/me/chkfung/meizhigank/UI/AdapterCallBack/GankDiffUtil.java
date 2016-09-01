@@ -26,6 +26,8 @@ import java.util.Objects;
 import me.chkfung.meizhigank.Model.Day;
 
 /**
+ * New Util introduce in Support 24.2.0
+ * Still Figuring Use cases
  * Created by Fung on 29/08/2016.
  */
 

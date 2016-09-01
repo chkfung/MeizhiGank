@@ -30,6 +30,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import java.util.Calendar;
 
 /**
+ * Alarm Receiver that will repeat at 13:14
  * Created by Fung on 31/08/2016.
  */
 

@@ -35,6 +35,9 @@ import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.ui.WebActivity;
 
 /**
+ * Recycler View in Gank Activity Grid Layout
+ * A Simple Recycler View that open a Web View
+ * {@link me.chkfung.meizhigank.ui.GankInfoActivity}
  * Created by Fung on 10/08/2016.
  */
 

@@ -45,6 +45,8 @@ import me.chkfung.meizhigank.ui.GankActivity;
 import me.chkfung.meizhigank.ui.MeizhiActivity;
 
 /**
+ * Recycler View in
+ * {@link me.chkfung.meizhigank.ui.MainActivity}
  * Created by Fung on 21/07/2016.
  */
 

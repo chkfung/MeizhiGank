@@ -24,6 +24,8 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
+ * This Receiver will re-activate the alarm after device reboot.
+ * If the notification disabled in Main Activity, this service will be disabled as well
  * Created by Fung on 31/08/2016.
  */
 
