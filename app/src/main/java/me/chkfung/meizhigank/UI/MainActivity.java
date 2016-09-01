@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI;
+package me.chkfung.meizhigank.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,8 +34,8 @@ import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.Service.AlarmReceiver;
-import me.chkfung.meizhigank.UI.Adapter.MeizhiRvAdapter;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
+import me.chkfung.meizhigank.ui.Adapter.MeizhiRvAdapter;
 
 import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
 
@@ -43,6 +43,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     private static final String SAVED_INSTANCE_MEIZHI = "SAVED_INSTANCE_MEIZHI";
     private static final String NOTIFICATION_ENABLED = "NOTIFICATION_ENABLED";
+    private final MeizhiRvAdapter meizhiRvAdapter = new MeizhiRvAdapter();
+    private final AlarmReceiver alarmReceiver = new AlarmReceiver();
     @BindView(R.id.rv_meizhi)
     RecyclerView rvMeizhi;
     @BindView(R.id.refreshlayout)
@@ -51,17 +53,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     TextView toolbarTitle;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
-
-    StaggeredGridLayoutManager layoutManager;
-    ArrayList<DataInfo> MeizhiData = new ArrayList<>();
-    MeizhiRvAdapter meizhiRvAdapter = new MeizhiRvAdapter();
     @Inject
     MainPresenter mainPresenter;
     @Inject
     SharedPreferences sharedPreferences;
-
-
-    AlarmReceiver alarmReceiver = new AlarmReceiver();
+    private StaggeredGridLayoutManager layoutManager;
+    private ArrayList<DataInfo> MeizhiData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,9 +133,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         refreshlayout.setRefreshing(false);
         View rootView = findViewById(android.R.id.content);
         if (ConnectionUtil.isNetworkAvailable(this)) {
-            Snackbar.make(rootView, "Error Message: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(rootView, getString(R.string.request_fail,e.getMessage()), Snackbar.LENGTH_LONG).show();
         } else {
-            Snackbar.make(rootView, "No Internet Connection and cache unavailable", Snackbar.LENGTH_LONG)
+            Snackbar.make(rootView, R.string.internet_error, Snackbar.LENGTH_LONG)
                     .show();
         }
     }
@@ -171,11 +168,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 if (sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true)) {
                     editor.putBoolean(NOTIFICATION_ENABLED, false);
                     alarmReceiver.cancelAlarm(this);
-                    Toast.makeText(this, "Notification Disabled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.notif_disable, Toast.LENGTH_SHORT).show();
                 } else {
                     editor.putBoolean(NOTIFICATION_ENABLED, true);
                     alarmReceiver.setAlarm(this);
-                    Toast.makeText(this, "Notification Enabled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.notif_enable, Toast.LENGTH_SHORT).show();
                 }
                 editor.apply();
                 setMenuIcon(item);
@@ -240,7 +237,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
-    public void setMenuIcon(MenuItem item) {
+    private void setMenuIcon(MenuItem item) {
         if (sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true)) {
             item.setIcon(R.drawable.ic_notifications);
         } else {

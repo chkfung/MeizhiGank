@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI.Adapter;
+package me.chkfung.meizhigank.ui.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,8 +22,8 @@ import butterknife.ButterKnife;
 import me.chkfung.meizhigank.MeizhiImageView;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.UI.GankActivity;
-import me.chkfung.meizhigank.UI.MeizhiActivity;
+import me.chkfung.meizhigank.ui.GankActivity;
+import me.chkfung.meizhigank.ui.MeizhiActivity;
 
 /**
  * Created by Fung on 21/07/2016.

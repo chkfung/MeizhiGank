@@ -1,5 +1,7 @@
 package me.chkfung.meizhigank.Dagger.Module;
 
+import android.content.Context;
+
 import dagger.Module;
 import dagger.Provides;
 import me.chkfung.meizhigank.Contract.MeizhiContract;
@@ -10,16 +12,21 @@ import me.chkfung.meizhigank.Dagger.PresenterScope;
  */
 @Module
 public class MeizhiPresenterModule {
-    private MeizhiContract.View view;
+    private final MeizhiContract.View mView;
 
     public MeizhiPresenterModule(MeizhiContract.View view) {
-        this.view = view;
+        mView = view;
     }
 
     @PresenterScope
     @Provides
     MeizhiContract.View provideView() {
-        return view;
+        return mView;
     }
 
+    @PresenterScope
+    @Provides
+    Context provideContext() {
+        return mView.getContext();
+    }
 }

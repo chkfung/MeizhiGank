@@ -37,13 +37,13 @@ public class CommonUtil {
         }
     }
 
-    public static void ShareImage(Context context, String url) {
+    public static void Share(Context context, String Title, String url, String ChooserText) {
 
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_SUBJECT, "I found a cute girl!");
+        i.putExtra(Intent.EXTRA_SUBJECT, Title);
         i.putExtra(Intent.EXTRA_TEXT, url);
-        context.startActivity(Intent.createChooser(i, "Share this Meizhi to"));
+        context.startActivity(Intent.createChooser(i, ChooserText));
     }
 
     public static void FancyAnimation(View v) {

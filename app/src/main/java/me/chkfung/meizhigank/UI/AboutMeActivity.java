@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI;
+package me.chkfung.meizhigank.ui;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,7 +16,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.UI.Adapter.AboutRvAdapter;
+import me.chkfung.meizhigank.Util.CommonUtil;
+import me.chkfung.meizhigank.ui.Adapter.AboutRvAdapter;
 
 import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
 
@@ -45,7 +47,7 @@ public class AboutMeActivity extends BaseActivity {
             PackageInfo pckInfo = pck.getPackageInfo(getPackageName(), 0);
             ver = pckInfo.versionName + "." + pckInfo.versionCode;
         } catch (Exception e) {
-            ver = "Unable to retrieve Info";
+            ver = getString(R.string.version_error);
         }
         version.setText(ver);
 
@@ -78,8 +80,16 @@ public class AboutMeActivity extends BaseActivity {
             case android.R.id.home:
                 onBackPressed();
                 break;
+            case R.id.action_share:
+                CommonUtil.Share(this,getString(R.string.share_app_title),getString(R.string.share_app_url),getString(R.string.share_app_intent_chooser));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_about,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 }

@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI.Adapter;
+package me.chkfung.meizhigank.ui.Adapter;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -27,15 +27,15 @@ import butterknife.ButterKnife;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.UI.GankActivity;
 import me.chkfung.meizhigank.Util.CommonUtil;
+import me.chkfung.meizhigank.ui.GankActivity;
 
 /**
  * Created by Fung on 17/08/2016.
  */
 
 public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandableRvAdapter.ViewHolder> {
-    private int mHeaderColor;
+    private final int mHeaderColor;
     private Day data;
     private List<GankExpandableRvSubAdapter> GankAdapterReuse;
     private int[] item_height;
@@ -174,7 +174,7 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
      * Sub RecycleView
      */
     class GankExpandableRvSubAdapter extends RecyclerView.Adapter<GankExpandableRvSubAdapter.ViewHolder> {
-        List<DataInfo> dataBean;
+        final List<DataInfo> dataBean;
 
         GankExpandableRvSubAdapter(List<DataInfo> dataBean) {
             this.dataBean = dataBean;
@@ -207,7 +207,6 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
                 @Override
                 public void onClick(View v) {
                     ((GankActivity) mContext).startCustomTabIntent(Desc, url);
-//                    ((MeizhiApp) MeizhiApp.get(mcontext)).CustomTabLaunch(mcontext, Uri.parse(url));
                 }
             });
 

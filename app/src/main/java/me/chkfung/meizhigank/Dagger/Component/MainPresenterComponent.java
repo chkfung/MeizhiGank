@@ -3,7 +3,7 @@ package me.chkfung.meizhigank.Dagger.Component;
 import dagger.Component;
 import me.chkfung.meizhigank.Dagger.Module.MainPresenterModule;
 import me.chkfung.meizhigank.Dagger.PresenterScope;
-import me.chkfung.meizhigank.UI.MainActivity;
+import me.chkfung.meizhigank.ui.MainActivity;
 
 /**
  * Created by Fung on 25/08/2016.

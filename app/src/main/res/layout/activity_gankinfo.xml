@@ -14,7 +14,7 @@
         android:layout_margin="50dp"
         android:orientation="vertical"
         android:transitionName="GankTransitionCard"
-        tools:context=".UI.GankInfoActivity">
+        tools:context=".ui.GankInfoActivity">
 
         <LinearLayout
             android:id="@+id/revealTest"
@@ -28,6 +28,7 @@
                 android:id="@+id/headerImage"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
+                android:contentDescription="@string/content_desc_meizhi_image"
                 android:src="@mipmap/ic_launcher"
                 android:transitionName="GankTransitionImage" />
 

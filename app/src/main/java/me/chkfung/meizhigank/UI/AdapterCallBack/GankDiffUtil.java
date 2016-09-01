@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI.AdapterCallBack;
+package me.chkfung.meizhigank.ui.AdapterCallBack;
 
 import android.support.v7.util.DiffUtil;
 
@@ -11,8 +11,8 @@ import me.chkfung.meizhigank.Model.Day;
  */
 
 public class GankDiffUtil extends DiffUtil.Callback {
-    private Day oldData;
-    private Day newData;
+    private final Day oldData;
+    private final Day newData;
 
     public GankDiffUtil(Day oldData, Day newData) {
         this.oldData = oldData;

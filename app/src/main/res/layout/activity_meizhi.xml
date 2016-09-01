@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/md_black_1000"
-    tools:context=".UI.MeizhiActivity">
+    tools:context=".ui.MeizhiActivity">
 
     <ImageView
         android:id="@+id/image"
@@ -20,7 +20,6 @@
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:visibility="visible" />
 

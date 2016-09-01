@@ -33,9 +33,9 @@ public class PermissionUtils {
     }
 
     public static boolean permissionGranted(int requestCode, int permissionCode, int[] grantResults) {
-        if (requestCode == permissionCode) {
-            return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        if (requestCode != permissionCode) {
+            return false;
         }
-        return false;
+        return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 }

@@ -32,10 +32,10 @@ import rx.schedulers.Schedulers;
 @Module
 public class NetModule {
 
-    String mBaseUrl;
+    private final String mBaseUrl;
 
-    public NetModule(String BaseUrl) {
-        mBaseUrl = BaseUrl;
+    public NetModule() {
+        mBaseUrl = "http://gank.io/";
     }
 
     @Provides

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MeizhiGank</string>
+    <string name="about_me">关于</string>
+    <string name="about_me_author"></string>
+    <string name="about_me_desc"></string>
+    <string name="about_me_library">开源库</string>
+    <string name="action_save">下载妹纸</string>
+    <string name="action_share">分享妹纸</string>
+    <string name="author">开发人员</string>
+    <string name="content_desc_arrow">展开 / 收起</string>
+    <string name="content_desc_meizhi_image">妹纸</string>
+    <string name="content_desc_refreshButton">刷新</string>
+    <string name="copy_link">复制链接</string>
+    <string name="menu_notification">通知</string>
+    <string name="menu_title_list_grid">列 / 格</string>
+    <string name="open_in_browser"></string>
+    <string name="refresh">刷新</string>
+</resources>

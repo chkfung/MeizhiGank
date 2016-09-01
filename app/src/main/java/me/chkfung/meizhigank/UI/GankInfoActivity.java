@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI;
+package me.chkfung.meizhigank.ui;
 
 import android.animation.Animator;
 import android.os.Build;
@@ -19,7 +19,7 @@ import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.UI.Adapter.GankInfoRvAdapter;
+import me.chkfung.meizhigank.ui.Adapter.GankInfoRvAdapter;
 
 /**
  * Created by Fung on 09/08/2016.

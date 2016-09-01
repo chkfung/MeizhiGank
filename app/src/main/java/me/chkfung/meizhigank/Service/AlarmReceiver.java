@@ -46,7 +46,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
      * Sets a repeating alarm that runs once a day at approximately 8:30 a.m. When the
      * alarm fires, the app broadcasts an Intent to this WakefulBroadcastReceiver.
      *
-     * @param context
+     * @param context Context
      */
     public void setAlarm(Context context) {
         alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -109,7 +109,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
     /**
      * Cancels the alarm.
      *
-     * @param context
+     * @param context Context
      */
     // BEGIN_INCLUDE(cancel_alarm)
     public void cancelAlarm(Context context) {

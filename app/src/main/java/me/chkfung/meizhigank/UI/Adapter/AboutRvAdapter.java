@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI.Adapter;
+package me.chkfung.meizhigank.ui.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import me.chkfung.meizhigank.R;
  */
 
 public class AboutRvAdapter extends RecyclerView.Adapter<AboutRvAdapter.ViewHolder> {
-    private String[][] data;
+    private final String[][] data;
 
     public AboutRvAdapter(String[][] data) {
         this.data = data;
@@ -29,7 +29,8 @@ public class AboutRvAdapter extends RecyclerView.Adapter<AboutRvAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(AboutRvAdapter.ViewHolder holder, int position) {
-        holder.title.setText(data[position][0] + " / " + data[position][1]);
+        String formattedText = holder.itemView.getResources().getString(R.string.format_open_source_library_author, data[position][0], data[position][1]);
+        holder.title.setText(formattedText);
     }
 
     @Override

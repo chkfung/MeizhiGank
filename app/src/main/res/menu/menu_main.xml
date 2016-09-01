@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.chkfung.meizhigank.UI.MainActivity">
+    tools:context="me.chkfung.meizhigank.ui.MainActivity">
     <item
         android:id="@+id/action_about"
         android:icon="@drawable/ic_octoface"
@@ -12,6 +12,6 @@
         android:id="@+id/action_notif"
         android:icon="@drawable/ic_notifications"
         android:orderInCategory="100"
-        android:title="Notification"
+        android:title="@string/menu_notification"
         app:showAsAction="ifRoom" />
 </menu>

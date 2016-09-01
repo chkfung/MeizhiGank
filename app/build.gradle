@@ -83,7 +83,7 @@ dependencies {
     compile dependencies.logger
 
     //UI Library
-    compile dependencies.circleImageView
+//    compile dependencies.circleImageView
 
     //Testing
     testCompile dependencies.tc_jUnit
@@ -103,4 +103,4 @@ dependencies {
 
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.frogermcs.androiddevmetrics'
+//apply plugin: 'com.frogermcs.androiddevmetrics'

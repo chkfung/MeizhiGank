@@ -1,5 +1,6 @@
 package me.chkfung.meizhigank.Dagger.Presenter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import me.chkfung.meizhigank.Contract.MeizhiContract;
+import me.chkfung.meizhigank.R;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -37,6 +39,8 @@ import rx.android.schedulers.AndroidSchedulers;
 public class MeizhiPresenter implements MeizhiContract.Presenter {
     @Inject
     Scheduler scheduler;
+    @Inject
+    Context context;
     private MeizhiContract.View mView;
     private Subscription mSubscription;
     private OkHttpClient.Builder okHttpClientBuilder;
@@ -60,14 +64,14 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        Logger.e(e, "Download Failure");
+                        Logger.e(e, context.getString(R.string.download_failure));
                         mView.DownloadFailure();
                     }
 
                     @Override
                     public void onNext(Uri uri) {
                         Intent scannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-                        mView.getContext().sendBroadcast(scannerIntent);
+                        context.sendBroadcast(scannerIntent);
                     }
                 });
     }
@@ -78,7 +82,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
             @Override
             public void call(Subscriber<? super Uri> subscriber) {
                 //Create Directory
-                File appDir = new File(Environment.getExternalStorageDirectory(), "MeizhiGank");
+                File appDir = new File(Environment.getExternalStorageDirectory(), context.getString(R.string.ImageDir));
                 if (!appDir.exists()) {
                     appDir.mkdir();
                 }
@@ -135,8 +139,8 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
     }
 
     private static class ProgressResponseBody extends ResponseBody {
-        ResponseBody responseBody;
-        progressListener downloadProgress;
+        final ResponseBody responseBody;
+        final progressListener downloadProgress;
         BufferedSource bufferedSource;
 
         private ProgressResponseBody(ResponseBody responseBody, progressListener downloadProgress) {

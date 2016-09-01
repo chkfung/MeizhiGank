@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="me.chkfung.meizhigank.UI.MainActivity">
+    tools:context="me.chkfung.meizhigank.ui.MainActivity">
 
     <include layout="@layout/view_toolbar" />
 

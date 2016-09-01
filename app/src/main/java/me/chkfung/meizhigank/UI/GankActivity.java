@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI;
+package me.chkfung.meizhigank.ui;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -37,8 +37,8 @@ import me.chkfung.meizhigank.Dagger.Presenter.GankPresenter;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.UI.Adapter.GankExpandableRvAdapter;
-import me.chkfung.meizhigank.UI.Adapter.GankRvAdapter;
+import me.chkfung.meizhigank.ui.Adapter.GankExpandableRvAdapter;
+import me.chkfung.meizhigank.ui.Adapter.GankRvAdapter;
 
 import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
 
@@ -49,9 +49,11 @@ import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
 public class GankActivity extends BaseActivity implements GankContract.View {
 
     private static final String SAVED_INSTANCE_GANK = "SAVED_INSTANCE_GANK";
-
-    String mDate;
-
+    private static final String INTENT_EXTRA_DATE = "Date";
+    private static final String SHARED_PREF_LIST = "SHARED_PREF_LIST";
+    private final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+    private final GankExpandableRvAdapter gankExpandableRvAdapter = new GankExpandableRvAdapter();
+    private final GankRvAdapter gankRvAdapter = new GankRvAdapter();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.expandable_listview)
@@ -66,32 +68,28 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     ImageButton refresh;
     @BindView(R.id.viewswitcher_loading)
     ViewSwitcher viewswitcherLoading;
-
     @Inject
     CustomTabsIntent.Builder customTabsIntentBuilder;
     @Inject
     GankPresenter mPresenter;
     @Inject
     SharedPreferences sharedPreferences;
-
-    Day mDay;
-    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-    GankExpandableRvAdapter gankExpandableRvAdapter = new GankExpandableRvAdapter();
-    GankRvAdapter gankRvAdapter = new GankRvAdapter();
-    StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private String mDate;
+    private Day mDay;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gank);
         ButterKnife.bind(this);
-        mDate = getIntent().getExtras().getString("Date");
+        mDate = getIntent().getExtras().getString(INTENT_EXTRA_DATE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(mDate);
         FancyAnimation(toolbarTitle);
 
 
+        StaggeredGridLayoutManager staggeredGridLayoutManager;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         else
@@ -129,7 +127,7 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_gank, menu);
-        setMenuIcon(menu);
+        setMenuIcon(menu.findItem(R.id.action_viewswitcher));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -154,16 +152,13 @@ public class GankActivity extends BaseActivity implements GankContract.View {
                 break;
             case R.id.action_viewswitcher:
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                if (viewswitcher.getCurrentView() == expandableListview) {
-                    viewswitcher.showNext();
-                    editor.putBoolean("GRID_LAYOUT", true);
-                    item.setIcon(R.drawable.ic_view_expand);
+                if (sharedPreferences.getBoolean(SHARED_PREF_LIST, true)) {
+                    editor.putBoolean(SHARED_PREF_LIST, false);
                 } else {
-                    viewswitcher.showPrevious();
-                    editor.putBoolean("GRID_LAYOUT", false);
-                    item.setIcon(R.drawable.ic_view_grid);
+                    editor.putBoolean(SHARED_PREF_LIST, true);
                 }
                 editor.apply();
+                setMenuIcon(item);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -173,8 +168,9 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     public void showError(Throwable e) {
         progressbar.setVisibility(View.INVISIBLE);
         viewswitcherLoading.showNext();
-        Snackbar.make(findViewById(android.R.id.content), "Request Failed: " + e.getMessage(), Snackbar.LENGTH_LONG)
-                .setAction("Retry", new View.OnClickListener() {
+        String errorMessage = getString(R.string.request_fail,e.getMessage());
+        Snackbar.make(findViewById(android.R.id.content),errorMessage, Snackbar.LENGTH_LONG)
+                .setAction(R.string.retry, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         onRefresh();
@@ -190,12 +186,14 @@ public class GankActivity extends BaseActivity implements GankContract.View {
         mPresenter.getGank(mDate);
     }
 
-    public void setMenuIcon(Menu menu) {
-        if (sharedPreferences.getBoolean("GRID_LAYOUT", false)) {
-            viewswitcher.showNext();
-            menu.findItem(R.id.action_viewswitcher).setIcon(R.drawable.ic_view_expand);
+    private void setMenuIcon(MenuItem item) {
+        if (sharedPreferences.getBoolean(SHARED_PREF_LIST, true)) {
+            if (viewswitcher.getCurrentView() != expandableListview)
+                viewswitcher.showPrevious();
+            item.setIcon(R.drawable.ic_view_grid);
         } else {
-            menu.findItem(R.id.action_viewswitcher).setIcon(R.drawable.ic_view_grid);
+            viewswitcher.showNext();
+            item.setIcon(R.drawable.ic_view_expand);
         }
     }
 
@@ -223,7 +221,7 @@ public class GankActivity extends BaseActivity implements GankContract.View {
         drawable.draw(canvas);
 
         //Combine Intent and Icon
-        customTabsIntentBuilder.setActionButton(icon, "Share Url", pi, true);
+        customTabsIntentBuilder.setActionButton(icon, getString(R.string.share_url), pi, true);
 
         //Build and Launch Url
         customTabsIntentBuilder.build().launchUrl(this, Uri.parse(url));

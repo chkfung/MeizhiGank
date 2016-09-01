@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="me.chkfung.meizhigank.UI.AboutMeActivity">
+    tools:context="me.chkfung.meizhigank.ui.AboutMeActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -23,7 +23,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="24dp"
@@ -32,6 +31,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/content_desc_meizhi_image"
                     android:padding="12dp"
                     android:src="@mipmap/ic_launcher" />
 
@@ -41,22 +41,23 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="cursive"
                     android:padding="12dp"
-                    android:text="Meizhi &amp; Gank.io"
+                    android:text="@string/meizhi_amp_gank_io"
                     android:textSize="24sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Proudly Presented By ChkFung" />
+                    android:text="@string/proudly_presented_by_chkfung" />
 
                 <TextView
                     android:id="@+id/version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif-monospace"
-                    android:text="1.0.0" />
+                    tools:text="1.0.0" />
             </LinearLayout>
+
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -68,10 +69,11 @@
 
                 <TextView
                     android:id="@id/toolbar_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="cursive"
                     android:text="@string/about_me"
+                    android:textAlignment="viewStart"
                     android:textSize="20sp" />
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -86,15 +88,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
             android:orientation="vertical"
+
             android:padding="4dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="Meizhi Project" />
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="@string/meizhi_project"
+                android:textColor="@color/textColor" />
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -105,8 +110,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:autoLink="web"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="This Project is developed using MVP and Dagger 2" />
+                    android:text="@string/about_me_desc"
+                    android:textIsSelectable="true" />
             </android.support.v7.widget.CardView>
 
 
@@ -114,28 +121,55 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="Author" />
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="@string/author"
+                android:textColor="@color/textColor" />
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardUseCompatPadding="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="Client Designed and developed by ChkFung.\nData Provided By Gank.io." />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/placeholderImage"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/author_image" />
+
+                    <TextView
+                        android:id="@+id/placeholderAuthor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/placeholderImage"
+                        android:layout_toEndOf="@id/placeholderImage"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:text="@string/about_me_author"
+                        android:textColor="@color/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/placeholderImage"
+                        android:layout_toEndOf="@id/placeholderImage"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="@string/author_info" />
+                </RelativeLayout>
             </android.support.v7.widget.CardView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="Open Source Library Used" />
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="@string/about_me_library"
+                android:textColor="@color/textColor" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_about"

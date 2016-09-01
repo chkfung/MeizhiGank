@@ -39,8 +39,8 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="http://chkfung.me/"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="http://chkfung.me/" />
 
         </LinearLayout>
     </android.support.v7.widget.Toolbar>

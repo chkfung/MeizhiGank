@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI.Adapter;
+package me.chkfung.meizhigank.ui.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,14 +13,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.UI.WebActivity;
+import me.chkfung.meizhigank.ui.WebActivity;
 
 /**
  * Created by Fung on 10/08/2016.
  */
 
 public class GankInfoRvAdapter extends RecyclerView.Adapter<GankInfoRvAdapter.ViewHolder> {
-    private ArrayList<DataInfo> Data;
+    private final ArrayList<DataInfo> Data;
 
     public GankInfoRvAdapter(ArrayList<DataInfo> Data) {
         this.Data = Data;

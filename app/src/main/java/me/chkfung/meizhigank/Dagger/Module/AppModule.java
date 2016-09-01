@@ -16,7 +16,7 @@ import me.chkfung.meizhigank.Constants;
 @Module
 public class AppModule {
 
-    Application mApplication;
+    private final Application mApplication;
 
     public AppModule(Application application) {
         mApplication = application;

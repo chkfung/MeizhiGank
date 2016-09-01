@@ -32,7 +32,7 @@ public class DataInfo implements Parcelable {
     public DataInfo() {
     }
 
-    protected DataInfo(Parcel in) {
+    private DataInfo(Parcel in) {
         this._id = in.readString();
         this.createdAt = in.readString();
         this.desc = in.readString();

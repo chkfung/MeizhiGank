@@ -31,13 +31,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Test" />
+                tools:text="Test" />
 
             <ImageView
                 android:id="@+id/ic_rotate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:contentDescription="@string/content_desc_arrow"
                 android:src="@drawable/ic_keyboard_arrow_down" />
         </LinearLayout>
     </android.support.v7.widget.CardView>

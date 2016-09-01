@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_gank"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -23,6 +24,7 @@
             android:id="@+id/headerImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/content_desc_meizhi_image"
             android:scaleType="centerInside"
             android:transitionName="GankTransitionImage" />
 
@@ -30,8 +32,8 @@
             android:id="@+id/headerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Test"
             android:textColor="@color/md_white_1000"
-            android:transitionName="GankTransitionText" />
+            android:transitionName="GankTransitionText"
+            tools:text="Test" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -16,12 +16,6 @@ public interface NetworkApi {
     @GET("api/data/福利/{amount}/{page}")
     Observable<Meizhi> getMeizhi(@Path("amount") int meizhiCount, @Path("page") int page);
 
-    @GET("api/data/Android/{amount}/{page}")
-    Observable<Meizhi> getAndroid(@Path("amount") int meizhiCount, @Path("page") int page);
-
-//    @GET("api/day/{year}/{month}/{day}")
-//    Observable<Day> getDay(@Path("year") int year, @Path("month") int month, @Path("day") int day);
-
     @GET("api/day/{date}")
     Observable<Day> getDay(@Path("date") String date);
 }

@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI.Adapter;
+package me.chkfung.meizhigank.ui.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,13 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.Model.Day;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.UI.GankInfoActivity;
 import me.chkfung.meizhigank.Util.CommonUtil;
+import me.chkfung.meizhigank.ui.GankInfoActivity;
 
 /**
  * Created by Fung on 04/08/2016.
@@ -56,18 +58,11 @@ public class GankRvAdapter extends RecyclerView.Adapter<GankRvAdapter.ViewHolder
                 ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,
                         anim1, anim2, anim3);
                 Intent i = new Intent(context, GankInfoActivity.class);
-                i.putParcelableArrayListExtra("Data", new ArrayList<Parcelable>(CommonUtil.getDataOf(data, cat)));
-                context.startActivity(i, optionsCompat.toBundle());
-
-//                FragmentManager fm = ((AppCompatActivity) holder.itemView.getContext()).getSupportFragmentManager();
-//                fm.beginTransaction()
-//                        .add(new GankFragment(), "tag")
-//                        .addSharedElement(holder.headerImage, "headerAnim")
-//                        .addSharedElement(holder.abc, "abc")
-//                        .commit();
-//                GankFragment gankFragment = new GankFragment();
-//
-//                gankFragment.show(fm,"tag");
+                List<DataInfo> dataInfosList = CommonUtil.getDataOf(data, cat);
+                if (dataInfosList != null) {
+                    i.putParcelableArrayListExtra("Data", new ArrayList<Parcelable>(dataInfosList));
+                    context.startActivity(i, optionsCompat.toBundle());
+                }
             }
         });
     }

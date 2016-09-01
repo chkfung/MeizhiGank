@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI;
+package me.chkfung.meizhigank.ui;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -54,7 +54,7 @@ public class WebActivity extends BaseActivity {
 
         webview.loadUrl(Url);
         WebSettings webSettings = webview.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+//        webSettings.setJavaScriptEnabled(true);
 
         toolbarTitle.setSelected(true);
         toolbarTitle.setText(Title);

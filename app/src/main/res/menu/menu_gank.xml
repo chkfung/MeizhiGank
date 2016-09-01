@@ -5,6 +5,6 @@
     <item
         android:id="@+id/action_viewswitcher"
         android:icon="@drawable/ic_view_grid"
-        android:title="List / Popup"
+        android:title="@string/menu_title_list_grid"
         app:showAsAction="always" />
 </menu>

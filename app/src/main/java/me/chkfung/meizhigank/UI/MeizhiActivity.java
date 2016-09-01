@@ -1,4 +1,4 @@
-package me.chkfung.meizhigank.UI;
+package me.chkfung.meizhigank.ui;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
@@ -125,8 +125,8 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
     @Override
     public void DownloadFailure() {
-        Snackbar.make(findViewById(android.R.id.content), "Save Failed", Snackbar.LENGTH_LONG)
-                .setAction("Retry", new View.OnClickListener() {
+        Snackbar.make(findViewById(android.R.id.content), R.string.save_failed, Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.retry), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         SaveMenuTapped();
@@ -161,7 +161,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                 onBackPressed();
                 break;
             case R.id.action_share:
-                CommonUtil.ShareImage(this, url);
+                CommonUtil.Share(this, getString(R.string.share_meizhi_title), url, getString(R.string.share_meizhi_intent_chooser));
                 break;
             case R.id.action_save:
                 SaveMenuTapped();
@@ -178,12 +178,12 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         if (PermissionUtils.permissionGranted(requestCode, SAVE_MEIZHI, grantResults)) {
             //Important Permission such as read external storage required a restart of Application to take effect
             Snackbar.make(findViewById(android.R.id.content)
-                    , "Permission Granted! Image Saving will be taking effect on next Restart"
+                    , R.string.Permission_granted
                     , Snackbar.LENGTH_INDEFINITE)
-                    .setAction("OK", null)
+                    .setAction(android.R.string.ok, null)
                     .show();
         } else {
-            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT)
+            Toast.makeText(this, R.string.Permission_denie, Toast.LENGTH_SHORT)
                     .show();
         }
     }
@@ -198,7 +198,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     public void ImageSaved() {
         progressbar.setProgress(100);
         progressbar.setVisibility(View.GONE);
-        Snackbar.make(findViewById(android.R.id.content), "Image Saved", Snackbar.LENGTH_SHORT)
+        Snackbar.make(findViewById(android.R.id.content), R.string.image_saved, Snackbar.LENGTH_SHORT)
                 .show();
     }
 

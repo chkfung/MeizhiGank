@@ -37,7 +37,7 @@ public class Day implements Parcelable {
     public Day() {
     }
 
-    protected Day(Parcel in) {
+    private Day(Parcel in) {
         this.error = in.readByte() != 0;
         this.results = in.readParcelable(ResultsBean.class.getClassLoader());
         this.category = in.createStringArrayList();
@@ -120,7 +120,7 @@ public class Day implements Parcelable {
         public ResultsBean() {
         }
 
-        protected ResultsBean(Parcel in) {
+        ResultsBean(Parcel in) {
             this.Android = in.createTypedArrayList(DataInfo.CREATOR);
             this.iOS = in.createTypedArrayList(DataInfo.CREATOR);
             this.App = in.createTypedArrayList(DataInfo.CREATOR);

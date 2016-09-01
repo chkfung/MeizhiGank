@@ -15,17 +15,23 @@ import me.chkfung.meizhigank.R;
  */
 @Module
 public class GankPresenterModule {
-    private GankContract.View view;
+    private final GankContract.View mView;
 
 
     public GankPresenterModule(GankContract.View view) {
-        this.view = view;
+        mView = view;
     }
 
     @PresenterScope
     @Provides
     GankContract.View provideGankContractView() {
-        return view;
+        return mView;
+    }
+
+    @PresenterScope
+    @Provides
+    Context provideContext() {
+        return mView.getContext();
     }
 
     @PresenterScope
