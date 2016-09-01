@@ -31,6 +31,7 @@ import me.chkfung.meizhigank.Dagger.PresenterScope;
 import me.chkfung.meizhigank.R;
 
 /**
+ * Gank Presenter Module to provide required Object
  * Created by Fung on 26/08/2016.
  */
 @Module

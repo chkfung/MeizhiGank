@@ -36,6 +36,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 
 /**
+ * Main Presenter that perform business logic
  * Created by Fung on 26/07/2016.
  */
 

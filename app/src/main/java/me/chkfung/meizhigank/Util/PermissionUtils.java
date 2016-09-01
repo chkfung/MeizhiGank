@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Permission Util for easy life
  * Created by Fung on 01/08/2016.
  */
 

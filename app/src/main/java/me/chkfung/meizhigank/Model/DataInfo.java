@@ -25,6 +25,7 @@ import android.os.Parcelable;
 import java.util.Date;
 
 /**
+ * Data Info is a object that contain the core data and keep reusing by other 2 model
  * Created by Fung on 19/08/2016.
  */
 public class DataInfo implements Parcelable {

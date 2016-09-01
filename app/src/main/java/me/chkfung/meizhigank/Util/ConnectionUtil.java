@@ -23,6 +23,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 
 /**
+ * Detect Connectivity
  * Created by Fung on 03/08/2016.
  */
 

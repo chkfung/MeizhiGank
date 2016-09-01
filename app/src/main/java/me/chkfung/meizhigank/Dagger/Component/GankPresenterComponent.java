@@ -25,6 +25,7 @@ import me.chkfung.meizhigank.Dagger.PresenterScope;
 import me.chkfung.meizhigank.ui.GankActivity;
 
 /**
+ * Gank Presenter Component injection
  * Created by Fung on 26/08/2016.
  */
 @PresenterScope

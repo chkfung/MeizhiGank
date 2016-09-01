@@ -32,6 +32,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
+ * Gank Presenter that perform business logic
  * Created by Fung on 04/08/2016.
  */
 

@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import me.chkfung.meizhigank.R;
 
 /**
+ * Base Activity to make life easy
  * Created by Fung on 21/07/2016.
  */
 

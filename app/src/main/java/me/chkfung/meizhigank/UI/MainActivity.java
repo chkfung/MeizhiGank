@@ -1,3 +1,22 @@
+/*
+ * Meizhi & Gank.io
+ * Copyright (C) 2016 ChkFung
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package me.chkfung.meizhigank.ui;
 
 import android.content.Intent;
@@ -33,8 +52,8 @@ import me.chkfung.meizhigank.Dagger.Presenter.MainPresenter;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.R;
-import me.chkfung.meizhigank.Service.AlarmReceiver;
 import me.chkfung.meizhigank.Util.ConnectionUtil;
+import me.chkfung.meizhigank.service.AlarmReceiver;
 import me.chkfung.meizhigank.ui.Adapter.MeizhiRvAdapter;
 
 import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
@@ -184,10 +203,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     /**
      * Toggle Night Mode
      *
-     * @param v fab
      */
     @OnClick(R.id.fab)
-    public void onClick(View v) {
+    public void onClick() {
         appbar.setExpanded(true, false);
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
             case Configuration.UI_MODE_NIGHT_YES:

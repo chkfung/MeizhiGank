@@ -52,6 +52,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
+ * Meizhi Presenter that perform business logic
  * Created by Fung on 01/08/2016.
  */
 

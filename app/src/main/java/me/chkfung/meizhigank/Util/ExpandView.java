@@ -24,6 +24,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 /**
+ * A View that width = height
  * Created by Fung on 09/08/2016.
  */
 

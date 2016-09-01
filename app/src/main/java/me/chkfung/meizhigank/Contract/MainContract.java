@@ -25,6 +25,7 @@ import me.chkfung.meizhigank.Base.BaseContract;
 import me.chkfung.meizhigank.Model.DataInfo;
 
 /**
+ * Main Activity MVP Contract
  * Created by Fung on 21/07/2016.
  */
 

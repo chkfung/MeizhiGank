@@ -19,7 +19,7 @@
 
 <resources>
     <string name="toolbar_title" translatable="false">M e i z h i</string>
-    <string name="app_name">Meizhi &amp; Gank.io</string>
+    <string name="app_name" translatable="false">Meizhi &amp; Gank.io</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="action_share">Share</string>
     <string name="action_save">Save</string>
@@ -33,24 +33,24 @@
     <string name="via_format" translatable="false"> (via @%s )</string>
     <string name="format_open_source_library_author" translatable="false"> %s / %s </string>
     <string name="meizhi_amp_gank_io" translatable="false">Meizhi &amp; Gank.io</string>
-    <string name="proudly_presented_by_chkfung">Proudly Presented By ChkFung</string>
+    <string name="proudly_presented_by_chkfung" translatable="false">Proudly Presented By ChkFung</string>
     <string name="meizhi_project" translatable="false">Meizhi Project</string>
     <string name="about_me_desc">A concise of Programmer Worth Readings and a Pretty Meizhi update on every weekday.\n\nData provided by daimajia: http://gank.io \n\nThis Project is developed using MVP structure and Dagger 2 as a best practice of Uncle Bob\'s Clean Architecture.\n\nMy Github: https://github.com/chkfung \nThis Project is currently open source at GitHub to support the open source community. </string>
     <string name="author">Author</string>
-    <string name="about_me_author">ChkFung</string>
+    <string name="about_me_author" translatable="false">ChkFung</string>
     <string name="about_me_library">Open Source Library Used</string>
     <string name="menu_title_list_grid">List / Popup</string>
     <string name="menu_notification">Notification</string>
     <string name="author_info">Client Design and Develop</string>
     <string name="download_failure">Download Failure</string>
-    <string name="ImageDir">MeizhiGank</string>
+    <string name="ImageDir" translatable="false">MeizhiGank</string>
     <string name="Notification_bigText">New Worth Readings and Meizhi Arrived!</string>
     <string name="Notification_content">Programmer Worth Readings and Meizhi Updated</string>
     <string name="share_this_app">Share this app</string>
     <string name="share_meizhi_title">I found a cute Meizhi</string>
     <string name="share_meizhi_intent_chooser">"Share Meizhi to "</string>
     <string name="share_app_title">This App is AMeiZhing!</string>
-    <string name="share_app_url">https://playstore/</string>
+    <string name="share_app_url" translatable="false">https://playstore/</string>
     <string name="share_app_intent_chooser">Share this App to</string>
     <string name="version_error">Unable to retrieve Info</string>
     <string name="request_fail">Request Failed: %s</string>
@@ -62,5 +62,5 @@
     <string name="save_failed">Save Failed</string>
     <string name="Permission_granted">Permission Granted! Image Saving will be taking effect on next Restart</string>
     <string name="Permission_denie">Permission Denied</string>
-    <string name="image_saved">Image Saved</string>
+    <string name="image_saved">You used Master Ball on this Meizhi!</string>
 </resources>

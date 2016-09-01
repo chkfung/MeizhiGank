@@ -23,6 +23,7 @@ import me.chkfung.meizhigank.Base.BaseContract;
 import me.chkfung.meizhigank.Model.Day;
 
 /**
+ * Gank Activity MVP Contract
  * Created by Fung on 04/08/2016.
  */
 

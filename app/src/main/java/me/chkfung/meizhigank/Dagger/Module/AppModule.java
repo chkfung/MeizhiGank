@@ -30,6 +30,7 @@ import dagger.Provides;
 import me.chkfung.meizhigank.Constants;
 
 /**
+ * AppModule provide required object
  * Created by Fung on 12/08/2016.
  */
 @Module

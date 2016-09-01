@@ -22,6 +22,7 @@ package me.chkfung.meizhigank.Dagger;
 import javax.inject.Scope;
 
 /**
+ * Presenter Scope is not maintained, thus it life cycle will be destroy with activity
  * Created by Fung on 25/08/2016.
  */
 

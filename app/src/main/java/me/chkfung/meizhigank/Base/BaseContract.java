@@ -22,6 +22,7 @@ package me.chkfung.meizhigank.Base;
 import android.content.Context;
 
 /**
+ * Base Contract for MVP
  * Created by Fung on 26/07/2016.
  */
 

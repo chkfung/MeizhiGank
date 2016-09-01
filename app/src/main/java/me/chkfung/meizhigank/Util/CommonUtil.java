@@ -30,6 +30,7 @@ import me.chkfung.meizhigank.Model.DataInfo;
 import me.chkfung.meizhigank.Model.Day;
 
 /**
+ * Common Util
  * Created by Fung on 16/08/2016.
  */
 

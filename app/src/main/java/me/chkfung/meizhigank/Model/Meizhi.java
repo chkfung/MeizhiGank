@@ -22,6 +22,7 @@ package me.chkfung.meizhigank.Model;
 import java.util.List;
 
 /**
+ * Meizhi Object is use to handle Main Activity Response
  * Created by Fung on 21/07/2016.
  */
 

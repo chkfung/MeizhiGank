@@ -24,6 +24,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
+ * Can be removed
  * Created by Fung on 25/07/2016.
  */
 

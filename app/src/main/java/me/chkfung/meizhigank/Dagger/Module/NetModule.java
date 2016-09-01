@@ -46,6 +46,7 @@ import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
 /**
+ * NetModule Object
  * Created by Fung on 12/08/2016.
  */
 @Module

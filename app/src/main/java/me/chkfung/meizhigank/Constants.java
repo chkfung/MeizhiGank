@@ -20,6 +20,7 @@
 package me.chkfung.meizhigank;
 
 /**
+ * Constants of the Application
  * Created by Fung on 26/07/2016.
  */
 

@@ -18,13 +18,11 @@
   -->
 
 <resources>
-    <string name="app_name">MeizhiGank</string>
     <string name="about_me">关于</string>
-    <string name="about_me_author"></string>
-    <string name="about_me_desc"></string>
+    <string name="about_me_desc">好长</string>
     <string name="about_me_library">开源库</string>
     <string name="action_save">下载妹纸</string>
-    <string name="action_share">分享妹纸</string>
+    <string name="action_share">分享</string>
     <string name="author">开发人员</string>
     <string name="content_desc_arrow">展开 / 收起</string>
     <string name="content_desc_meizhi_image">妹纸</string>
@@ -32,6 +30,26 @@
     <string name="copy_link">复制链接</string>
     <string name="menu_notification">通知</string>
     <string name="menu_title_list_grid">列 / 格</string>
-    <string name="open_in_browser"></string>
+    <string name="open_in_browser">在浏览器打开</string>
     <string name="refresh">刷新</string>
+    <string name="Notification_bigText">今天的日报和妹子都准备好了!</string>
+    <string name="Notification_content">今天的日报和妹子都准备好了!</string>
+    <string name="Permission_denie">权限取得失败</string>
+    <string name="Permission_granted">取得权限! 请重启APP生效</string>
+    <string name="author_info">设计与开发</string>
+    <string name="download_failure">下载失败</string>
+    <string name="image_saved">大师球捕抓妹子成功!</string>
+    <string name="internet_error">无法连接</string>
+    <string name="notif_disable">通知取消</string>
+    <string name="notif_enable">通知开启</string>
+    <string name="request_fail">请求失败: %s</string>
+    <string name="retry">重试</string>
+    <string name="save_failed">下载失败</string>
+    <string name="share_app_intent_chooser">分享APP</string>
+    <string name="share_app_title">这个APP 可真棒!</string>
+    <string name="share_meizhi_intent_chooser">分享妹子到</string>
+    <string name="share_meizhi_title">捕抓到一个妹子和你分享!</string>
+    <string name="share_this_app">分享APP</string>
+    <string name="share_url">分享链接</string>
+    <string name="version_error">取得失败</string>
 </resources>

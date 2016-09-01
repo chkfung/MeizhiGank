@@ -25,6 +25,7 @@ import me.chkfung.meizhigank.Base.BaseContract;
 import rx.Observable;
 
 /**
+ * Meizhi Activity MVP Contract
  * Created by Fung on 26/07/2016.
  */
 

@@ -25,6 +25,7 @@ import me.chkfung.meizhigank.Dagger.PresenterScope;
 import me.chkfung.meizhigank.ui.MainActivity;
 
 /**
+ * Main Presenter Component Injection
  * Created by Fung on 25/08/2016.
  */
 @PresenterScope

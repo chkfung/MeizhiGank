@@ -27,6 +27,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
+ * Day Object is used to parse Gank Activity Response
  * Created by Fung on 04/08/2016.
  */
 

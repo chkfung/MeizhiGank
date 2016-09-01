@@ -27,6 +27,7 @@ import me.chkfung.meizhigank.Contract.MeizhiContract;
 import me.chkfung.meizhigank.Dagger.PresenterScope;
 
 /**
+ * Provide Meizhi Presenter Object
  * Created by Fung on 29/08/2016.
  */
 @Module

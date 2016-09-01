@@ -32,6 +32,7 @@ import me.chkfung.meizhigank.NetworkApi;
 import rx.Scheduler;
 
 /**
+ * AppComponent preserved by Application class to maintain global
  * Created by Fung on 12/08/2016.
  */
 @Singleton

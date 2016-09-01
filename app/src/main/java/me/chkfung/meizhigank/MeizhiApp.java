@@ -34,6 +34,7 @@ import me.chkfung.meizhigank.Dagger.Module.NetModule;
 //import com.frogermcs.androiddevmetrics.AndroidDevMetrics;
 
 /**
+ * Application Class to initialize Dagger dependencies
  * Created by Fung on 21/07/2016.
  */
 

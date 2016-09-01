@@ -27,6 +27,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
+ * Scroll Aware Behavior
  * Created by Fung on 18/08/2016.
  */
 
