@@ -35,10 +35,10 @@ import android.view.animation.Transformation;
 
 public class LoadingCircleView extends View {
 
-    LodingCircleViewAnim mLodingCircleViewAnim;
     private Paint OuterCircle;
     private Paint PaddingCircle;
     private Paint ProgressCircle;
+    private RectF rectF;
     private long animDuration = 2000;
     private float sweepAngle = 0;
     private float progressCirclePadding = 10;
@@ -65,8 +65,8 @@ public class LoadingCircleView extends View {
 
     private void init() {
 
-        mLodingCircleViewAnim = new LodingCircleViewAnim();
-        mLodingCircleViewAnim.setDuration(animDuration);
+        LoadingCircleViewAnim mLoadingCircleViewAnim = new LoadingCircleViewAnim();
+        mLoadingCircleViewAnim.setDuration(animDuration);
 
         OuterCircle = new Paint();
         OuterCircle.setAntiAlias(true);
@@ -84,6 +84,7 @@ public class LoadingCircleView extends View {
         ProgressCircle.setStyle(Paint.Style.FILL);
         ProgressCircle.setColor(Color.argb(255, 255, 255, 255));
 
+        rectF = new RectF();
     }
 
     @Override
@@ -92,7 +93,8 @@ public class LoadingCircleView extends View {
         canvas.drawCircle(getMeasuredWidth() / 2, getMeasuredHeight() / 2, getMeasuredWidth() / 2, PaddingCircle);
         canvas.drawCircle(getMeasuredWidth() / 2, getMeasuredHeight() / 2, getMeasuredWidth() / 2 - progressCirclePadding / 2, OuterCircle);
 
-        RectF rectF = new RectF(progressCirclePadding, progressCirclePadding, getMeasuredWidth() - progressCirclePadding, getMeasuredWidth() - progressCirclePadding);
+        rectF.set(progressCirclePadding, progressCirclePadding, getMeasuredWidth() - progressCirclePadding, getMeasuredWidth() - progressCirclePadding);
+
         canvas.drawArc(rectF, -90f, sweepAngle, true, ProgressCircle);
     }
 
@@ -101,15 +103,13 @@ public class LoadingCircleView extends View {
         invalidate();
     }
 
-    private class LodingCircleViewAnim extends Animation {
+    private class LoadingCircleViewAnim extends Animation {
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation t) {
             super.applyTransformation(interpolatedTime, t);
             if (interpolatedTime < 1.0f) {
                 sweepAngle = 360 * interpolatedTime;
                 invalidate();
-            } else {
-//                startAnimAutomatic(fillIn);
             }
 
         }

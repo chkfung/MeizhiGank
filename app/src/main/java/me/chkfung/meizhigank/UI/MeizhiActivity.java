@@ -34,7 +34,6 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -56,6 +55,7 @@ import me.chkfung.meizhigank.Dagger.Presenter.MeizhiPresenter;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.Util.CommonUtil;
+import me.chkfung.meizhigank.Util.LoadingCircleView;
 import me.chkfung.meizhigank.Util.PermissionUtils;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -70,7 +70,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.progressbar)
-    ProgressBar progressbar;
+    LoadingCircleView progressbar;
     @BindView(R.id.frame_meizhi)
     FrameLayout frameMeizhi;
     @Inject
@@ -145,6 +145,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
     @Override
     public void DownloadFailure() {
+        progressbar.setVisibility(View.GONE);
         Snackbar.make(findViewById(android.R.id.content), R.string.save_failed, Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.retry), new View.OnClickListener() {
                     @Override
@@ -171,6 +172,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
             Logger.i("Granted");
             mPresenter.SaveImage(url);
             progressbar.setVisibility(View.VISIBLE);
+            progressbar.setProgress(0);
         }
     }
 
@@ -217,9 +219,15 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     @Override
     public void ImageSaved() {
         progressbar.setProgress(100);
-        progressbar.setVisibility(View.GONE);
         Snackbar.make(findViewById(android.R.id.content), R.string.image_saved, Snackbar.LENGTH_SHORT)
                 .show();
+
+        progressbar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressbar.setVisibility(View.GONE);
+            }
+        }, 500);
     }
 
     @Override

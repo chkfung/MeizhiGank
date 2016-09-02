@@ -48,7 +48,7 @@
     <string name="share_this_app">Share this app</string>
     <string name="share_meizhi_title">I found a cute Meizhi</string>
     <string name="share_meizhi_intent_chooser">"Share Meizhi to "</string>
-    <string name="share_app_title">This App is AMeiZhing!</string>
+    <string name="share_app_title">This App is Amazing!</string>
     <string name="share_app_url" translatable="false">https://play.google.com/store/apps/details?id=me.chkfung.meizhigankio</string>
     <string name="share_app_intent_chooser">Share this App to</string>
     <string name="version_error">Unable to retrieve Info</string>
@@ -61,5 +61,5 @@
     <string name="save_failed">Save Failed</string>
     <string name="Permission_granted">Permission Granted! Image Saving will be taking effect on next Restart</string>
     <string name="Permission_denie">Permission Denied</string>
-    <string name="image_saved">You used Master Ball on this Meizhi!</string>
+    <string name="image_saved">Image saved successfully!</string>
 </resources>

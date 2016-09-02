@@ -251,7 +251,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     public void onBackPressed() {
         //Custom Exit Application Animation
         super.onBackPressed();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(R.anim.app_quit_in, R.anim.app_quit_out);
     }
 
     private void setMenuIcon(MenuItem item) {
