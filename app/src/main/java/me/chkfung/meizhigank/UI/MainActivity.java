@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     private static final String SAVED_INSTANCE_MEIZHI = "SAVED_INSTANCE_MEIZHI";
     private static final String NOTIFICATION_ENABLED = "NOTIFICATION_ENABLED";
+    private static final String SHARED_PREF_DAY = "SHARED_PREF_DAY";
     private final MeizhiRvAdapter meizhiRvAdapter = new MeizhiRvAdapter();
     private final AlarmReceiver alarmReceiver = new AlarmReceiver();
     @BindView(R.id.rv_meizhi)
@@ -80,6 +81,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
+//        setDayNightMode(sharedPreferences.getBoolean(SHARED_PREF_DAY,true));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -151,7 +154,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         refreshlayout.setRefreshing(false);
         View rootView = findViewById(android.R.id.content);
         if (ConnectionUtil.isNetworkAvailable(this)) {
-            Snackbar.make(rootView, getString(R.string.request_fail,e.getMessage()), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(rootView, getString(R.string.request_fail, e.getMessage()), Snackbar.LENGTH_LONG).show();
         } else {
             Snackbar.make(rootView, R.string.internet_error, Snackbar.LENGTH_LONG)
                     .show();
@@ -201,24 +204,32 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     /**
      * Toggle Night Mode
-     *
      */
     @OnClick(R.id.fab)
     public void onClick() {
         appbar.setExpanded(true, false);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
             case Configuration.UI_MODE_NIGHT_YES:
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                editor.putBoolean(SHARED_PREF_DAY, true);
                 break;
             case Configuration.UI_MODE_NIGHT_NO:
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                editor.putBoolean(SHARED_PREF_DAY, false);
                 break;
         }
+        editor.apply();
+        setDayNightMode(sharedPreferences.getBoolean(SHARED_PREF_DAY, true));
         //fixme Nougat not showing animation
         getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
         recreate();
     }
 
+    private void setDayNightMode(boolean day) {
+        if (day)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+    }
     /**
      * Save Recycler View Instance when
      * 1. Changing Night Mode
@@ -244,6 +255,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
         MeizhiData = savedInstanceState.getParcelableArrayList(SAVED_INSTANCE_MEIZHI);
         meizhiRvAdapter.setMeizhiList(MeizhiData);
+
+        if (MeizhiData.size() == 0)
+            summonMeizhi(true);
 
     }
 

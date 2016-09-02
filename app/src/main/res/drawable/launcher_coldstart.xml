@@ -17,12 +17,14 @@
   ~
   -->
 
-<resources>
-    <color name="colorPrimary">@color/md_white_1000</color>
-    <color name="colorPrimaryDark">@color/md_grey_600</color>
-    <color name="colorAccent">@color/md_blue_500</color>
-    <color name="colorCircularReveal">@color/md_blue_100</color>
-    <color name="textColor">@color/md_black_1000</color>
-    <color name="HeaderColor">@color/md_blue_900</color>
-    <color name="launcherBackground">@color/md_white_1000</color>
-</resources>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+    <!-- The background color, preferably the same as your normal theme -->
+    <item android:drawable="@color/launcherBackground" />
+    <!-- Your product logo - 144dp color version of your app icon -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/web_hi_res_512" />
+    </item>
+</layer-list>

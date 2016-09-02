@@ -22,6 +22,7 @@
     android:id="@+id/subItem_handle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"

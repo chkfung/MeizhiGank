@@ -19,6 +19,11 @@
 
 <resources>
 
+    <style name="AppTheme.Launcher" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/launcher_coldstart</item>
+        <item name="android:windowFullscreen">true</item>
+
+    </style>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
 
