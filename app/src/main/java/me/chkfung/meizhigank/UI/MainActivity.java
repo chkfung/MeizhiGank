@@ -36,7 +36,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -138,7 +137,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     //TODO Use DiffUtil to update adapter
     @Override
-    public void refreshRv(List<DataInfo> arrayList) {
+    public void refreshRv() {
         //To Prevent ViewHolder that had been loaded blink/ load
         meizhiRvAdapter.notifyItemRangeChanged(MeizhiData.size(), Constants.MEIZHI_AMOUNT);
 //        DiffUtil.DiffResult diffResult =DiffUtil.calculateDiff(new MeizhiDiffUtil(MeizhiData,arrayList));

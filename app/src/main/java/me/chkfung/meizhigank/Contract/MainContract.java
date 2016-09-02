@@ -36,6 +36,7 @@ public interface MainContract {
          * @param page Current Page Number
          * @param MeizhiData Current Meizhi Data
          */
+        @SuppressWarnings("unused")
         void loadMeizhi(int page, List<DataInfo> MeizhiData);
     }
 
@@ -44,9 +45,8 @@ public interface MainContract {
         /**
          * Update Adapter
          *
-         * @param arrayList Meizhi
          */
-        void refreshRv(List<DataInfo> arrayList);
+        void refreshRv();
 
         /**
          * UI Action when Network Error
@@ -58,6 +58,7 @@ public interface MainContract {
          * Summon Cute Meizhi prrrrr
          * @param clearItem true = Reset MeizhiData, false = Add Meizhi Data
          */
+        @SuppressWarnings("unused")
         void summonMeizhi(boolean clearItem);
 
     }

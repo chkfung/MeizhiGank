@@ -33,6 +33,7 @@ public interface BaseContract {
          * Detach View to prevent Memory Leak
          * Call it in onDestroy of all Activity
          */
+        @SuppressWarnings("unused")
         void detachView();
 
     }

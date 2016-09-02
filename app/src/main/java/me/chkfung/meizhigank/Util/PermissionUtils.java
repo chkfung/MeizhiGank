@@ -32,6 +32,7 @@ import java.util.List;
  */
 
 public class PermissionUtils {
+    @SuppressWarnings("SameParameterValue")
     public static boolean requestPermission(Activity activity, int requestCode, String... permissions) {
         boolean granted = true;
         List<String> permissionRequired = new ArrayList<>();
@@ -52,6 +53,7 @@ public class PermissionUtils {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static boolean permissionGranted(int requestCode, int permissionCode, int[] grantResults) {
         if (requestCode != permissionCode) {
             return false;

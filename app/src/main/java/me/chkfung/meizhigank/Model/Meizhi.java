@@ -37,10 +37,12 @@ public class Meizhi {
 
     private List<DataInfo> results;
 
+    @SuppressWarnings("unused")
     public boolean isError() {
         return error;
     }
 
+    @SuppressWarnings("unused")
     public void setError(boolean error) {
         this.error = error;
     }
@@ -49,6 +51,7 @@ public class Meizhi {
         return results;
     }
 
+    @SuppressWarnings("unused")
     public void setResults(List<DataInfo> results) {
         this.results = results;
     }

@@ -33,6 +33,7 @@ import rx.Observable;
 public interface NetworkApi {
 
 
+    @SuppressWarnings("SameParameterValue")
     @GET("api/data/福利/{amount}/{page}")
     Observable<Meizhi> getMeizhi(@Path("amount") int meizhiCount, @Path("page") int page);
 

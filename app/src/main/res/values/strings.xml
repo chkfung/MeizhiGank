@@ -20,7 +20,6 @@
 <resources>
     <string name="toolbar_title" translatable="false">M e i z h i</string>
     <string name="app_name" translatable="false">Meizhi &amp; Gank.io</string>
-    <string name="action_settings" translatable="false">Settings</string>
     <string name="action_share">Share</string>
     <string name="action_save">Save</string>
     <string name="refresh">Refresh</string>
@@ -50,7 +49,7 @@
     <string name="share_meizhi_title">I found a cute Meizhi</string>
     <string name="share_meizhi_intent_chooser">"Share Meizhi to "</string>
     <string name="share_app_title">This App is AMeiZhing!</string>
-    <string name="share_app_url" translatable="false">https://playstore/</string>
+    <string name="share_app_url" translatable="false">https://play.google.com/store/apps/details?id=me.chkfung.meizhigankio</string>
     <string name="share_app_intent_chooser">Share this App to</string>
     <string name="version_error">Unable to retrieve Info</string>
     <string name="request_fail">Request Failed: %s</string>

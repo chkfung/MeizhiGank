@@ -19,6 +19,7 @@
 
 package me.chkfung.meizhigank.Base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
@@ -35,6 +36,7 @@ import me.chkfung.meizhigank.R;
  * Created by Fung on 21/07/2016.
  */
 
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity implements BaseContract.View {
 
     @Nullable

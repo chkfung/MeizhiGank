@@ -49,6 +49,7 @@ public class DataInfo implements Parcelable {
     private boolean used;
     private String who;
 
+    @SuppressWarnings("unused")
     public DataInfo() {
     }
 
@@ -67,14 +68,17 @@ public class DataInfo implements Parcelable {
         return _id;
     }
 
+    @SuppressWarnings("unused")
     public void set_id(String _id) {
         this._id = _id;
     }
 
+    @SuppressWarnings("unused")
     public String getCreatedAt() {
         return createdAt;
     }
 
+    @SuppressWarnings("unused")
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
@@ -83,6 +87,7 @@ public class DataInfo implements Parcelable {
         return desc;
     }
 
+    @SuppressWarnings("unused")
     public void setDesc(String desc) {
         this.desc = desc;
     }
@@ -91,6 +96,7 @@ public class DataInfo implements Parcelable {
         return publishedAt;
     }
 
+    @SuppressWarnings("unused")
     public void setPublishedAt(Date publishedAt) {
         this.publishedAt = publishedAt;
     }
@@ -99,6 +105,7 @@ public class DataInfo implements Parcelable {
         return type;
     }
 
+    @SuppressWarnings("unused")
     public void setType(String type) {
         this.type = type;
     }
@@ -107,14 +114,17 @@ public class DataInfo implements Parcelable {
         return url;
     }
 
+    @SuppressWarnings("unused")
     public void setUrl(String url) {
         this.url = url;
     }
 
+    @SuppressWarnings("unused")
     public boolean isUsed() {
         return used;
     }
 
+    @SuppressWarnings("unused")
     public void setUsed(boolean used) {
         this.used = used;
     }
@@ -123,6 +133,7 @@ public class DataInfo implements Parcelable {
         return who;
     }
 
+    @SuppressWarnings("unused")
     public void setWho(String who) {
         this.who = who;
     }

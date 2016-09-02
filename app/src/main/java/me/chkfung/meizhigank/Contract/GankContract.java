@@ -29,6 +29,7 @@ import me.chkfung.meizhigank.Model.Day;
 
 public interface GankContract {
     interface Presenter extends BaseContract.Presenter {
+        @SuppressWarnings("unused")
         void getGank(String date);
     }
 
@@ -36,6 +37,7 @@ public interface GankContract {
         void setupRecycleView(Day day);
         void showError(Throwable e);
 
+        @SuppressWarnings("unused")
         void startCustomTabIntent(String Desc, String url);
     }
 }

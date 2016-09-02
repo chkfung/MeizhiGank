@@ -35,7 +35,6 @@ import me.chkfung.meizhigank.ui.MainActivity;
  */
 
 public class SchedulingService extends IntentService {
-    public static final String TAG = "Scheduling";
     // An ID used to post the notification.
     private static final int NOTIFICATION_ID = 1;
 

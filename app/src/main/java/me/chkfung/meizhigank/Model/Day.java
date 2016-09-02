@@ -54,6 +54,7 @@ public class Day implements Parcelable {
     private ResultsBean results;
     private List<String> category;
 
+    @SuppressWarnings("unused")
     public Day() {
     }
 
@@ -63,10 +64,12 @@ public class Day implements Parcelable {
         this.category = in.createStringArrayList();
     }
 
+    @SuppressWarnings("unused")
     public boolean isError() {
         return error;
     }
 
+    @SuppressWarnings("unused")
     public void setError(boolean error) {
         this.error = error;
     }
@@ -75,6 +78,7 @@ public class Day implements Parcelable {
         return results;
     }
 
+    @SuppressWarnings("unused")
     public void setResults(ResultsBean results) {
         this.results = results;
     }
@@ -83,6 +87,7 @@ public class Day implements Parcelable {
         return category;
     }
 
+    @SuppressWarnings("unused")
     public void setCategory(List<String> category) {
         this.category = category;
     }
@@ -153,6 +158,7 @@ public class Day implements Parcelable {
             return Android;
         }
 
+        @SuppressWarnings("unused")
         public void setAndroid(List<DataInfo> Android) {
             this.Android = Android;
         }
@@ -161,6 +167,7 @@ public class Day implements Parcelable {
             return iOS;
         }
 
+        @SuppressWarnings("unused")
         public void setIOS(List<DataInfo> iOS) {
             this.iOS = iOS;
         }
@@ -169,6 +176,7 @@ public class Day implements Parcelable {
             return App;
         }
 
+        @SuppressWarnings("unused")
         public void setApp(List<DataInfo> App) {
             this.App = App;
         }
@@ -177,6 +185,7 @@ public class Day implements Parcelable {
             return FrontEnd;
         }
 
+        @SuppressWarnings("unused")
         public void setFrontEnd(List<DataInfo> frontEnd) {
             FrontEnd = frontEnd;
         }
@@ -185,6 +194,7 @@ public class Day implements Parcelable {
             return RestVideo;
         }
 
+        @SuppressWarnings("unused")
         public void setRestVideo(List<DataInfo> restVideo) {
             this.RestVideo = restVideo;
         }
@@ -201,6 +211,7 @@ public class Day implements Parcelable {
 //            this.Fuli = fuli;
 //        }
 
+        @SuppressWarnings("unused")
         public void setExtra(List<DataInfo> extra) {
             this.Extra = extra;
         }
@@ -209,6 +220,7 @@ public class Day implements Parcelable {
             return Recommend;
         }
 
+        @SuppressWarnings("unused")
         public void setRecommend(List<DataInfo> recommend) {
             this.Recommend = recommend;
         }

@@ -19,9 +19,8 @@
 
 package me.chkfung.meizhigank.Contract;
 
-import android.net.Uri;
-
 import me.chkfung.meizhigank.Base.BaseContract;
+import me.chkfung.meizhigank.Dagger.Presenter.MeizhiPresenter;
 import rx.Observable;
 
 /**
@@ -36,6 +35,7 @@ public interface MeizhiContract {
          * Save Image to Storage
          * @param url URL
          */
+        @SuppressWarnings("unused")
         void SaveImage(String url);
 
         /**
@@ -43,12 +43,14 @@ public interface MeizhiContract {
          * @param mUrl URL
          * @return Uri for informing gallery to update
          */
-        Observable<Uri> DownloadImage(String mUrl);
+        @SuppressWarnings("unused")
+        Observable<MeizhiPresenter.DownloadProgressURI> DownloadImage(String mUrl);
 
 
     }
 
     interface View extends BaseContract.View {
+        @SuppressWarnings("unused")
         void SaveMenuTapped();
 
         void DownloadFailure();

@@ -47,10 +47,10 @@
                 app:layout_collapseMode="parallax">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="12dp"
                     android:contentDescription="@string/content_desc_meizhi_image"
-                    android:padding="12dp"
                     android:src="@mipmap/ic_launcher" />
 
                 <TextView
@@ -163,7 +163,6 @@
                         android:src="@drawable/author_image" />
 
                     <TextView
-                        android:id="@+id/placeholderAuthor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/placeholderImage"

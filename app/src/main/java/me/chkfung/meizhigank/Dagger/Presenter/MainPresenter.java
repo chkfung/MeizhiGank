@@ -68,7 +68,7 @@ public class MainPresenter implements MainContract.Presenter {
                 .subscribe(new Subscriber<DataInfo>() {
                     @Override
                     public void onCompleted() {
-                        mView.refreshRv(MeizhiData);
+                        mView.refreshRv();
                     }
 
                     @Override

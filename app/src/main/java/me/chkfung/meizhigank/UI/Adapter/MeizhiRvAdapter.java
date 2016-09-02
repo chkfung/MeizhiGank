@@ -74,13 +74,16 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Context mContext = holder.itemView.getContext();
+
         //Content
         Glide.with(mContext)
                 .load(meizhiList.get(position).getUrl())
+                .crossFade(500)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.image);
 
         holder.title.setText(meizhiList.get(position).getDesc());
+
 
         //Event
         holder.image.setOnClickListener(new View.OnClickListener() {

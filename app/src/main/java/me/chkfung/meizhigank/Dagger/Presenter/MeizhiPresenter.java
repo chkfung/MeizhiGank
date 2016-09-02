@@ -76,7 +76,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
         mSubscription = DownloadImage(mUrl)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(scheduler)
-                .subscribe(new Subscriber<Uri>() {
+                .subscribe(new Subscriber<DownloadProgressURI>() {
                     @Override
                     public void onCompleted() {
                         mView.ImageSaved();
@@ -89,18 +89,24 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(Uri uri) {
-                        Intent scannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-                        context.sendBroadcast(scannerIntent);
+                    public void onNext(DownloadProgressURI myObj) {
+                        if (myObj.uri != null) {
+                            Intent scannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, myObj.uri);
+                            context.sendBroadcast(scannerIntent);
+                        } else
+                            mView.updateProgressBar(myObj.progress);
                     }
-                });
+                })
+        ;
     }
 
     @Override
-    public Observable<Uri> DownloadImage(final String mUrl) {
-        return Observable.create(new Observable.OnSubscribe<Uri>() {
+    public Observable<DownloadProgressURI> DownloadImage(final String mUrl) {
+
+
+        return Observable.create(new Observable.OnSubscribe<DownloadProgressURI>() {
             @Override
-            public void call(Subscriber<? super Uri> subscriber) {
+            public void call(final Subscriber<? super DownloadProgressURI> subscriber) {
                 //Create Directory
                 File appDir = new File(Environment.getExternalStorageDirectory(), context.getString(R.string.ImageDir));
                 if (!appDir.exists()) {
@@ -110,11 +116,15 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 Request mDownloadRequest = new Request.Builder()
                         .url(mUrl)
                         .build();
+
                 final progressListener progressListener = new progressListener() {
                     @Override
                     public void update(long bytesloaded, long totalbytes, boolean done) {
                         int progress = (int) (bytesloaded / totalbytes);
-                        mView.updateProgressBar(progress);
+                        //update Progress
+                        if (progress < 25)
+                            progress = 25;
+                        subscriber.onNext(new DownloadProgressURI(null, progress));
                     }
                 };
                 okHttpClientBuilder = new OkHttpClient.Builder();
@@ -128,6 +138,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                                 .build();
                     }
                 });
+
                 try {
                     Response resp = okHttpClientBuilder.build().newCall(mDownloadRequest).execute();
                     if (resp.isSuccessful()) {
@@ -135,7 +146,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                         BufferedSink sink = Okio.buffer(Okio.sink(downloadedFile));
                         sink.writeAll(resp.body().source());
                         sink.close();
-                        subscriber.onNext(Uri.fromFile(downloadedFile));
+                        subscriber.onNext(new DownloadProgressURI(Uri.fromFile(downloadedFile), 100));
                     }
                     if (resp.code() == 504)
                         throw new IOException("File is not cached");
@@ -144,8 +155,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 }
                 subscriber.onCompleted();
             }
-        })
-                ;
+        });
     }
 
     @Override
@@ -199,6 +209,16 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                     return bytesRead;
                 }
             };
+        }
+    }
+
+    public class DownloadProgressURI {
+        public Uri uri;
+        public int progress;
+
+        public DownloadProgressURI(Uri uri, int progress) {
+            this.uri = uri;
+            this.progress = progress;
         }
     }
 }

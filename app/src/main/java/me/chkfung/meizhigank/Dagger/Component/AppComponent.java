@@ -43,8 +43,10 @@ import rx.Scheduler;
         }
 )
 public interface AppComponent {
+    @SuppressWarnings("unused")
     void inject(MeizhiApp meizhiApp);
 
+    @SuppressWarnings("unused")
     Application getApplication();
 
     NetworkApi getNetworkApi();
