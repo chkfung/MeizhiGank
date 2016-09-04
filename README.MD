@@ -5,7 +5,7 @@
 
 
 ## Overview
----
+
 A concise of Programmer Worth Readings and a Pretty Meizhi update on every weekday.
 
 Data provided by daimajia: http://gank.io 
@@ -21,11 +21,11 @@ This Project is developed using MVP structure and Dagger 2 as a best practice of
 
 
 ## Download
----
+
 [Google Play](https://play.google.com/store/apps/details?id=me.chkfung.meizhigankio)
 
 ## Screenshot:
----
+
 ![Gif1](Screenshot/1.gif)
 ![Gif2](Screenshot/2.gif)
 ![Gif2](Screenshot/3.gif)
@@ -39,12 +39,12 @@ This Project is developed using MVP structure and Dagger 2 as a best practice of
 
 
 ## Thanks
----
+
 [Drakeet](https://github.com/drakeet)
 [代码家](https://github.com/daimajia)
 
 ## License
----
+
 ```
 Meizhi & Gank.io
 Copyright (C) 2016 ChkFung
