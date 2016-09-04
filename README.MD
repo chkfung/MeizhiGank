@@ -1,6 +1,7 @@
 # Meizhi & Gank.io / 妹纸 & Gank.io
 
-![Meizhi Icon](Screenshot/ic_web_hi_res_144.png =200x200)
+
+<img src="Screenshot/ic_web_hi_res_144.png" width=200/>
 
 
 ## Overview
@@ -29,12 +30,11 @@ This Project is developed using MVP structure and Dagger 2 as a best practice of
 ![Gif2](Screenshot/2.gif)
 ![Gif2](Screenshot/3.gif)
 
-
-![Screenshot1](Screenshot/1.png =250x500)
-![Screenshot2](Screenshot/2.png =250x500)
-![Screenshot3](Screenshot/3.png =250x500)
-![Screenshot4](Screenshot/4.png =250x500)
-![Screenshot5](Screenshot/5.png =250x500)
+<img src="Screenshot/1.png" width=200/>
+<img src="Screenshot/2.png" width=200/>
+<img src="Screenshot/3.png" width=200/>
+<img src="Screenshot/4.png" width=200/>
+<img src="Screenshot/5.png" width=200/>
 
 
 
