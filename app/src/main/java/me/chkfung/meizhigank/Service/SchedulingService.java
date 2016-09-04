@@ -24,7 +24,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
+
+import java.util.Calendar;
 
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.ui.MainActivity;
@@ -45,7 +48,10 @@ public class SchedulingService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        sendNotification();
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        if (day > 0 && day < 6)
+            sendNotification();
         AlarmReceiver.completeWakefulIntent(intent);
     }
 
@@ -58,7 +64,8 @@ public class SchedulingService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon( R.drawable.ic_stat_notificon)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher))
                         .setContentTitle(getResources().getString(R.string.app_name))
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(getString(R.string.Notification_bigText)))

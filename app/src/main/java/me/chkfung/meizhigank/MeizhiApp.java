@@ -22,10 +22,12 @@ package me.chkfung.meizhigank;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 
+import io.fabric.sdk.android.Fabric;
 import me.chkfung.meizhigank.Dagger.Component.AppComponent;
 import me.chkfung.meizhigank.Dagger.Component.DaggerAppComponent;
 import me.chkfung.meizhigank.Dagger.Module.AppModule;
@@ -49,6 +51,7 @@ public class MeizhiApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         if (BuildConfig.DEBUG) {
             Logger.init("Tibber Say");

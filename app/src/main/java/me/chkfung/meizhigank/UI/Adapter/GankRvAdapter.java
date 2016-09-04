@@ -22,6 +22,7 @@ package me.chkfung.meizhigank.ui.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -75,10 +76,14 @@ public class GankRvAdapter extends RecyclerView.Adapter<GankRvAdapter.ViewHolder
                 Pair<View, String> anim1 = Pair.create((View) holder.cardGank, "GankTransitionCard");
                 Pair<View, String> anim2 = Pair.create((View) holder.headerImage, "GankTransitionImage");
                 Pair<View, String> anim3 = Pair.create((View) holder.headerText, "GankTransitionText");
-                //TODO Add try catch
 
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,
-                        anim1, anim2, anim3);
+                ActivityOptionsCompat optionsCompat;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    //noinspection unchecked
+                    optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,
+                            anim1, anim2, anim3);
+                else
+                    optionsCompat = ActivityOptionsCompat.makeScaleUpAnimation(holder.cardGank, 0, 0, holder.cardGank.getWidth(), holder.cardGank.getHeight());
                 Intent i = new Intent(context, GankInfoActivity.class);
                 List<DataInfo> dataInfosList = CommonUtil.getDataOf(data, cat);
                 if (dataInfosList != null) {

@@ -83,4 +83,11 @@ public class GankInfoActivity extends BaseActivity {
     void Close() {
         this.onBackPressed();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            overridePendingTransition(R.anim.pre_lolipop_enter, R.anim.pre_lolipop_exit);
+    }
 }

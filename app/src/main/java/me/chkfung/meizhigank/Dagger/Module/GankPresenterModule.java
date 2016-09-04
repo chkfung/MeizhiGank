@@ -30,6 +30,8 @@ import me.chkfung.meizhigank.Contract.GankContract;
 import me.chkfung.meizhigank.Dagger.PresenterScope;
 import me.chkfung.meizhigank.R;
 
+import static me.chkfung.meizhigank.Util.CommonUtil.getPackageNameToUse;
+
 /**
  * Gank Presenter Module to provide required Object
  * Created by Fung on 26/08/2016.
@@ -58,17 +60,23 @@ public class GankPresenterModule {
     @PresenterScope
     @Provides
     CustomTabsIntent.Builder provideCustomTabIntent(GankContract.View view) {
-        Context mContext = view.getContext();
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setToolbarColor(ContextCompat.getColor(mContext, R.color.colorPrimary))
-                .setShowTitle(true);
+        String chromeAvailable = getPackageNameToUse(view.getContext());
+        //Dagger 2 cannot return null, maybe I should do this somewhere else.
+        if (chromeAvailable == null)
+            return new CustomTabsIntent.Builder();
+        else {
+            Context mContext = view.getContext();
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            builder.setToolbarColor(ContextCompat.getColor(mContext, R.color.colorPrimary))
+                    .setShowTitle(true);
 
-        builder.setStartAnimations(mContext, R.anim.right_in, R.anim.right_out);
-        builder.setExitAnimations(mContext, R.anim.right_in_back, R.anim.right_out_back);
-        builder.setCloseButtonIcon(
-                BitmapFactory.decodeResource(mContext.getResources(), android.R.drawable.ic_menu_close_clear_cancel));
-
-        return builder;
-
+            builder.setStartAnimations(mContext, R.anim.right_in, R.anim.right_out);
+            builder.setExitAnimations(mContext, R.anim.right_in_back, R.anim.right_out_back);
+            builder.setCloseButtonIcon(
+                    BitmapFactory.decodeResource(mContext.getResources(), android.R.drawable.ic_menu_close_clear_cancel));
+            return builder;
+        }
     }
+
+
 }

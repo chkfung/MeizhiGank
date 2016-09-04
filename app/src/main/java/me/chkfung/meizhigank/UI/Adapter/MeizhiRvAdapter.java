@@ -22,6 +22,7 @@ package me.chkfung.meizhigank.ui.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -91,7 +92,12 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
             public void onClick(View v) {
                 Intent i = new Intent(mContext, MeizhiActivity.class);
                 i.putExtra("URL", meizhiList.get(holder.getAdapterPosition()).getUrl());
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, holder.image, "MeizhiImage");
+
+                ActivityOptionsCompat optionsCompat;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, holder.image, "MeizhiImage");
+                else
+                    optionsCompat = ActivityOptionsCompat.makeScaleUpAnimation(holder.image, 0, 0, holder.image.getWidth(), holder.image.getHeight());
                 mContext.startActivity(i, optionsCompat.toBundle());
             }
         });
@@ -99,7 +105,7 @@ public class MeizhiRvAdapter extends RecyclerView.Adapter<MeizhiRvAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(meizhiList.get(holder.getAdapterPosition()).getPublishedAt());
+                calendar.setTime(meizhiList.get(holder.getAdapterPosition()).getCreatedAt());
                 Intent i = new Intent(mContext, GankActivity.class);
                 i.putExtra("Date", calendar.get(Calendar.YEAR)
                         + "/" + (calendar.get(Calendar.MONTH) + 1)

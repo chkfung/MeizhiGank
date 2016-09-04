@@ -136,6 +136,7 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
      * @param position Store the height of RecyclerView Cell before OnBind Called.
      */
     private void Expand(final View view, int position) {
+
         int widthMeasure = View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.AT_MOST);
         int heightMeasure = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         view.measure(widthMeasure, heightMeasure);
@@ -186,6 +187,8 @@ public class GankExpandableRvAdapter extends RecyclerView.Adapter<GankExpandable
         CardView rv_header;
         @BindView(R.id.headerColor)
         View headerColor;
+        @BindView(R.id.subItem_container)
+        CardView subItem_container;
 
         public ViewHolder(View view) {
             super(view);

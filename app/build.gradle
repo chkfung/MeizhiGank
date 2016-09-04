@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 apply plugin: 'com.neenbedankt.android-apt'
 
@@ -29,8 +44,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+//            minifyEnabled true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -40,7 +55,7 @@ android {
             // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
             // to pre-dex each module and produce an APK that can be tested on
             // Android Lollipop without time consuming dex merging processes.
-            minSdkVersion 21
+//            minSdkVersion 21
         }
 
         production {
@@ -90,15 +105,21 @@ dependencies {
     testCompile dependencies.tc_jUnit
     androidTestCompile dependencies.atc_espresso
     androidTestCompile dependencies.atc_runner
-    compile 'com.google.firebase:firebase-core:9.0.2'
-    compile 'com.google.firebase:firebase-crash:9.0.2'
-    compile 'com.google.firebase:firebase-messaging:9.0.2'
+    compile 'com.google.firebase:firebase-core:9.4.0'
+    compile 'com.google.firebase:firebase-crash:9.4.0'
+    compile 'com.google.firebase:firebase-messaging:9.4.0'
 
 
     compile dependencies.glide
-    compile "com.google.android.gms:play-services-location:9.0.2"
+    compile "com.google.android.gms:play-services-location:9.4.0"
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
+        transitive = true;
+    }
+    compile('com.crashlytics.sdk.android:answers:1.3.9@aar') {
+        transitive = true;
+    }
 
 }
 

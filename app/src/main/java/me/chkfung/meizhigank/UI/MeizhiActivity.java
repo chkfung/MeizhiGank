@@ -21,6 +21,7 @@ package me.chkfung.meizhigank.ui;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -55,8 +56,8 @@ import me.chkfung.meizhigank.Dagger.Presenter.MeizhiPresenter;
 import me.chkfung.meizhigank.MeizhiApp;
 import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.Util.CommonUtil;
-import me.chkfung.meizhigank.Util.LoadingCircleView;
 import me.chkfung.meizhigank.Util.PermissionUtils;
+import me.chkfung.meizhigank.ui.widget.LoadingCircleView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -198,6 +199,9 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //Immediate Action When Permission Dialog Tapped
         if (PermissionUtils.permissionGranted(requestCode, SAVE_MEIZHI, grantResults)) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                SaveMenuTapped();
+            else
             //Important Permission such as read external storage required a restart of Application to take effect
             Snackbar.make(findViewById(android.R.id.content)
                     , R.string.Permission_granted
@@ -233,6 +237,13 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     @Override
     public void updateProgressBar(int progress) {
         progressbar.setProgress(progress);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.LOLLIPOP)
+            overridePendingTransition(R.anim.pre_lolipop_enter,R.anim.pre_lolipop_exit);
     }
 
     private class imageOnTouchListener implements View.OnTouchListener {

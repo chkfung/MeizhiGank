@@ -41,7 +41,7 @@ public class DataInfo implements Parcelable {
         }
     };
     private String _id;
-    private String createdAt;
+    private Date createdAt;
     private String desc;
     private Date publishedAt;
     private String type;
@@ -55,7 +55,7 @@ public class DataInfo implements Parcelable {
 
     private DataInfo(Parcel in) {
         this._id = in.readString();
-        this.createdAt = in.readString();
+        this.createdAt = (Date) in.readSerializable();
         this.desc = in.readString();
         this.publishedAt = (Date) in.readSerializable();
         this.type = in.readString();
@@ -74,12 +74,12 @@ public class DataInfo implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
     @SuppressWarnings("unused")
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -146,7 +146,7 @@ public class DataInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this._id);
-        dest.writeString(this.createdAt);
+        dest.writeSerializable(this.createdAt);
         dest.writeString(this.desc);
         dest.writeSerializable(this.publishedAt);
         dest.writeString(this.type);

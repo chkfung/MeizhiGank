@@ -17,7 +17,7 @@
  *
  */
 
-package me.chkfung.meizhigank.Util;
+package me.chkfung.meizhigank.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -222,6 +222,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         //fixme Nougat not showing animation
         getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
         recreate();
+//        throw new RuntimeException("This is a crash");
     }
 
     private void setDayNightMode(boolean day) {

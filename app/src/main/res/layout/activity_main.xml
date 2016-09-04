@@ -50,8 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_nightmode"
-        android:tint="@color/md_white_1000"
-        app:layout_behavior="me.chkfung.meizhigank.Util.ScrollAwareFABBehavior" />
+        app:layout_behavior="me.chkfung.meizhigank.ui.widget.ScrollAwareFABBehavior"
+        app:srcCompat="@drawable/ic_nightmode" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -31,7 +31,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatDrawableManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -60,6 +60,7 @@ import me.chkfung.meizhigank.ui.Adapter.GankExpandableRvAdapter;
 import me.chkfung.meizhigank.ui.Adapter.GankRvAdapter;
 
 import static me.chkfung.meizhigank.Util.CommonUtil.FancyAnimation;
+import static me.chkfung.meizhigank.Util.CommonUtil.getPackageNameToUse;
 
 /**
  * Gank Activity that contain Programmer Worth Readings
@@ -188,8 +189,8 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     public void showError(Throwable e) {
         progressbar.setVisibility(View.INVISIBLE);
         viewswitcherLoading.showNext();
-        String errorMessage = getString(R.string.request_fail,e.getMessage());
-        Snackbar.make(findViewById(android.R.id.content),errorMessage, Snackbar.LENGTH_LONG)
+        String errorMessage = getString(R.string.request_fail, e.getMessage());
+        Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG)
                 .setAction(R.string.retry, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -225,25 +226,29 @@ public class GankActivity extends BaseActivity implements GankContract.View {
 
     @Override
     public void startCustomTabIntent(String Desc, String url) {
+        if (getPackageNameToUse(this) == null) {
+            startActivity(WebActivity.newIntent(this, Desc, url));
+        } else {
+            //Sharing Intent
+            Intent actionIntent = new Intent(Intent.ACTION_SEND);
+            actionIntent.setType("text/plain");
+            actionIntent.putExtra(Intent.EXTRA_SUBJECT, Desc);
+            actionIntent.putExtra(Intent.EXTRA_TEXT, url);
+            PendingIntent pi = PendingIntent.getActivity(this, 0, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        //Sharing Intent
-        Intent actionIntent = new Intent(Intent.ACTION_SEND);
-        actionIntent.setType("text/plain");
-        actionIntent.putExtra(Intent.EXTRA_SUBJECT, Desc);
-        actionIntent.putExtra(Intent.EXTRA_TEXT, url);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, actionIntent, PendingIntent.FLAG_ONE_SHOT);
+            //Share Icon
+            Drawable drawable = AppCompatDrawableManager.get().getDrawable(this, R.drawable.ic_share);
 
-        //Share Icon
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_share);
-        Bitmap icon = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(icon);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
+            Bitmap icon = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(icon);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
 
-        //Combine Intent and Icon
-        customTabsIntentBuilder.setActionButton(icon, getString(R.string.share_url), pi, true);
+//        Combine Intent and Icon
+            customTabsIntentBuilder.setActionButton(icon, getString(R.string.share_url), pi, true);
 
-        //Build and Launch Url
-        customTabsIntentBuilder.build().launchUrl(this, Uri.parse(url));
+            //Build and Launch Url
+            customTabsIntentBuilder.build().launchUrl(this, Uri.parse(url));
+        }
     }
 }

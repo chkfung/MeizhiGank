@@ -33,7 +33,7 @@
         android:contentDescription="@string/content_desc_meizhi_image"
         android:transitionName="MeizhiImage" />
 
-    <me.chkfung.meizhigank.Util.LoadingCircleView
+    <me.chkfung.meizhigank.ui.widget.LoadingCircleView
         android:id="@id/progressbar"
         android:layout_width="50dp"
         android:layout_height="50dp"
