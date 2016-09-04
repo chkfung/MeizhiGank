@@ -62,6 +62,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private static final String SAVED_INSTANCE_MEIZHI = "SAVED_INSTANCE_MEIZHI";
     private static final String NOTIFICATION_ENABLED = "NOTIFICATION_ENABLED";
     private static final String SHARED_PREF_DAY = "SHARED_PREF_DAY";
+    private static final String SHARED_PREF_FIRST_LAUNCH = "SHARED_PREF_FIRST_LAUNCH";
+    private static final String SHARED_PREF_TUTORIAL = "SHARED_PREF_TUTORIAL";
     private final MeizhiRvAdapter meizhiRvAdapter = new MeizhiRvAdapter();
     private final AlarmReceiver alarmReceiver = new AlarmReceiver();
     @BindView(R.id.rv_meizhi)
@@ -125,6 +127,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             summonMeizhi(true);
         }
         FancyAnimation(toolbarTitle);
+
+        if (sharedPreferences.getBoolean(SHARED_PREF_FIRST_LAUNCH, true))
+            firstTimelaunch();
+        if (sharedPreferences.getBoolean(SHARED_PREF_TUTORIAL, true))
+            tutorial();
+
     }
 
     @OnClick(R.id.toolbar_title)
@@ -231,6 +239,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
+
     /**
      * Save Recycler View Instance when
      * 1. Changing Night Mode
@@ -277,4 +286,24 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         }
     }
 
+    @Override
+    public void firstTimelaunch() {
+        alarmReceiver.setAlarm(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(SHARED_PREF_FIRST_LAUNCH, false);
+        editor.apply();
+    }
+
+    @Override
+    public void tutorial() {
+        Snackbar.make(findViewById(R.id.fab), R.string.first_time_launch, Snackbar.LENGTH_INDEFINITE)
+                .setAction(android.R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean(SHARED_PREF_TUTORIAL, false);
+                        editor.apply();
+                    }
+                }).show();
+    }
 }

@@ -18,7 +18,6 @@ repositories {
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-
     def versionPropsFile = file('version.properties')
     if (versionPropsFile.canRead()) {
         def Properties versionProps = new Properties()
@@ -33,8 +32,9 @@ android {
             applicationId "me.chkfung.meizhigankio"
             minSdkVersion 16
             targetSdkVersion 24
+
             versionCode code
-            versionName "1.0"
+            versionName '1.0'
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
             vectorDrawables.setUseSupportLibrary(true)
@@ -63,6 +63,10 @@ android {
         }
 
 
+    }
+    applicationVariants.all { variant ->
+        def flavor = variant.mergedFlavor
+        flavor.versionCode = 0.1;
     }
 }
 

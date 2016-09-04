@@ -61,5 +61,8 @@ public interface MainContract {
         @SuppressWarnings("unused")
         void summonMeizhi(boolean clearItem);
 
+        void firstTimelaunch();
+
+        void tutorial();
     }
 }
