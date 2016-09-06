@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Constants;
@@ -64,8 +63,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private static final String SHARED_PREF_DAY = "SHARED_PREF_DAY";
     private static final String SHARED_PREF_FIRST_LAUNCH = "SHARED_PREF_FIRST_LAUNCH";
     private static final String SHARED_PREF_TUTORIAL = "SHARED_PREF_TUTORIAL";
-    private final MeizhiRvAdapter meizhiRvAdapter = new MeizhiRvAdapter();
-    private final AlarmReceiver alarmReceiver = new AlarmReceiver();
+
     @BindView(R.id.rv_meizhi)
     RecyclerView rvMeizhi;
     @BindView(R.id.refreshlayout)
@@ -74,20 +72,22 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     TextView toolbarTitle;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
+
     @Inject
     MainPresenter mainPresenter;
     @Inject
     SharedPreferences sharedPreferences;
+
+    private AlarmReceiver alarmReceiver = new AlarmReceiver();
     private StaggeredGridLayoutManager layoutManager;
+    private MeizhiRvAdapter meizhiRvAdapter = new MeizhiRvAdapter();
     private ArrayList<DataInfo> MeizhiData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
-//        setDayNightMode(sharedPreferences.getBoolean(SHARED_PREF_DAY,true));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
         DaggerMainPresenterComponent.builder()
                 .appComponent(MeizhiApp.get(this).getAppComponent())
@@ -106,6 +106,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         else
             layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
         meizhiRvAdapter.setMeizhiList(MeizhiData);
         rvMeizhi.setAdapter(meizhiRvAdapter);
         rvMeizhi.setLayoutManager(layoutManager);
@@ -123,16 +124,15 @@ public class MainActivity extends BaseActivity implements MainContract.View {
             }
         });
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null)
             summonMeizhi(true);
-        }
+
         FancyAnimation(toolbarTitle);
 
         if (sharedPreferences.getBoolean(SHARED_PREF_FIRST_LAUNCH, true))
             firstTimelaunch();
         if (sharedPreferences.getBoolean(SHARED_PREF_TUTORIAL, true))
             tutorial();
-
     }
 
     @OnClick(R.id.toolbar_title)
@@ -146,14 +146,20 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mainPresenter.detachView();
     }
 
-    //TODO Use DiffUtil to update adapter
     @Override
-    public void refreshRv() {
+    public void refreshRv(ArrayList<DataInfo> TempData) {
         //To Prevent ViewHolder that had been loaded blink/ load
-        meizhiRvAdapter.notifyItemRangeChanged(MeizhiData.size(), Constants.MEIZHI_AMOUNT);
-//        DiffUtil.DiffResult diffResult =DiffUtil.calculateDiff(new MeizhiDiffUtil(MeizhiData,arrayList));
-//        diffResult.dispatchUpdatesTo(meizhiRvAdapter);
+        if (TempData.size()>0) {
+            MeizhiData.clear();
+            MeizhiData.addAll(TempData);
 
+            meizhiRvAdapter.notifyDataSetChanged();
+//            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MeizhiDiffUtil(MeizhiData, TempData));
+//            diffResult.dispatchUpdatesTo(meizhiRvAdapter);
+//            MeizhiData = TempData;
+//            meizhiRvAdapter.setMeizhiList(MeizhiData);
+        } else
+            meizhiRvAdapter.notifyItemRangeChanged(MeizhiData.size(), Constants.MEIZHI_AMOUNT);
         refreshlayout.setRefreshing(false);
     }
 
@@ -171,11 +177,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void summonMeizhi(boolean clearItem) {
-        if (clearItem) {
-            MeizhiData.clear();
-        }
+        if (clearItem)
+            mainPresenter.loadMeizhi(1, MeizhiData);
+        else
+            mainPresenter.loadMeizhi(MeizhiData.size() / 10 + 1, MeizhiData);
+
         refreshlayout.setRefreshing(true);
-        mainPresenter.loadMeizhi(MeizhiData.size() / 10 + 1, MeizhiData);
     }
 
     @Override
@@ -196,14 +203,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 if (sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true)) {
                     editor.putBoolean(NOTIFICATION_ENABLED, false);
-                    alarmReceiver.cancelAlarm(this);
                     Toast.makeText(this, R.string.notif_disable, Toast.LENGTH_SHORT).show();
                 } else {
                     editor.putBoolean(NOTIFICATION_ENABLED, true);
-                    alarmReceiver.setAlarm(this);
                     Toast.makeText(this, R.string.notif_enable, Toast.LENGTH_SHORT).show();
                 }
                 editor.apply();
+                setupAlarm(sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true));
                 setMenuIcon(item);
                 break;
         }
@@ -230,14 +236,31 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         //fixme Nougat not showing animation
         getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
         recreate();
-//        throw new RuntimeException("This is a crash");
     }
 
-    private void setDayNightMode(boolean day) {
+    @Override
+    public void setDayNightMode(boolean day) {
         if (day)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+    }
+
+    @Override
+    public void setupAlarm(boolean enabled) {
+        if (enabled)
+            alarmReceiver.setAlarm(this);
+        else
+            alarmReceiver.cancelAlarm(this);
+    }
+
+    @Override
+    public void setMenuIcon(MenuItem item) {
+        if (sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true)) {
+            item.setIcon(R.drawable.ic_notifications);
+        } else {
+            item.setIcon(R.drawable.ic_notifications_off);
+        }
     }
 
     /**
@@ -268,7 +291,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
         if (MeizhiData.size() == 0)
             summonMeizhi(true);
-
     }
 
     @Override
@@ -276,14 +298,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         //Custom Exit Application Animation
         super.onBackPressed();
         overridePendingTransition(R.anim.app_quit_in, R.anim.app_quit_out);
-    }
-
-    private void setMenuIcon(MenuItem item) {
-        if (sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true)) {
-            item.setIcon(R.drawable.ic_notifications);
-        } else {
-            item.setIcon(R.drawable.ic_notifications_off);
-        }
     }
 
     @Override

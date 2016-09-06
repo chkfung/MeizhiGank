@@ -19,7 +19,7 @@
 
 package me.chkfung.meizhigank.Dagger.Presenter;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -54,7 +54,13 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void loadMeizhi(int page, final List<DataInfo> MeizhiData) {
+    public void loadMeizhi(final int page, final ArrayList<DataInfo> MeizhiData) {
+        //Condition &&:
+        //Page == 1
+        //Data Set Exist
+        //Result -> True
+        final boolean clear = page == 1 && MeizhiData.size() > 0;
+
         if (mSubscription != null) mSubscription.unsubscribe();
         mSubscription = networkApi.getMeizhi(Constants.MEIZHI_AMOUNT, page)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -66,9 +72,12 @@ public class MainPresenter implements MainContract.Presenter {
                     }
                 })
                 .subscribe(new Subscriber<DataInfo>() {
+
+                    ArrayList<DataInfo> TempData = new ArrayList<DataInfo>();
+
                     @Override
                     public void onCompleted() {
-                        mView.refreshRv();
+                        mView.refreshRv(TempData);
                     }
 
                     @Override
@@ -78,10 +87,14 @@ public class MainPresenter implements MainContract.Presenter {
 
                     @Override
                     public void onNext(DataInfo resultsBean) {
-                        MeizhiData.add(resultsBean);
+                        if (clear)
+                            TempData.add(resultsBean);
+                        else
+                            MeizhiData.add(resultsBean);
                     }
                 });
     }
+
 
     @Override
     public void detachView() {

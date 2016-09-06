@@ -18,30 +18,30 @@ repositories {
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    def versionPropsFile = file('version.properties')
-    if (versionPropsFile.canRead()) {
-        def Properties versionProps = new Properties()
-        versionProps.load(new FileInputStream(versionPropsFile))
-        def code = versionProps['VERSION_CODE'].toInteger() + 1
-        versionProps['VERSION_CODE'] = code.toString()
-        versionProps.store(versionPropsFile.newWriter(), null)
+//    def versionPropsFile = file('version.properties')
+//    if (versionPropsFile.canRead()) {
+//        def Properties versionProps = new Properties()
+//        versionProps.load(new FileInputStream(versionPropsFile))
+//        def code = versionProps['VERSION_CODE'].toInteger() + 1
+//        versionProps['VERSION_CODE'] = code.toString()
+//        versionProps.store(versionPropsFile.newWriter(), null)
 
-        compileSdkVersion 24
-        buildToolsVersion "24.0.0"
-        defaultConfig {
-            applicationId "me.chkfung.meizhigankio"
-            minSdkVersion 16
-            targetSdkVersion 24
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
+    defaultConfig {
+        applicationId "me.chkfung.meizhigankio"
+        minSdkVersion 16
+        targetSdkVersion 24
 
-            versionCode code
-            versionName '1.0'
-            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode 2501
+        versionName '2.1'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-            vectorDrawables.setUseSupportLibrary(true)
-        }
-    } else {
-        throw new GradleException("Could not read version.properties!")
+        vectorDrawables.setUseSupportLibrary(true)
     }
+//    } else {
+//        throw new GradleException("Could not read version.properties!")
+//    }
     buildTypes {
         release {
 //            minifyEnabled true
@@ -55,7 +55,9 @@ android {
             // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
             // to pre-dex each module and produce an APK that can be tested on
             // Android Lollipop without time consuming dex merging processes.
-//            minSdkVersion 21
+            minSdkVersion 21
+            versionCode 1
+            versionName '3.0'
         }
 
         production {
@@ -63,10 +65,6 @@ android {
         }
 
 
-    }
-    applicationVariants.all { variant ->
-        def flavor = variant.mergedFlavor
-        flavor.versionCode = 0.1;
     }
 }
 

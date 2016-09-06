@@ -51,14 +51,13 @@ public class MeizhiApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
 
         if (BuildConfig.DEBUG) {
             Logger.init("Tibber Say");
             LeakCanary.install(this);
-//        AndroidDevMetrics.initWith(this);
         } else {
             Logger.init().setLogLevel(LogLevel.NONE);
+            Fabric.with(this, new Crashlytics());
         }
 
         appComponent = DaggerAppComponent.builder()

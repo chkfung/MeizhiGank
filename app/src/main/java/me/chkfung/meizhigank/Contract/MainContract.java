@@ -19,7 +19,9 @@
 
 package me.chkfung.meizhigank.Contract;
 
-import java.util.List;
+import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 import me.chkfung.meizhigank.Base.BaseContract;
 import me.chkfung.meizhigank.Model.DataInfo;
@@ -37,7 +39,7 @@ public interface MainContract {
          * @param MeizhiData Current Meizhi Data
          */
         @SuppressWarnings("unused")
-        void loadMeizhi(int page, List<DataInfo> MeizhiData);
+        void loadMeizhi(int page, ArrayList<DataInfo> MeizhiData);
     }
 
     interface View extends BaseContract.View {
@@ -46,7 +48,7 @@ public interface MainContract {
          * Update Adapter
          *
          */
-        void refreshRv();
+        void refreshRv(ArrayList<DataInfo> TempData);
 
         /**
          * UI Action when Network Error
@@ -64,5 +66,11 @@ public interface MainContract {
         void firstTimelaunch();
 
         void tutorial();
+
+        void setDayNightMode(boolean day);
+
+        void setupAlarm(boolean enabled);
+
+        void setMenuIcon(MenuItem item);
     }
 }

@@ -147,7 +147,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     @Override
     public void DownloadFailure() {
         progressbar.setVisibility(View.GONE);
-        Snackbar.make(findViewById(android.R.id.content), R.string.save_failed, Snackbar.LENGTH_LONG)
+        Snackbar.make(findViewById(android.R.id.content), R.string.save_failed, Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(R.string.retry), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -223,7 +223,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     @Override
     public void ImageSaved() {
         progressbar.setProgress(100);
-        Snackbar.make(findViewById(android.R.id.content), R.string.image_saved, Snackbar.LENGTH_SHORT)
+        Snackbar.make(findViewById(android.R.id.content), R.string.image_saved, Snackbar.LENGTH_INDEFINITE)
                 .show();
 
         progressbar.postDelayed(new Runnable() {

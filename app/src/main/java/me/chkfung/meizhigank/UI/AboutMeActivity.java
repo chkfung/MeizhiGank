@@ -74,7 +74,7 @@ public class AboutMeActivity extends BaseActivity {
         String[][] item = {
                 {"Butterknife", "Jake Wharton"},
                 {"Dagger 2", "Google, Square"},
-                {"Glide", "Bumptech - Sam Judd"},
+                {"Glide", "Bumptech"},
                 {"Gson", "Google"},
                 {"Leak Canary", "Square"},
                 {"Logger", "Orhan Obut"},

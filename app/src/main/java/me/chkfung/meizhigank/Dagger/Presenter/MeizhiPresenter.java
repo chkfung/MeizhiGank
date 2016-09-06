@@ -33,6 +33,7 @@ import javax.inject.Inject;
 
 import me.chkfung.meizhigank.Contract.MeizhiContract;
 import me.chkfung.meizhigank.R;
+import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -61,9 +62,10 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
     Scheduler scheduler;
     @Inject
     Context context;
+
     private MeizhiContract.View mView;
     private Subscription mSubscription;
-    private OkHttpClient.Builder okHttpClientBuilder;
+    private Call call;
 
     @Inject
     MeizhiPresenter(MeizhiContract.View view) {
@@ -102,8 +104,6 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
 
     @Override
     public Observable<DownloadProgressURI> DownloadImage(final String mUrl) {
-
-
         return Observable.create(new Observable.OnSubscribe<DownloadProgressURI>() {
             @Override
             public void call(final Subscriber<? super DownloadProgressURI> subscriber) {
@@ -127,7 +127,8 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                         subscriber.onNext(new DownloadProgressURI(null, progress));
                     }
                 };
-                okHttpClientBuilder = new OkHttpClient.Builder();
+
+                OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
                 okHttpClientBuilder.addNetworkInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
@@ -138,9 +139,9 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                                 .build();
                     }
                 });
-
+                call = okHttpClientBuilder.build().newCall(mDownloadRequest);
                 try {
-                    Response resp = okHttpClientBuilder.build().newCall(mDownloadRequest).execute();
+                    Response resp = call.execute();
                     if (resp.isSuccessful()) {
                         File downloadedFile = new File(appDir, mUrl.substring(mUrl.length() - 20));
                         BufferedSink sink = Okio.buffer(Okio.sink(downloadedFile));
@@ -161,6 +162,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
     @Override
     public void detachView() {
         mView = null;
+        if (call != null) call.cancel();
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
