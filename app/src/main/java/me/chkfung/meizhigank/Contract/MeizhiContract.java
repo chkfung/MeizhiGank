@@ -57,6 +57,6 @@ public interface MeizhiContract {
 
         void ImageSaved();
 
-        void updateProgressBar(int progress);
+        void updateProgressBar(float progress);
     }
 }

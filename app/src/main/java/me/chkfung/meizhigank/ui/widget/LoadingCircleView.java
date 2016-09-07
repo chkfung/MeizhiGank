@@ -19,15 +19,18 @@
 
 package me.chkfung.meizhigank.ui.widget;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
+
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by Fung on 02/09/2016.
@@ -39,9 +42,9 @@ public class LoadingCircleView extends View {
     private Paint PaddingCircle;
     private Paint ProgressCircle;
     private RectF rectF;
-    private long animDuration = 2000;
     private float sweepAngle = 0;
     private float progressCirclePadding = 10;
+    private float previousProgress = 0;
 
     public LoadingCircleView(Context context) {
         super(context);
@@ -64,9 +67,6 @@ public class LoadingCircleView extends View {
     }
 
     private void init() {
-
-        LoadingCircleViewAnim mLoadingCircleViewAnim = new LoadingCircleViewAnim();
-        mLoadingCircleViewAnim.setDuration(animDuration);
 
         OuterCircle = new Paint();
         OuterCircle.setAntiAlias(true);
@@ -98,21 +98,41 @@ public class LoadingCircleView extends View {
         canvas.drawArc(rectF, -90f, sweepAngle, true, ProgressCircle);
     }
 
-    public void setProgress(int progress) {
-        sweepAngle = (float) (360 * progress / 100);
-        invalidate();
-    }
-
-    private class LoadingCircleViewAnim extends Animation {
-        @Override
-        protected void applyTransformation(float interpolatedTime, Transformation t) {
-            super.applyTransformation(interpolatedTime, t);
-            if (interpolatedTime < 1.0f) {
-                sweepAngle = 360 * interpolatedTime;
+    public void setProgress(float progress) {
+        Logger.i("Progress:" + progress);
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(previousProgress, progress);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                previousProgress = (float) animation.getAnimatedValue();
+                sweepAngle = previousProgress * 360;
                 invalidate();
             }
+        });
+        valueAnimator.setInterpolator(new FastOutSlowInInterpolator());
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
 
-        }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                //Reset Progress
+                if (sweepAngle > 360)
+                    previousProgress = 0;
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+
+        valueAnimator.start();
     }
 
 }

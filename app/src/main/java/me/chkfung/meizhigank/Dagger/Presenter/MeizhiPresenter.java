@@ -120,10 +120,10 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 final progressListener progressListener = new progressListener() {
                     @Override
                     public void update(long bytesloaded, long totalbytes, boolean done) {
-                        int progress = (int) (bytesloaded / totalbytes);
+                        float progress = (float) bytesloaded / (float) totalbytes;
                         //update Progress
-                        if (progress < 25)
-                            progress = 25;
+//                        if (progress < 25)
+//                            progress = 25;
                         subscriber.onNext(new DownloadProgressURI(null, progress));
                     }
                 };
@@ -216,9 +216,9 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
 
     public class DownloadProgressURI {
         public Uri uri;
-        public int progress;
+        public float progress;
 
-        public DownloadProgressURI(Uri uri, int progress) {
+        public DownloadProgressURI(Uri uri, float progress) {
             this.uri = uri;
             this.progress = progress;
         }

@@ -222,7 +222,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
     @Override
     public void ImageSaved() {
-        progressbar.setProgress(100);
+//        progressbar.setProgress(100);
         Snackbar.make(findViewById(android.R.id.content), R.string.image_saved, Snackbar.LENGTH_INDEFINITE)
                 .show();
 
@@ -235,7 +235,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     }
 
     @Override
-    public void updateProgressBar(int progress) {
+    public void updateProgressBar(float progress) {
         progressbar.setProgress(progress);
     }
 
