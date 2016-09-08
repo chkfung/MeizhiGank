@@ -22,6 +22,8 @@ package me.chkfung.meizhigank.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 /**
@@ -40,13 +42,22 @@ public class DataInfo implements Parcelable {
             return new DataInfo[size];
         }
     };
+
+    @SerializedName("_id")
     private String _id;
+    @SerializedName("createdAt")
     private Date createdAt;
+    @SerializedName("desc")
     private String desc;
+    @SerializedName("publishedAt")
     private Date publishedAt;
+    @SerializedName("type")
     private String type;
+    @SerializedName("url")
     private String url;
+    @SerializedName("used")
     private boolean used;
+    @SerializedName("who")
     private String who;
 
     @SuppressWarnings("unused")

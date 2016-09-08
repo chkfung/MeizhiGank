@@ -23,9 +23,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
-import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
-import com.squareup.leakcanary.LeakCanary;
 
 import io.fabric.sdk.android.Fabric;
 import me.chkfung.meizhigank.Dagger.Component.AppComponent;
@@ -54,9 +52,10 @@ public class MeizhiApp extends Application {
 
         if (BuildConfig.DEBUG) {
             Logger.init("Tibber Say");
-            LeakCanary.install(this);
+//            LeakCanary.install(this);
         } else {
-            Logger.init().setLogLevel(LogLevel.NONE);
+            Logger.init("Tibber Say");
+//            Logger.init().setLogLevel(LogLevel.NONE);
             Fabric.with(this, new Crashlytics());
         }
 

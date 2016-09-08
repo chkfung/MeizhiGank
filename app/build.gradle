@@ -14,42 +14,33 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-//    def versionPropsFile = file('version.properties')
-//    if (versionPropsFile.canRead()) {
-//        def Properties versionProps = new Properties()
-//        versionProps.load(new FileInputStream(versionPropsFile))
-//        def code = versionProps['VERSION_CODE'].toInteger() + 1
-//        versionProps['VERSION_CODE'] = code.toString()
-//        versionProps.store(versionPropsFile.newWriter(), null)
-
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
     defaultConfig {
         applicationId "me.chkfung.meizhigankio"
         minSdkVersion 16
         targetSdkVersion 24
 
-        versionCode 2502
+        versionCode 2600
         versionName '2.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.setUseSupportLibrary(true)
     }
-//    } else {
-//        throw new GradleException("Could not read version.properties!")
-//    }
     buildTypes {
         release {
-            minifyEnabled false
-//            shrinkResources true
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     productFlavors {
         dev {
             // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
@@ -69,60 +60,45 @@ android {
 }
 
 dependencies {
-    Map<String, String> dependencies = rootProject.ext.dependencies;
+    //Support Library
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion",
+            "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion",
+            "com.android.support:design:$rootProject.ext.supportLibraryVersion",
+            "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion",
+            "com.android.support:customtabs:$rootProject.ext.supportLibraryVersion",
 
-    //Leak Canary
-    debugCompile dependencies.debug_LeakCanary
-    releaseCompile dependencies.test_LeakCanary
-    testCompile dependencies.test_LeakCanary
-
-    //SupportLibrary
-    compile dependencies.appCompat
-    compile dependencies.cardView
-    compile dependencies.design
-    compile dependencies.recyclerView
-    compile dependencies.customTabs
-    compile dependencies.constraintLayout
-    androidTestCompile dependencies.atc_annotation
-
-    //Utils
-    compile dependencies.butterKnife
-    apt dependencies.apt_ButterKnife
-    compile dependencies.rxAndroid
-    compile dependencies.dagger
-    apt dependencies.apt_Dagger
-    provided dependencies.provided_annotation
-
+            //Utils
+            "com.jakewharton:butterknife:$rootProject.ext.butterKnife",
+            "com.google.dagger:dagger:$rootProject.ext.dagger",
+            "io.reactivex:rxandroid:$rootProject.ext.rxAndroid"
+    apt "com.google.dagger:dagger-compiler:$rootProject.ext.dagger"
+    apt "com.jakewharton:butterknife-compiler:$rootProject.ext.butterKnife"
     //Network And Provider
-    compile dependencies.retrofit
-    compile dependencies.retrofitConverterGson
-    compile dependencies.retrofitAdapterRxJava
-    compile dependencies.gson
-    compile dependencies.logger
-
-    //UI Library
-//    compile dependencies.circleImageView
-
-    //Testing
-    testCompile dependencies.tc_jUnit
-    androidTestCompile dependencies.atc_espresso
-    androidTestCompile dependencies.atc_runner
-    compile 'com.google.firebase:firebase-core:9.4.0'
-    compile 'com.google.firebase:firebase-crash:9.4.0'
-    compile 'com.google.firebase:firebase-messaging:9.4.0'
-
-
-    compile dependencies.glide
-    compile "com.google.android.gms:play-services-location:9.4.0"
-    compile 'com.github.chrisbanes:PhotoView:1.2.6'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion",
+            "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion",
+            "com.squareup.retrofit2:adapter-rxjava:$rootProject.ext.retrofitVersion",
+            "com.google.code.gson:gson:$rootProject.ext.gson",
+            "com.orhanobut:logger:1.11",
+            "com.github.bumptech.glide:glide:$rootProject.ext.glide",
+            'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    //Leak Canary
+    //    debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakCanary"
+    //Google Service
+    compile 'com.google.firebase:firebase-core:9.4.0',
+            'com.google.firebase:firebase-crash:9.4.0',
+            'com.google.firebase:firebase-messaging:9.4.0'
+    //Fabric
     compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
         transitive = true;
     }
     compile('com.crashlytics.sdk.android:answers:1.3.9@aar') {
         transitive = true;
     }
-
+    //Testing
+    testCompile 'junit:junit:4.12'
+    androidTestCompile "com.android.support.test.espresso:espresso-core:2.2.2",
+            "com.android.support.test:runner:0.5",
+            "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
 }
 
 /*

@@ -58,7 +58,6 @@ import me.chkfung.meizhigank.R;
 import me.chkfung.meizhigank.Util.CommonUtil;
 import me.chkfung.meizhigank.Util.PermissionUtils;
 import me.chkfung.meizhigank.ui.widget.LoadingCircleView;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Fung on 25/07/2016.
@@ -76,7 +75,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     FrameLayout frameMeizhi;
     @Inject
     MeizhiPresenter mPresenter;
-    private PhotoViewAttacher photoViewAttacher;
     private String url;
 
     @Override
@@ -115,26 +113,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                     public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         progressbar.setVisibility(View.INVISIBLE);
                         supportStartPostponedEnterTransition();
-
-//                        photoViewAttacher = new PhotoViewAttacher(image);
-//                        photoViewAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
-//                            @Override
-//                            public void onViewTap(View view, float v, float v1) {
-//                                onBackPressed();
-//                            }
-//                        });
-//                        photoViewAttacher.update();
-//                        Bitmap mBitmap =(Bitmap) resource;
-//
-//                        String path = MediaStore.Images.Media.insertImage(getContentResolver(),
-//                                mBitmap, "Image Description", null);
-//
-//                        Uri uri = Uri.parse(path);
-//                        Intent shareIntent = new Intent();
-//                        shareIntent.setAction(Intent.ACTION_SEND);
-//                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-//                        shareIntent.setType("image/*");
-//                        miShareAction.setShareIntent(shareIntent);
                         return false;
                     }
                 })
