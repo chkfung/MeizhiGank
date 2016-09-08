@@ -47,19 +47,20 @@ public class MainPresenter implements MainContract.Presenter {
     Scheduler scheduler;
     private MainContract.View mView;
     private Subscription mSubscription;
+    private ArrayList<DataInfo> MeizhiData = new ArrayList<>();
 
     @Inject
     MainPresenter(MainContract.View mView) {
         this.mView = mView;
+        mView.getAdapter().setMeizhiList(MeizhiData);
     }
 
     @Override
-    public void loadMeizhi(final int page, final ArrayList<DataInfo> MeizhiData) {
-        //Condition &&:
-        //Page == 1
-        //Data Set Exist
-        //Result -> True
-        final boolean clear = page == 1 && MeizhiData.size() > 0;
+    public void loadMeizhi(final boolean clearItem) {
+        mView.swipeRefreshStatus(true);
+        int page = 1;
+        if (!clearItem)
+            page += MeizhiData.size() / 10;
 
         if (mSubscription != null) mSubscription.unsubscribe();
         mSubscription = networkApi.getMeizhi(Constants.MEIZHI_AMOUNT, page)
@@ -72,12 +73,11 @@ public class MainPresenter implements MainContract.Presenter {
                     }
                 })
                 .subscribe(new Subscriber<DataInfo>() {
-
                     ArrayList<DataInfo> TempData = new ArrayList<DataInfo>();
 
                     @Override
                     public void onCompleted() {
-                        mView.refreshRv(TempData);
+                        updateAdapter(clearItem, TempData);
                     }
 
                     @Override
@@ -87,14 +87,23 @@ public class MainPresenter implements MainContract.Presenter {
 
                     @Override
                     public void onNext(DataInfo resultsBean) {
-                        if (clear)
-                            TempData.add(resultsBean);
-                        else
-                            MeizhiData.add(resultsBean);
+                        TempData.add(resultsBean);
                     }
                 });
     }
 
+    @Override
+    public void updateAdapter(boolean clearItem, ArrayList<DataInfo> newData) {
+        if (clearItem) {
+            MeizhiData.clear();
+            MeizhiData.addAll(newData);
+            mView.getAdapter().notifyDataSetChanged();
+        } else {
+            MeizhiData.addAll(newData);
+            mView.getAdapter().notifyItemRangeChanged(MeizhiData.size(), Constants.MEIZHI_AMOUNT);
+        }
+        mView.swipeRefreshStatus(false);
+    }
 
     @Override
     public void detachView() {
@@ -102,4 +111,8 @@ public class MainPresenter implements MainContract.Presenter {
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
+    @Override
+    public ArrayList<DataInfo> getData() {
+        return MeizhiData;
+    }
 }

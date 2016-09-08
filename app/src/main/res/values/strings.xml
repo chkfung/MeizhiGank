@@ -60,7 +60,7 @@
     <string name="internet_error">No Internet Connection and cache unavailable</string>
     <string name="save_failed">Save Failed</string>
     <string name="Permission_granted">Permission Granted! Image Saving will be taking effect on next Restart</string>
-    <string name="Permission_denie">Permission Denied</string>
+    <string name="Permission_deny">Permission Denied</string>
     <string name="image_saved">Image saved successfully!</string>
     <string name="first_time_launch">Tap card title to open Programmer Worth Readings</string>
 </resources>

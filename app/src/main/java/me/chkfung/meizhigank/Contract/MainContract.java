@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import me.chkfung.meizhigank.Base.BaseContract;
 import me.chkfung.meizhigank.Model.DataInfo;
+import me.chkfung.meizhigank.ui.Adapter.MeizhiRvAdapter;
 
 /**
  * Main Activity MVP Contract
@@ -35,33 +36,25 @@ public interface MainContract {
     interface Presenter extends BaseContract.Presenter {
         /**
          * Perform Network Request to Obtain Meizhi Data
-         * @param page Current Page Number
-         * @param MeizhiData Current Meizhi Data
          */
         @SuppressWarnings("unused")
-        void loadMeizhi(int page, ArrayList<DataInfo> MeizhiData);
+        void loadMeizhi(boolean clearItem);
+
+        ArrayList<DataInfo> getData();
+
+        void updateAdapter(boolean clearItem, ArrayList<DataInfo> newData);
     }
 
     interface View extends BaseContract.View {
 
-        /**
-         * Update Adapter
-         *
-         */
-        void refreshRv(ArrayList<DataInfo> TempData);
+
+        MeizhiRvAdapter getAdapter();
 
         /**
          * UI Action when Network Error
          * @param e Throwable
          */
         void networkError(Throwable e);
-
-        /**
-         * Summon Cute Meizhi prrrrr
-         * @param clearItem true = Reset MeizhiData, false = Add Meizhi Data
-         */
-        @SuppressWarnings("unused")
-        void summonMeizhi(boolean clearItem);
 
         void firstTimelaunch();
 
@@ -72,5 +65,7 @@ public interface MainContract {
         void setupAlarm(boolean enabled);
 
         void setMenuIcon(MenuItem item);
+
+        void swipeRefreshStatus(boolean show);
     }
 }

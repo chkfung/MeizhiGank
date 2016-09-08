@@ -34,7 +34,7 @@
     <string name="refresh">刷新</string>
     <string name="Notification_bigText">今天的日报和妹子都准备好了!</string>
     <string name="Notification_content">今天的日报和妹子都准备好了!</string>
-    <string name="Permission_denie">权限取得失败</string>
+    <string name="Permission_deny">权限取得失败</string>
     <string name="Permission_granted">取得权限! 请重启APP生效</string>
     <string name="author_info">设计与开发</string>
     <string name="download_failure">下载失败</string>
