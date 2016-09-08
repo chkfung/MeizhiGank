@@ -81,7 +81,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private AlarmReceiver alarmReceiver = new AlarmReceiver();
     private StaggeredGridLayoutManager layoutManager;
     private MeizhiRvAdapter meizhiRvAdapter = new MeizhiRvAdapter();
-    private ArrayList<DataInfo> MeizhiData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +97,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                summonMeizhi(true);
+                mainPresenter.loadMeizhi(true);
             }
         });
 
@@ -107,7 +106,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         else
             layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
-        meizhiRvAdapter.setMeizhiList(MeizhiData);
         rvMeizhi.setAdapter(meizhiRvAdapter);
         rvMeizhi.setLayoutManager(layoutManager);
 
@@ -117,15 +115,15 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 super.onScrolled(recyclerView, dx, dy);
                 int[] lasPos = new int[layoutManager.getSpanCount()];
                 layoutManager.findLastVisibleItemPositions(lasPos);
-                if (MeizhiData.size() - Math.max(lasPos[0], lasPos[1]) < Constants.MEIZHI_PRELOAD &&
+                if (mainPresenter.getData().size() - Math.max(lasPos[0], lasPos[1]) < Constants.MEIZHI_PRELOAD &&
                         !refreshlayout.isRefreshing()) {
-                    summonMeizhi(false);
+                    mainPresenter.loadMeizhi(false);
                 }
             }
         });
 
         if (savedInstanceState == null)
-            summonMeizhi(true);
+            mainPresenter.loadMeizhi(true);
 
         FancyAnimation(toolbarTitle);
 
@@ -141,29 +139,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mainPresenter.detachView();
-    }
-
-    @Override
-    public void refreshRv(ArrayList<DataInfo> TempData) {
-        //To Prevent ViewHolder that had been loaded blink/ load
-        if (TempData.size()>0) {
-            MeizhiData.clear();
-            MeizhiData.addAll(TempData);
-
-            meizhiRvAdapter.notifyDataSetChanged();
-//            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MeizhiDiffUtil(MeizhiData, TempData));
-//            diffResult.dispatchUpdatesTo(meizhiRvAdapter);
-//            MeizhiData = TempData;
-//            meizhiRvAdapter.setMeizhiList(MeizhiData);
-        } else
-            meizhiRvAdapter.notifyItemRangeChanged(MeizhiData.size(), Constants.MEIZHI_AMOUNT);
-        refreshlayout.setRefreshing(false);
-    }
-
-    @Override
     public void networkError(Throwable e) {
         refreshlayout.setRefreshing(false);
         View rootView = findViewById(android.R.id.content);
@@ -176,44 +151,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     @Override
-    public void summonMeizhi(boolean clearItem) {
-        if (clearItem)
-            mainPresenter.loadMeizhi(1, MeizhiData);
+    public void swipeRefreshStatus(boolean show) {
+        if (show)
+            refreshlayout.setRefreshing(true);
         else
-            mainPresenter.loadMeizhi(MeizhiData.size() / 10 + 1, MeizhiData);
-
-        refreshlayout.setRefreshing(true);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        setMenuIcon(menu.findItem(R.id.action_notif));
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_about:
-                startActivity(new Intent(this, AboutMeActivity.class));
-                break;
-            case R.id.action_notif:
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                if (sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true)) {
-                    editor.putBoolean(NOTIFICATION_ENABLED, false);
-                    Toast.makeText(this, R.string.notif_disable, Toast.LENGTH_SHORT).show();
-                } else {
-                    editor.putBoolean(NOTIFICATION_ENABLED, true);
-                    Toast.makeText(this, R.string.notif_enable, Toast.LENGTH_SHORT).show();
-                }
-                editor.apply();
-                setupAlarm(sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true));
-                setMenuIcon(item);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+            refreshlayout.setRefreshing(false);
     }
 
     /**
@@ -263,43 +205,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         }
     }
 
-    /**
-     * Save Recycler View Instance when
-     * 1. Changing Night Mode
-     * 2. Android Neko Multi Window Resizing
-     *
-     * @param outState Bundle to put instances
-     */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        outState.putParcelableArrayList(SAVED_INSTANCE_MEIZHI, MeizhiData);
-        super.onSaveInstanceState(outState);
-    }
-
-    /**
-     * Restore Recycler View Instance When Recreate or Configuration Changed
-     *
-     * @param savedInstanceState Saved Bundle
-     */
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        MeizhiData = savedInstanceState.getParcelableArrayList(SAVED_INSTANCE_MEIZHI);
-        meizhiRvAdapter.setMeizhiList(MeizhiData);
-
-        if (MeizhiData.size() == 0)
-            summonMeizhi(true);
-    }
-
-    @Override
-    public void onBackPressed() {
-        //Custom Exit Application Animation
-        super.onBackPressed();
-        overridePendingTransition(R.anim.app_quit_in, R.anim.app_quit_out);
-    }
-
     @Override
     public void firstTimelaunch() {
         alarmReceiver.setAlarm(this);
@@ -320,4 +225,85 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                     }
                 }).show();
     }
+
+    @Override
+    public MeizhiRvAdapter getAdapter() {
+        return meizhiRvAdapter;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainPresenter.detachView();
+    }
+
+    /**
+     * Save Recycler View Instance when
+     * 1. Changing Night Mode
+     * 2. Android Neko Multi Window Resizing
+     *
+     * @param outState Bundle to put instances
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(SAVED_INSTANCE_MEIZHI, mainPresenter.getData());
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Restore Recycler View Instance When Recreate or Configuration Changed
+     *
+     * @param savedInstanceState Saved Bundle
+     */
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        ArrayList<DataInfo> MeizhiData = savedInstanceState.getParcelableArrayList(SAVED_INSTANCE_MEIZHI);
+        mainPresenter.getData().addAll(MeizhiData);
+        meizhiRvAdapter.setMeizhiList(mainPresenter.getData());
+
+        if (mainPresenter.getData().size() == 0)
+            mainPresenter.loadMeizhi(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Custom Exit Application Animation
+        super.onBackPressed();
+        overridePendingTransition(R.anim.app_quit_in, R.anim.app_quit_out);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        setMenuIcon(menu.findItem(R.id.action_notif));
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutMeActivity.class));
+                break;
+            case R.id.action_notif:
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                if (sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true)) {
+                    editor.putBoolean(NOTIFICATION_ENABLED, false);
+                    Toast.makeText(this, R.string.notif_disable, Toast.LENGTH_SHORT).show();
+                } else {
+                    editor.putBoolean(NOTIFICATION_ENABLED, true);
+                    Toast.makeText(this, R.string.notif_enable, Toast.LENGTH_SHORT).show();
+                }
+                editor.apply();
+                setupAlarm(sharedPreferences.getBoolean(NOTIFICATION_ENABLED, true));
+                setMenuIcon(item);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

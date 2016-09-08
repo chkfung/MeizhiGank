@@ -60,6 +60,7 @@ import me.chkfung.meizhigank.Util.PermissionUtils;
 import me.chkfung.meizhigank.ui.widget.LoadingCircleView;
 
 /**
+ * Meizhi Activity Prprprrrr
  * Created by Fung on 25/07/2016.
  */
 
@@ -118,6 +119,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                 })
                 .into(image);
         image.setOnTouchListener(new imageOnTouchListener());
+        //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_close_clear_cancel));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -177,7 +179,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //Immediate Action When Permission Dialog Tapped
         if (PermissionUtils.permissionGranted(requestCode, SAVE_MEIZHI, grantResults)) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
                 SaveMenuTapped();
             else
             //Important Permission such as read external storage required a restart of Application to take effect
@@ -187,7 +189,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                     .setAction(android.R.string.ok, null)
                     .show();
         } else {
-            Toast.makeText(this, R.string.Permission_denie, Toast.LENGTH_SHORT)
+            Toast.makeText(this, R.string.Permission_deny, Toast.LENGTH_SHORT)
                     .show();
         }
     }
@@ -200,7 +202,6 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
     @Override
     public void ImageSaved() {
-//        progressbar.setProgress(100);
         Snackbar.make(findViewById(android.R.id.content), R.string.image_saved, Snackbar.LENGTH_INDEFINITE)
                 .show();
 

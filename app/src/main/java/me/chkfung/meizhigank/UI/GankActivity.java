@@ -46,7 +46,6 @@ import android.widget.ViewSwitcher;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.chkfung.meizhigank.Base.BaseActivity;
 import me.chkfung.meizhigank.Contract.GankContract;
@@ -102,7 +101,6 @@ public class GankActivity extends BaseActivity implements GankContract.View {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gank);
-        ButterKnife.bind(this);
         mDate = getIntent().getExtras().getString(INTENT_EXTRA_DATE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -116,14 +114,6 @@ public class GankActivity extends BaseActivity implements GankContract.View {
         else
             staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
-//        GankFragment gankFragment = (GankFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-//        if (gankFragment == null) {
-//            gankFragment = GankFragment.newInstance(mDate);
-//            FragmentManager fm = getSupportFragmentManager();
-//            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-//            fragmentTransaction.add(R.id.fragment_content, gankFragment);
-//            fragmentTransaction.commit();
-//        }
         DaggerGankPresenterComponent.builder()
                 .appComponent(MeizhiApp.get(this).getAppComponent())
                 .gankPresenterModule(new GankPresenterModule(this))
