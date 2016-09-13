@@ -90,6 +90,7 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
 
         frameMeizhi.getBackground().setAlpha(255);
 
+
         //TODO there should be better way
         //To Prevent Image Flicker 2 times when glide load success and previous image transition,
         //Save Image in private storage and pass it as Uri?
@@ -182,12 +183,12 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
                 SaveMenuTapped();
             else
-            //Important Permission such as read external storage required a restart of Application to take effect
-            Snackbar.make(findViewById(android.R.id.content)
-                    , R.string.Permission_granted
-                    , Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, null)
-                    .show();
+                //Important Permission such as read external storage required a restart of Application to take effect
+                Snackbar.make(findViewById(android.R.id.content)
+                        , R.string.Permission_granted
+                        , Snackbar.LENGTH_INDEFINITE)
+                        .setAction(android.R.string.ok, null)
+                        .show();
         } else {
             Toast.makeText(this, R.string.Permission_deny, Toast.LENGTH_SHORT)
                     .show();
@@ -221,14 +222,14 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.LOLLIPOP)
-            overridePendingTransition(R.anim.pre_lolipop_enter,R.anim.pre_lolipop_exit);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            overridePendingTransition(R.anim.pre_lolipop_enter, R.anim.pre_lolipop_exit);
     }
 
     private class imageOnTouchListener implements View.OnTouchListener {
-        int StartX;
+        //        int StartX;
         int StartY;
-        int mMotionX;
+        //        int mMotionX;
         int mMotionY;
 
         @Override
@@ -242,12 +243,12 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                                 .setDuration(100)
                                 .setInterpolator(new LinearInterpolator());
                     Logger.i("Action Down");
-                    StartX = (int) event.getRawX();
+//                    StartX = (int) event.getRawX();
                     StartY = (int) event.getRawY();
                     break;
 
                 case MotionEvent.ACTION_MOVE:
-                    mMotionX = (int) event.getRawX() - StartX;
+//                    mMotionX = (int) event.getRawX() - StartX;
                     mMotionY = (int) event.getRawY() - StartY;
 //                        layoutParams.leftMargin = mMotionX;
 //                        layoutParams.rightMargin = -mMotionX;
@@ -255,20 +256,20 @@ public class MeizhiActivity extends BaseActivity implements MeizhiContract.View 
                     layoutParams.bottomMargin = -mMotionY / 2;
                     v.requestLayout();
 
-                    if (Math.abs(mMotionY) > 200) {
+                    if (Math.abs(mMotionY) > 400) {
                         frameMeizhi.getBackground().setAlpha(128);
 
                     } else {
                         //Alpha min 128 max 255
                         //255 - 128 = 127
-                        double ratioAlpha = (Math.abs(mMotionY) / 200.0) * 127;
+                        double ratioAlpha = (Math.abs(mMotionY) / 400.0) * 127;
                         frameMeizhi.getBackground().setAlpha(255 - (int) ratioAlpha);
                     }
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     Logger.i("Motion Y: " + mMotionY);
-                    if (Math.abs(mMotionY) > 100) {
+                    if (Math.abs(mMotionY) > 200) {
                         onBackPressed();
                     } else {
                         //TODO Reuse Value Animator?

@@ -24,6 +24,8 @@ This Project is developed using MVP structure and Dagger 2 as a best practice of
 
 [Google Play](https://play.google.com/store/apps/details?id=me.chkfung.meizhigankio)
 
+[酷安市场 Cool APK](http://www.coolapk.com/apk/me.chkfung.meizhigankio)
+
 ## Screenshot:
 
 ![Gif1](Screenshot/1.gif)

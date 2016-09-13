@@ -82,6 +82,7 @@ public class AboutMeActivity extends BaseActivity {
                 {"RxAndroid", "RxAndroid authors"},
                 {"Support Library", "Android Developers"},
         };
+
         rvAbout.setNestedScrollingEnabled(false);
         rvAbout.setLayoutManager(new LinearLayoutManager(this));
         rvAbout.setAdapter(new AboutRvAdapter(item));
