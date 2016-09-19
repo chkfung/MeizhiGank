@@ -38,7 +38,9 @@ This Project is developed using MVP structure and Dagger 2 as a best practice of
 <img src="Screenshot/4.png" width=200/>
 <img src="Screenshot/5.png" width=200/>
 
+## 文章
 
+[夜间模式实现](http://www.jianshu.com/p/f30ebec8b4ed)
 
 ## Thanks
 
