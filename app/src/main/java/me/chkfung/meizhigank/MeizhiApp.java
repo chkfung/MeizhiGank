@@ -22,10 +22,10 @@ package me.chkfung.meizhigank;
 import android.app.Application;
 import android.content.Context;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 import com.orhanobut.logger.Logger;
 
-import io.fabric.sdk.android.Fabric;
+//import io.fabric.sdk.android.Fabric;
 import me.chkfung.meizhigank.Dagger.Component.AppComponent;
 import me.chkfung.meizhigank.Dagger.Component.DaggerAppComponent;
 import me.chkfung.meizhigank.Dagger.Module.AppModule;
@@ -56,7 +56,7 @@ public class MeizhiApp extends Application {
         } else {
             Logger.init("Tibber Say");
 //            Logger.init().setLogLevel(LogLevel.NONE);
-            Fabric.with(this, new Crashlytics());
+//            Fabric.with(this, new Crashlytics());
         }
 
         appComponent = DaggerAppComponent.builder()
